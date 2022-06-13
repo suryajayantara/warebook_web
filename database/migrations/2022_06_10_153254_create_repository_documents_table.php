@@ -15,7 +15,7 @@ class CreateRepositoryDocumentsTable extends Migration
     {
         Schema::create('repository_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreign('idRepository');
+            // $table->foreign('idRepository');
             $table->string('title');
             $table->string('desc');
             $table->string('url');
