@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRepositoryTypesTable extends Migration
+class CreateStudentCreativityProgramTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateRepositoryTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('repository_types', function (Blueprint $table) {
+        Schema::create('student_creativity_program_types', function (Blueprint $table) {
             $table->id();
-            $table->string('type_of_repository');
-            $table->string('desc');
+            $table->string('type_name');
+            $table->string('aliases');
+            $table->text('desc');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateRepositoryTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repository_types');
+        Schema::dropIfExists('student_creativity_program_types');
     }
 }

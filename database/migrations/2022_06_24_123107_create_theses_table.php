@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRepositoryDocumentsTable extends Migration
+class CreateThesesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateRepositoryDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('repository_documents', function (Blueprint $table) {
+        Schema::create('theses', function (Blueprint $table) {
             $table->id();
-            $table->foreign('idRepository');
+            $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->enum('thesis_type',['Tugas Akhir','Skripsi']);
             $table->string('title');
-            $table->string('desc');
-            $table->string('url');
+            $table->text('abstract');
+            $table->string('thumbnail_url');
+            $table->json('tags');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateRepositoryDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repository_documents');
+        Schema::dropIfExists('theses');
     }
 }
