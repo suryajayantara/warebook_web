@@ -10,6 +10,9 @@ class UserDetail extends Model
     use HasFactory;
 
     protected $fillable = [
-        
+        'users_id',
+        'unique_id',
+        'departement_id',
+        'study_id'
     ];
 }

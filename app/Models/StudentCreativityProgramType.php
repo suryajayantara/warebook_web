@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class StudentCreativityProgramType extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'type_name',
+        'aliases',
+        'desc'
+    ];
 }
