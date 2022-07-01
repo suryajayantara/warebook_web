@@ -21,4 +21,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/thesis',[ThesisController::class,'getAllThesis']);
+Route::get('/thesis',[ThesisController::class,'getThesis']);
