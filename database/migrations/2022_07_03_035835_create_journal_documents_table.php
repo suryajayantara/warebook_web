@@ -15,7 +15,7 @@ class CreateJournalDocumentsTable extends Migration
     {
         Schema::create('journal_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('journals_id')->constrained('journals')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('journal_topics_id')->constrained('journal_topics')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->json('author');
             $table->text('abstract');
