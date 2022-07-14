@@ -30,11 +30,12 @@ Route::prefix('v1')->group(function(){
         Route::get('/',[ThesisController::class,'getThesis']);
         Route::get('/{id}', [ThesisController::class,'getOneThesis']);
         Route::post('/',[ThesisController::class,'create']);
+        Route::put('/{id}',[ThesisController::class,'update']);
         Route::delete('/{id}',[ThesisController::class,'destroy']);
     });
 
     // InternalResearch => Ade Part
-    
+
 
 
 });

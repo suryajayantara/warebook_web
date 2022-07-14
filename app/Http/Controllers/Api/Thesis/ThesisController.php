@@ -20,7 +20,7 @@ class ThesisController extends Controller
             'search_keyword' => $search,
             'data' => $data
         ],200);
-        
+
     }
 
     // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
@@ -32,14 +32,51 @@ class ThesisController extends Controller
         ],200);
     }
 
+    //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
     public function create(Request $request){
-        return response()->json([
-            'data' => $request->data
-        ],200);
+
+        try {
+            $data = new Thesis();
+            $data->users_id = $request->users_id;
+            $data->thesis_type = $request->thesis_type;
+            $data->title = $request->title;
+            $data->abstract = $request->abstract;
+            $data->thumbnail_url = $request->thumbnail_url;
+            $data->tags = $request->tags;
+
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+                'message' => 'Succesful Adding Data'
+            ],200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
     }
 
+    //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){
-        // 
+        try {
+
+            $data = Thesis::find($id);
+            $data->users_id = $request->users_id;
+            $data->thesis_type = $request->thesis_type;
+            $data->title = $request->title;
+            $data->abstract = $request->abstract;
+            $data->thumbnail_url = $request->thumbnail_url;
+            $data->tags = $request->tags;
+
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+                'message' => 'Succesful Update Data'
+            ],200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     public function destroy($id){
@@ -49,7 +86,7 @@ class ThesisController extends Controller
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
-            }   
+            }
             $query->delete();
             if($query){
                 return response()->json([
@@ -63,10 +100,10 @@ class ThesisController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-        
+
     }
 
-    // Start new Function HERE 
+    // Start new Function HERE
 
-   
+
 }

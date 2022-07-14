@@ -20,7 +20,7 @@ class CreateThesesTable extends Migration
             $table->string('title');
             $table->text('abstract');
             $table->string('thumbnail_url');
-            $table->json('tags');
+            $table->text('tags');
             $table->timestamps();
         });
     }
