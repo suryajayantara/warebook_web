@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Thesis;
 
 use App\Http\Controllers\Controller;
 use App\Models\Thesis;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 
 class ThesisController extends Controller
@@ -36,6 +37,21 @@ class ThesisController extends Controller
     public function create(Request $request){
 
         try {
+            $validate = Validator($request->all(),[
+                'users_id' => 'required',
+                'thesis_type' => 'required',
+                'title' => 'required',
+                'abstract' => 'required',
+                'thumbnail_url' => 'required',
+                'tags' => 'required',
+            ]);
+
+            if($validate->fails()){
+                return response()->json([
+                    'validate' => $validate->errors()
+                ]);
+            }
+
             $data = new Thesis();
             $data->users_id = $request->users_id;
             $data->thesis_type = $request->thesis_type;
@@ -59,6 +75,20 @@ class ThesisController extends Controller
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){
         try {
+            $validate = Validator($request->all(),[
+                'users_id' => 'required',
+                'thesis_type' => 'required',
+                'title' => 'required',
+                'abstract' => 'required',
+                'thumbnail_url' => 'required',
+                'tags' => 'required',
+            ]);
+
+            if($validate->fails()){
+                return response()->json([
+                    'validate' => $validate->errors()
+                ]);
+            }
 
             $data = Thesis::find($id);
             $data->users_id = $request->users_id;
