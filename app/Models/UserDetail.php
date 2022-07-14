@@ -15,4 +15,19 @@ class UserDetail extends Model
         'departement_id',
         'study_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'users_id');
+    }
+
+    public function departements()
+    {
+        return $this->belongsTo(Departement::class,'departement_id');
+    }
+
+    public function studies()
+    {
+        return $this->belongsTo(Study::class,'study_id');
+    }
 }

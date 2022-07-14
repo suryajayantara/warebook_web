@@ -13,4 +13,9 @@ class ThesisDocument extends Model
         'document_name',
         'url'
     ];
+
+    public function thesis()
+    {
+        return $this->belongsTo(Thesis::class,'thesis_id');
+    }
 }

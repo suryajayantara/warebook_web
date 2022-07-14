@@ -13,4 +13,9 @@ class StudentCreativityProgramType extends Model
         'aliases',
         'desc'
     ];
+
+    public function creativity()
+    {
+        return $this->hasMany(StudentCreativityProgram::class);
+    }
 }

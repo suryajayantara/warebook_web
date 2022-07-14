@@ -9,8 +9,18 @@ class Departement extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'departemen_name',
+        'departement_name',
         'desc'
     ];
+
+    public function study()
+    {
+        return $this->hasMany(Study::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(UserDetail::class);
+    }
 
 }

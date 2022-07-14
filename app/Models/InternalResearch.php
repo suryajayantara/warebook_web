@@ -23,4 +23,9 @@ class InternalResearch extends Model
         'proposal_url',
         'document_url'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'users_id');
+    }
 }

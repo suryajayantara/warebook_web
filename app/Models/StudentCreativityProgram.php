@@ -17,4 +17,15 @@ class StudentCreativityProgram extends Model
         'supervisor',
         'document_url'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'users_id');
+    }
+
+    public function creativityType()
+    {
+        return $this->belongsTo(StudentCreativityProgramType::class,'users_id');
+    }
+
 }

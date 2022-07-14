@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Web\Departement;
+namespace App\Http\Controllers\Api\StudentCreativityProgram;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DepartementController extends Controller
+class StudentCreativityProgramServiceTypeController extends Controller
 {
     /**
      * Display a listing of the resource.

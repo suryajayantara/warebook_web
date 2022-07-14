@@ -13,4 +13,14 @@ class Study extends Model
         'studies_name',
         'desc'
     ];
+
+    public function departements()
+    {
+        return $this->belongsTo(Departement::class, 'departement_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
