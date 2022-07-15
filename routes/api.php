@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Thesis\ThesisController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Api\Thesis\ThesisServiceController;
 use App\Models\Thesis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +21,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::group(['prefix' => 'v1'],function(){
+    Route::post('login',[LoginController::class,'login']);
+    Route::post('register',[LoginController::class,'register']);
+    Route::get('logout',[LoginController::class,'logout'])->middleware('auth:api');
+});
 
-Route::get('/thesis',[ThesisController::class,'getAllThesis']);
+Route::get('/thesis',[ThesisServiceController::class,'getAllThesis']);

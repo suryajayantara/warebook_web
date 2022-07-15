@@ -44,6 +44,18 @@ class User extends Authenticatable
     ];
 
     public function theses(){
-        return $this->belongsTo(Thesis::class);
+        return $this->hasOne(Thesis::class);
+    }
+
+    public function creativity(){
+        return $this->hasOne(StudentCreativityProgram::class);
+    }
+
+    public function internalResearch(){
+        return $this->hasOne(InternalResearch::class);
+    }
+
+    public function details(){
+        return $this->hasOne(UserDetail::class);
     }
 }
