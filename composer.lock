@@ -1102,6 +1102,7 @@
         },
         {
             "name": "laravel/framework",
+
             "version": "v8.83.18",
             "source": {
                 "type": "git",
@@ -1112,6 +1113,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/db8188e9cc8359a5c6706fa9d9f55aad7f235077",
                 "reference": "db8188e9cc8359a5c6706fa9d9f55aad7f235077",
+
                 "shasum": ""
             },
             "require": {
@@ -1271,7 +1273,9 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+
             "time": "2022-06-28T14:30:38+00:00"
+
         },
         {
             "name": "laravel/passport",
@@ -2591,6 +2595,15 @@
                     "type": "opencollective"
                 },
                 {
+
+
+                },
+                {
+                    "url": "https://opencollective.com/Carbon#sponsor",
+                    "type": "opencollective"
+                },
+                {
+
 
                     "url": "https://tidelift.com/subscription/pkg/packagist-nesbot-carbon?utm_source=packagist-nesbot-carbon&utm_medium=referral&utm_campaign=readme",
                     "type": "tidelift"
@@ -9178,5 +9191,7 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
+
     "plugin-api-version": "2.2.0"
+
 }
