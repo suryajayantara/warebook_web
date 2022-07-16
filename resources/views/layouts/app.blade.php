@@ -34,14 +34,14 @@
           </div>
       
           <div class="flex items-center justify-end flex-1">
-            <nav class="hidden lg:text-gray-500 lg:tracking-wide lg:font-semibold lg:text-sm lg:space-x-4 lg:flex">
-              <a href="/about" class="block h-16 leading-[4rem] border-b-4 border-transparent hover:text-slate-800 hover:border-blue-600">
+            <nav class="hidden lg:text-gray-500 lg:tracking-wide lg:font-semibold lg:text-base lg:space-x-6 lg:flex">
+              <a href="/about" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent hover:text-slate-800 hover:border-blue-600">
                 Beranda
               </a>
-              <a href="/news" class="block h-16 leading-[4rem] border-b-4 border-transparent hover:border-blue-600">
+              <a href="/news" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent hover:border-blue-600">
                 Repositori
               </a>
-              <a href="/products" class="block h-16 leading-[4rem] border-b-4 border-transparent hover:border-blue-600">
+              <a href="/products" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent hover:border-blue-600">
                 Favorite
               </a>
               <div class="py-5">
@@ -53,5 +53,6 @@
       </header>
 
       @yield('contents')
+
 </body>
 </html>
