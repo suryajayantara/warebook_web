@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <title>PNB Repositories</title>
 </head>
-<body class="font-nunito bg-[#EEEFF3]">
+<body class="font-nunito bg-[#EEEFF3] text-[#333333]">
     <header class="border-b  border-gray-100  bg-white">
         <div class="flex items-center justify-between w-[95%] mx-auto h-16 max-w-screen-2xl sm:px-6 lg:px-8">
           <div class="flex items-center">
