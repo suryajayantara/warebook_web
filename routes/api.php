@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Thesis\ThesisController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Api\Thesis\ThesisServiceController;
 use App\Models\Thesis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

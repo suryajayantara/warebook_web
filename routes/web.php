@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\Thesis\ThesisController;
+use App\Http\Controllers\Web\Manage\DepartementController;
+use App\Http\Controllers\Web\Manage\StudyController;
+use App\Http\Controllers\Web\User\RegisterController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('register.index');
+});
+
+
+Route::resource('departements',DepartementController::class);
+Route::resource('studies',StudyController::class);
+Route::resource('register',RegisterController::class);
