@@ -21,10 +21,22 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['prefix' => 'v1'],function(){
-    Route::post('login',[LoginController::class,'login']);
-    Route::post('register',[LoginController::class,'register']);
-    Route::get('logout',[LoginController::class,'logout'])->middleware('auth:api');
-});
+Route::prefix('v1')->group(function(){
 
-Route::get('/thesis',[ThesisServiceController::class,'getAllThesis']);
+    // Thesis atau tugas akhir => Surje Part => Jangan diutak atik !
+    // Cuma Surje dan tuhan yang tau arah route ini kemana
+    // Kalau surje udah ga maintain code ini , berarti gaada yang tau route ini arahnya kemana
+    // Baca baca aja dokumentasi dilaravel, sisanya ku serahkan kepadamu anak muda 🙏
+    Route::prefix('thesis')->group(function(){
+        Route::get('/',[ThesisController::class,'getThesis']);
+        Route::get('/{id}', [ThesisController::class,'getOneThesis']);
+        Route::post('/',[ThesisController::class,'create']);
+        Route::put('/{id}',[ThesisController::class,'update']);
+        Route::delete('/{id}',[ThesisController::class,'destroy']);
+    });
+
+    // InternalResearch => Ade Part
+
+
+
+});
