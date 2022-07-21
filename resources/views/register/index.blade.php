@@ -4,61 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <title>PNB Repositories</title>
 </head>
-<body>
-    <div class="row my-5 mx-auto">
-        <div class="col-md-10">
-            {{-- <form action="{{ url()->current() }}" method="GET">
-                <div class="input-group mb-3">
-                    <input name="cari" value="{{ request('cari') }}" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Cari Departemen">
-                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Cari</button>
-                </div>
-            </form> --}}
-        </div>
-        <div class="col-md-2">
-            <a href="{{ route('register.create') }}" class="btn btn-success">Register</a>
-        </div>
+<body class="bg-[#F5F5F5]">
+    <img class="mx-auto my-14" src="{{asset('img/icon/icon.svg')}}" alt="">
+    <div class="bg-white w-[35%] mx-auto px-16 pb-8 pt-10 shadow-md rounded-sm" >
+        <h1 class="font-black text-[30px]">Jenis Akun</h1>
+        <p class="opacity-60 -mt-1 mb-3">Tentukan jenis akun yang akan dibuat</p>
+        <div class="flex">
+          <a href="{{ route('register.create')}}" class="w-1/2 mr-2 shadow-sm h-44 flex flex-col items-center rounded-xl bg-[#0984E3]">
+            <img class="h-32" src="{{asset('img/design/teacher.svg')}}" alt="">
+            <h1 class="font-bold text-white text-xl">Pengajar</h1>
+          </a>  
+          <a href="{{ route('register.create')}}" class="w-1/2 ml-2 shadow-sm h-44 rounded-xl flex flex-col items-center bg-[#E2AA40]">
+            <img class="h-32" src="{{asset('img/design/student.svg')}}" alt="">
+            <h1 class="font-bold text-white text-xl">Mahasiswa</h1>
+          </a>
+        </div>        
     </div>
-    {{-- <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nama Jurusan</th>
-            <th scope="col">Nama Program Study</th>
-            <th scope="col">Deskripsi</th>
-            <th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($data as $item)
-          <tr>
-            <th scope="row">{{ $loop->iteration }}</th>
-            <td>{{ $item->departements->departement_name}}</td>
-            <td>{{ $item->studies_name}}</td>
-            <td>{{ $item->desc}}</td>
-            <td class="row">
-              <div class="mx-1 my-1">
-                <a href="{{ route('studies.edit',$item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-              </div>
-              <div class="mx-1 my-1">
-                <form action="{{ route('studies.destroy',$item->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-danger" onclick = "return confirm('Yakin hapus program study?')">Hapus</button>
-                </form>
-              </div>
-            </td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table> --}}
-      {{-- <div class="d-flex justify-content-center">
-        {{ $datas->links() }}
-      </div> --}}
-
 </body>
 </html>
-
