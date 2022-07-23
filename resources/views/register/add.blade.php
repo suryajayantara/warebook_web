@@ -4,89 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <title>PNB Repositories</title>
 </head>
-<body>
-    <div class="card">
-        <div class="card-body">
+<body class="bg-[#F5F5F5]">
+    <img class="mx-auto my-14" src="{{asset('img/icon/icon.svg')}}">
+    <div class="bg-white w-[30%] mx-auto px-16 pb-8 pt-10 mb-32 shadow-md rounded-sm" >
+        <h1 class="font-black text-[#333333] text-[30px]">Isi Datamu</h1>
+        <p class="opacity-60 -mt-1 mb-3">Daftar untuk mengakses konten</p>
+        <form enctype="multipart/form-data" action="{{ route('register.store') }}" method="post" class="flex flex-col">
+            <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="Nama" name="name">
+            <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="No Identitas" name="unique_id">
+            <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="email" placeholder="Email" name="email">
+            <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="password" placeholder="Password" name="password">  
+            
+            <select class="text-slate-400 h-12 mt-3 mb-2 px-3 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200 focus:text-[#333333] " name="departement_id" id="">
+                <option class="" value="" disabled selected>Pilih Jurusan</option>
+                    @foreach ($departement_data as $departement)
+                        <option value="{{ $departement->id }}">{{ $departement->departement_name }}</option>
+                    @endforeach
+            </select>
+            
+            <select class="text-slate-400 h-12 mt-3 mb-2 px-3 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200 focus:text-[#333333] " name="departement_id" id="">
+                <option value="" selected>Pilih Program Studi</option>
+                    @foreach ($studies_data as $item)
+                        <option value="{{ $item->id }}">{{ $item->studies_name }}</option>
+                    @endforeach
+            </select>
 
-            <form enctype="multipart/form-data" action="{{ route('register.store') }}" method="post" >
-                @csrf
-                <div class="m-3">
-
-                    {{-- Name --}}
-                    <div class="form-group row">
-                        <label for="exampleInputEmail1" class="form-label">Nama</label>
-                        <input name="name" type="Name" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                    </div>
-
-                    {{-- Password --}}
-                    <div class="form-group row">
-                        <label for="exampleInputEmail1" class="form-label">Password</label>
-                        <input name="password" type="Name" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                    </div>
-
-                    {{-- email --}}
-                    <div class="form-group row">
-                        <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input name="email" type="Name" class="form-control @error('email') is-invalid @enderror" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    {{-- unique_id --}}
-                    <div class="form-group row">
-                        <label for="exampleInputEmail1" class="form-label">Unique</label>
-                        <input name="unique_id" type="Name" class="form-control @error('unique_id') is-invalid @enderror" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                        @error('unique_id')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    {{-- nama jurusan --}}
-                    <div class="form-group row">
-                        <label for="exampleInputEmail1" class="form-label">Nama Jurusan</label>
-                        <select name="departement_id"  class="form-control" aria-label="Default select example" required>
-                            <option value="" selected>Pilih Jurusan</option>
-                            @foreach ($departement_data as $departement)
-                            <option value="{{ $departement->id }}">{{ $departement->departement_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    {{-- nama program study --}}
-                    <div class="form-group row">
-                        <label for="exampleInputEmail1" class="form-label">Nama Jurusan</label>
-                        <select name="study_id"  class="form-control" aria-label="Default select example" required>
-                            <option value="" selected>Pilih Jurusan</option>
-                            @foreach ($studies_data as $item)
-                                <option value="{{ $item->id }}">{{ $item->studies_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    {{-- tambah --}}
-                    <div class="form-group row">
-                        <button type="submit" class="btn btn-lg btn-primary w-100 mt-3">Tambah</button>
-                    </div>
-
-              </form>
-            <a href="{{ route('studies.index') }}">
-                {{-- kembali --}}
-                <div class="form-group row">
-                    <button type="button" class="btn btn-lg btn-danger w-100">Kembali</button>
-                </div>
-            </a>
-        </div>
+            <button class="bg-[#0984E3] h-12 rounded-xl my-4 font-bold text-white" type="submit">Registrasi</button>
+            
+        </form>        
     </div>
-
 </body>
 </html>
-
