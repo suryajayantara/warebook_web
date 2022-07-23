@@ -18,7 +18,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('register.index');
+    return view('index');
+});
+
+Route::get('/journal', function () {
+    return view('journal.index');
+});
+Route::get('/home', function(){
+    return view('user.index');
 });
 
 

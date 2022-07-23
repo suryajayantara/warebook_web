@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <title>PNB Repositories</title>
 </head>
-<body class="bg-[#F5F5F5]">
+<body class="text-[#333333] bg-[#F5F5F5]">
     <img class="mx-auto my-14" src="{{asset('img/icon/icon.svg')}}" alt="">
     <div class="bg-white w-[35%] mx-auto px-16 pb-8 pt-10 shadow-md rounded-sm" >
         <h1 class="font-black text-[30px]">Jenis Akun</h1>
