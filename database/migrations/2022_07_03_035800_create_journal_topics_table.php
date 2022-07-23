@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateThesesTable extends Migration
+class CreateJournalTopicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateThesesTable extends Migration
      */
     public function up()
     {
-        Schema::create('theses', function (Blueprint $table) {
+        Schema::create('journal_topics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->enum('thesis_type',['Tugas Akhir','Skripsi']);
-            $table->string('title');
-            $table->text('abstract');
+            $table->foreignId('journal_types_id')->constrained('journal_types')->onDelete('cascade')->onUpdate('cascade');
+            $table->string(' title');
+            $table->text('description');
             $table->string('thumbnail_url');
-            $table->text('tags');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateThesesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('theses');
+        Schema::dropIfExists('journal_topics');
     }
 }

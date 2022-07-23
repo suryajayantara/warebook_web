@@ -48,6 +48,18 @@ Route::prefix('v1')->group(function(){
         Route::post('/{id}',[StudentCreativityProgramTypeServiceController::class,'update']);
         Route::delete('/{id}',[StudentCreativityProgramTypeServiceController::class,'destroy']);
     });
+    
+    // Thesis atau tugas akhir => Surje Part => Jangan diutak atik !
+    // Cuma Surje dan tuhan yang tau arah route ini kemana
+    // Kalau surje udah ga maintain code ini , berarti gaada yang tau route ini arahnya kemana
+    // Baca baca aja dokumentasi dilaravel, sisanya ku serahkan kepadamu anak muda 🙏
+    Route::prefix('thesis')->group(function(){
+        Route::get('/',[ThesisController::class,'getThesis']);
+        Route::get('/{id}', [ThesisController::class,'getOneThesis']);
+        Route::post('/',[ThesisController::class,'create']);
+        Route::put('/{id}',[ThesisController::class,'update']);
+        Route::delete('/{id}',[ThesisController::class,'destroy']);
+    });
 
     //ThesisDocument => Ade part
     //route untuk get all data, get one data by id, post data, put data and delete data ThesisDocument
