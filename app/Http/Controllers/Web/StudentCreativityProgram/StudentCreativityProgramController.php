@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\StudentCreativityProgram;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudentCreativityProgram;
 use Illuminate\Http\Request;
 
 class StudentCreativityProgramController extends Controller
@@ -14,7 +15,8 @@ class StudentCreativityProgramController extends Controller
      */
     public function index()
     {
-        //
+        $data = StudentCreativityProgram::all();
+        return view('admin.study.index',compact('data'));
     }
 
     /**
@@ -80,6 +82,11 @@ class StudentCreativityProgramController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            StudentCreativityProgram::find($id)->delete();
+            return redirect()->route('admin.departements.index');
+        } catch (\Throwable $th) {
+            echo 'gagal';
+        }
     }
 }
