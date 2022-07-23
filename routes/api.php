@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\InternalResearch\InternalResearchServiceController;
+use App\Http\Controllers\Api\Manage\DepartementServiceController;
+use App\Http\Controllers\Api\Manage\StudyServiceController;
+use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramServiceController;
+use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramTypeServiceController;
+use App\Http\Controllers\Api\Thesis\ThesisDocumentServiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Api\Thesis\ThesisServiceController;
 use App\Models\Thesis;
@@ -21,10 +27,67 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['prefix' => 'v1'],function(){
-    Route::post('login',[LoginController::class,'login']);
-    Route::post('register',[LoginController::class,'register']);
-    Route::get('logout',[LoginController::class,'logout'])->middleware('auth:api');
+Route::prefix('v1')->group(function(){
+
+    //StudentCreativityProgram => Ade part
+    //route untuk get all data, get one data by id, post data, put data and delete data PKM
+    Route::prefix('creativity')->group(function(){
+        Route::get('/',[StudentCreativityProgramServiceController::class,'getCreativity']);
+        Route::get('/{id}', [StudentCreativityProgramServiceController::class,'getOneCreativity']);
+        Route::post('/',[StudentCreativityProgramServiceController::class,'create']);
+        Route::post('/{id}',[StudentCreativityProgramServiceController::class,'update']);
+        Route::delete('/{id}',[StudentCreativityProgramServiceController::class,'destroy']);
+    });
+
+    //CreativityType => Ade part
+    //route untuk get all data, get one data by id, post data, put data and delete data Type PKM
+    Route::prefix('creativityType')->group(function(){
+        Route::get('/',[StudentCreativityProgramTypeServiceController::class,'getCreativityType']);
+        Route::get('/{id}', [StudentCreativityProgramTypeServiceController::class,'getOneCreativityType']);
+        Route::post('/',[StudentCreativityProgramTypeServiceController::class,'create']);
+        Route::post('/{id}',[StudentCreativityProgramTypeServiceController::class,'update']);
+        Route::delete('/{id}',[StudentCreativityProgramTypeServiceController::class,'destroy']);
+    });
+
+    //ThesisDocument => Ade part
+    //route untuk get all data, get one data by id, post data, put data and delete data ThesisDocument
+    Route::prefix('thesisDocument')->group(function(){
+        Route::get('/',[ThesisDocumentServiceController::class,'getThesisDocument']);
+        Route::get('/{id}', [ThesisDocumentServiceController::class,'getOneThesisDocument']);
+        Route::post('/',[ThesisDocumentServiceController::class,'create']);
+        Route::post('/{id}',[ThesisDocumentServiceController::class,'update']);
+        Route::delete('/{id}',[ThesisDocumentServiceController::class,'destroy']);
+    });
+
+    //InternalResearch => Ade part
+    //route untuk get all data, get one data by id, post data, put data and delete data InternalResearch
+    Route::prefix('research')->group(function(){
+        Route::get('/',[InternalResearchServiceController::class,'getResearch']);
+        Route::get('/{id}', [InternalResearchServiceController::class,'getOneResearch']);
+        Route::post('/',[InternalResearchServiceController::class,'create']);
+        Route::post('/{id}',[InternalResearchServiceController::class,'update']);
+        Route::delete('/{id}',[InternalResearchServiceController::class,'destroy']);
+    });
+
+    //Study => Ade part
+    //route untuk get all data, get one data by id, post data, put data and delete data InternalResearch
+    Route::prefix('study')->group(function(){
+        Route::get('/',[StudyServiceController::class,'getStudy']);
+        Route::get('/{id}', [StudyServiceController::class,'getOneStudy']);
+        Route::post('/',[StudyServiceController::class,'create']);
+        Route::post('/{id}',[StudyServiceController::class,'update']);
+        Route::delete('/{id}',[StudyServiceController::class,'destroy']);
+    });
+
+    //Departement => Ade part
+    //route untuk get all data, get one data by id, post data, put data and delete data InternalResearch
+    Route::prefix('departement')->group(function(){
+        Route::get('/',[DepartementServiceController::class,'getDepartement']);
+        Route::get('/{id}', [DepartementServiceController::class,'getOneDepartement']);
+        Route::post('/',[DepartementServiceController::class,'create']);
+        Route::post('/{id}',[DepartementServiceController::class,'update']);
+        Route::delete('/{id}',[DepartementServiceController::class,'destroy']);
+    });
+
 });
 
-Route::get('/thesis',[ThesisServiceController::class,'getAllThesis']);

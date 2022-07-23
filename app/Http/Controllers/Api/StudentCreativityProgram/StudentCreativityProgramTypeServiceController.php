@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\Thesis;
+namespace App\Http\Controllers\Api\StudentCreativityProgram;
 
 use App\Http\Controllers\Controller;
-use App\Models\ThesisDocument;
+use App\Models\StudentCreativityProgramType;
 use Illuminate\Http\Request;
 
-class ThesisDocumentServiceController extends Controller
+class StudentCreativityProgramTypeServiceController extends Controller
 {
-    //function ini digunakan untuk mengambil dan mencari data dari repositori thesis document
-    public function getThesisDocument(Request $request)
+    //function ini digunakan untuk mengambil dan mencari data dari repositori PKM
+    public function getCreativityType(Request $request)
     {
         $search = request('search','');
-        $data = ThesisDocument::query()->when($search , function($query) use ($search){
-            $query->where('document_name','like','%' . $search . '%');
+        $data = StudentCreativityProgramType::query()->when($search , function($query) use ($search){
+            $query->where('type_name','like','%' . $search . '%');
         })->get();
 
         return response()->json([
@@ -21,10 +21,10 @@ class ThesisDocumentServiceController extends Controller
             'data' => $data
         ],200);
     }
-    //function ini digunakan untuk mengambil satu data dari repositori thesis document dengan mengambil salah satu idnya
-    public function getOneThesisDocument(Request $request, $id)
+    //function ini digunakan untuk mengambil satu data type dari repositori PKM dengan mengambil salah satu idnya
+    public function getOneCreativityType(Request $request, $id)
     {
-        $data = ThesisDocument::find($id)->with('thesis')->first();
+        $data = StudentCreativityProgramType::find($id);
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -36,14 +36,14 @@ class ThesisDocumentServiceController extends Controller
         }
     }
 
-    //Fungsi ini gunanya untuk menambah data thesis document pada Repositori thesis
+    //Fungsi ini gunanya untuk menambah data type pada Repositori PKM
     public function create(Request $request){
 
         try {
             $validate = Validator($request->all(),[
-                'thesis_id' => 'required',
-                'document_name' => 'required',
-                'url' => 'required'
+                'type_name' => 'required',
+                'aliases' => 'required',
+                'desc' => 'required',
             ]);
 
             if($validate->fails()){
@@ -52,10 +52,10 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
 
-            $data = new ThesisDocument();
-            $data->thesis_id = $request->thesis_id;
-            $data->document_name = $request->document_name;
-            $data->url = $request->url;
+            $data = new StudentCreativityProgramType();
+            $data->type_name = $request->type_name;
+            $data->aliases = $request->aliases;
+            $data->desc = $request->desc;
 
             $data->save();
 
@@ -69,19 +69,19 @@ class ThesisDocumentServiceController extends Controller
 
     }
 
-    //Fungsi ini gunanya untuk mengupdate data thesis document pada Repositori thesis
+    //Fungsi ini gunanya untuk mengupdate data type pada Repositori PKM
     public function update(Request $request,$id){
         try {
-            $data = ThesisDocument::find($id);
+            $data = StudentCreativityProgramType::find($id);
             if($data == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
 
-            $data->thesis_id = $request->thesis_id;
-            $data->document_name = $request->document_name;
-            $data->url = $request->url;
+            $data->type_name = $request->type_name;
+            $data->aliases = $request->aliases;
+            $data->desc = $request->desc;
 
             $data->save();
 
@@ -94,10 +94,10 @@ class ThesisDocumentServiceController extends Controller
         }
     }
 
-    //Fungsi ini gunanya untuk menghapus salah satu data pada repositori thesis document
+    //Fungsi ini gunanya untuk menghapus salah satu data type pada repositori PKM
     public function destroy($id){
         try {
-            $query = ThesisDocument::find($id);
+            $query = StudentCreativityProgramType::find($id);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
@@ -119,4 +119,6 @@ class ThesisDocumentServiceController extends Controller
         }
 
     }
+
+    // Start new Function HER
 }
