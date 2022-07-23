@@ -35,13 +35,13 @@
       
           <div class="flex items-center justify-end flex-1">
             <nav class="hidden lg:text-gray-500 lg:tracking-wide lg:font-semibold lg:text-base lg:space-x-6 lg:flex">
-              <a href="/about" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent hover:text-slate-800 hover:border-blue-600">
+              <a href="/home" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Beranda
               </a>
-              <a href="/news" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent hover:border-blue-600">
+              <a href="/repositori" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Repositori
               </a>
-              <a href="/products" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent hover:border-blue-600">
+              <a href="/Favorite" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Favorite
               </a>
               <div class="py-5">

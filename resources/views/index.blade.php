@@ -19,7 +19,7 @@
             <button class="bg-[#0984E3] h-12 rounded-xl my-3 font-bold text-white" type="submit">Masuk</button>
         </form>
         <div class="mx-auto flex justify-center">
-            <a href="{{ route('register.create') }}" class="text-[#0984E3] font-bold py-1 px-2 hover:bg-blue-50 mt-2">
+            <a href="{{ route('register.index') }}" class="text-[#0984E3] font-bold py-1 px-2 hover:bg-blue-50 mt-2">
                 Buat Akun
             </a>
         </div>
