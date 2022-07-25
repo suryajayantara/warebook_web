@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\Thesis;
+namespace App\Http\Controllers\Api\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Thesis;
-use Dotenv\Validator;
+use App\Models\JournalTopic;
 use Illuminate\Http\Request;
 
-class ThesisController extends Controller
+class JournelTopicsServiceController extends Controller
 {
-
     /* Function ini digunakan untuk mengambil data dari database */
-    public function getThesis(Request $request){
+    public function getJournalTopic(Request $request){
         $search = request('search','');
-        $data = Thesis::query()->when($search , function($query) use ($search){
+        $data = JournalTopic::query()->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -24,26 +22,25 @@ class ThesisController extends Controller
 
     }
 
-    // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
+    // Fungsi ini gunanya untuk mengambil detail dari 1 data Journal Topic
     // Kalo ini work , biarin , gausah dikutak kutik lagi
-    public function getOneThesis($id){
-        $data = Thesis::find($id)->with('documents')->first();
+    public function getOneJournalTopic($id){
+        $data = JournalTopic::find($id)->with('journalType')->first();
         return response()->json([
             'data' => $data
         ],200);
     }
 
-    //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
+    //Fungsi ini gunanya untuk menambah data Journal Topic
     public function create(Request $request){
 
         try {
             $validate = Validator($request->all(),[
                 'users_id' => 'required',
-                'thesis_type' => 'required',
+                'journal_types_id' => 'required',
                 'title' => 'required',
-                'abstract' => 'required',
-                'thumbnail_url' => 'required',
-                'tags' => 'required',
+                'description' => 'required',
+                'thumbnail_url' => 'required'
             ]);
 
             if($validate->fails()){
@@ -52,13 +49,12 @@ class ThesisController extends Controller
                 ]);
             }
 
-            $data = new Thesis();
+            $data = new JournalTopic();
             $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;
-            $data->abstract = $request->abstract;
+            $data->description = $request->description;
             $data->thumbnail_url = $request->thumbnail_url;
-            $data->tags = $request->tags;
 
             $data->save();
 
@@ -72,22 +68,16 @@ class ThesisController extends Controller
 
     }
 
-    //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
-    public function update(Request $request, $id){
+    //Fungsi ini gunanya untuk mengupdate data Journal Topic
+    public function update(Request $request,$id){
         try {
 
-            $data = Thesis::find($id);
-            if($data == null){
-                return response()->json([
-                    'message' => 'Data Not Found !'
-                ],500);
-            }
+            $data = JournalTopic::find($id);
             $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;
-            $data->abstract = $request->abstract;
+            $data->description = $request->description;
             $data->thumbnail_url = $request->thumbnail_url;
-            $data->tags = $request->tags;
 
             $data->save();
 
@@ -102,7 +92,7 @@ class ThesisController extends Controller
 
     public function destroy($id){
         try {
-            $query = Thesis::find($id);
+            $query = JournalTopic::find($id);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
@@ -125,6 +115,5 @@ class ThesisController extends Controller
     }
 
     // Start new Function HERE
-
 
 }
