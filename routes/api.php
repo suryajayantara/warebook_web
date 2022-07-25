@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\Manage\DepartementServiceController;
 use App\Http\Controllers\Api\Manage\StudyServiceController;
 use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramServiceController;
 use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramTypeServiceController;
-use App\Http\Controllers\Api\Thesis\ThesisController;
 use App\Http\Controllers\Api\Thesis\ThesisDocumentServiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Api\Thesis\ThesisServiceController;
@@ -49,7 +48,7 @@ Route::prefix('v1')->group(function(){
         Route::post('/{id}',[StudentCreativityProgramTypeServiceController::class,'update']);
         Route::delete('/{id}',[StudentCreativityProgramTypeServiceController::class,'destroy']);
     });
-
+    
     // Thesis atau tugas akhir => Surje Part => Jangan diutak atik !
     // Cuma Surje dan tuhan yang tau arah route ini kemana
     // Kalau surje udah ga maintain code ini , berarti gaada yang tau route ini arahnya kemana
@@ -58,7 +57,7 @@ Route::prefix('v1')->group(function(){
         Route::get('/',[ThesisController::class,'getThesis']);
         Route::get('/{id}', [ThesisController::class,'getOneThesis']);
         Route::post('/',[ThesisController::class,'create']);
-        Route::post('/{id}',[ThesisController::class,'update']);
+        Route::put('/{id}',[ThesisController::class,'update']);
         Route::delete('/{id}',[ThesisController::class,'destroy']);
     });
 
