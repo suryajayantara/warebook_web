@@ -73,24 +73,15 @@ class ThesisController extends Controller
     }
 
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
-    public function update(Request $request,$id){
+    public function update(Request $request, $id){
         try {
-            $validate = Validator($request->all(),[
-                'users_id' => 'required',
-                'thesis_type' => 'required',
-                'title' => 'required',
-                'abstract' => 'required',
-                'thumbnail_url' => 'required',
-                'tags' => 'required',
-            ]);
-
-            if($validate->fails()){
-                return response()->json([
-                    'validate' => $validate->errors()
-                ]);
-            }
 
             $data = Thesis::find($id);
+            if($data == null){
+                return response()->json([
+                    'message' => 'Data Not Found !'
+                ],500);
+            }
             $data->users_id = $request->users_id;
             $data->thesis_type = $request->thesis_type;
             $data->title = $request->title;
