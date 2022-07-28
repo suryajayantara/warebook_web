@@ -14,7 +14,7 @@ class ThesisController extends Controller
      */
     public function index()
     {
-        //
+        return view('thesis.repository.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class ThesisController extends Controller
      */
     public function create()
     {
-        //
+        return view('thesis.repository.add');
     }
 
     /**

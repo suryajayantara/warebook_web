@@ -2,6 +2,7 @@ var abstract = document.getElementById('abstract');
 var documents = document.getElementById('document');
 var abstractbutton = document.getElementById('abstractButton');
 var documentbutton = document.getElementById('documentButton');
+var addbutton  = document.getElementById('add');
 
 documentbutton.classList.add("border-transparent");
 documentbutton.classList.add("opacity-40");
@@ -18,6 +19,7 @@ function tabsView(classname){
         documentbutton.classList.add("border-current");
         abstractbutton.classList.remove("border-current");
         abstractbutton.classList.add("border-transparent");
+        addbutton.classList.remove("hidden");
     }else {
         abstract.classList.remove("hidden");
         documents.classList.add("hidden");
@@ -26,5 +28,6 @@ function tabsView(classname){
         documentbutton.classList.remove("border-current");
         abstractbutton.classList.add("border-current");
         abstractbutton.classList.remove("border-transparent");
+        addbutton.classList.add("hidden");
     }
 } 
