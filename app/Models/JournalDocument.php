@@ -16,8 +16,7 @@ class JournalDocument extends Model
         'year'
     ];
 
-    public function journalTopic()
-    {
+    public function journalTopic(){
         return $this->belongsTo(JournalTopic::class,'journal_topics_id');
     }
 }

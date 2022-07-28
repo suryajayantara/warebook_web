@@ -82,7 +82,6 @@ class JournalTopicsServiceController extends Controller
                     'message' => 'Data Not Found !'
                 ],500);
             }
-
             $data->users_id = $request->users_id;
             $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;

@@ -12,8 +12,7 @@ class JournalType extends Model
         'journal_types'
     ];
 
-    public function journalDocument()
-    {
-        return $this->hasMany(JournalDocument::class);
+    public function journalTopic(){
+        return $this->hasMany(JournalTopic::class);
     }
 }

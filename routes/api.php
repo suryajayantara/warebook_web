@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Manage\DepartementServiceController;
 use App\Http\Controllers\Api\Manage\StudyServiceController;
 use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramServiceController;
 use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramTypeServiceController;
+use App\Http\Controllers\Api\Thesis\ThesisController;
 use App\Http\Controllers\Api\Thesis\ThesisDocumentServiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Api\Thesis\ThesisServiceController;

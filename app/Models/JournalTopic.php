@@ -17,18 +17,17 @@ class JournalTopic extends Model
         'thumbnail_url'
     ];
 
-    public function user()
-    {
-        return $this->BelongsTo(User::class,'users_id');
+    public function user(){
+        return $this->belongsTo(User::class,'users_id');
     }
 
-    public function journalType()
-    {
-        return $this->BelongsTo(JournalType::class,'journal_types_id');
+    public function journalType(){
+        return $this->belongsTo(JournalType::class,'journal_types_id');
     }
 
-    public function journalDocument()
-    {
+    public function journalDocument(){
         return $this->hasMany(JournalDocument::class);
     }
+
+
 }
