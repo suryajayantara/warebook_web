@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\Manage;
+namespace App\Http\Controllers\Api\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Study;
+use App\Models\JournalType;
 use Illuminate\Http\Request;
 
-class StudyServiceController extends Controller
+class JournalTypesServiceController extends Controller
 {
-    //function ini digunakan untuk mengambil dan mencari data dari study atau program studi
-    public function getStudy(Request $request)
+    //function ini digunakan untuk mengambil dan mencari data dari Journal Type
+    public function getJournalType(Request $request)
     {
         $search = request('search','');
-        $data = Study::query()->when($search , function($query) use ($search){
-            $query->where('studies_name','like','%' . $search . '%');
+        $data = JournalType::query()->when($search , function($query) use ($search){
+            $query->where('journal_types','like','%' . $search . '%');
         })->get();
 
         return response()->json([
@@ -21,10 +21,10 @@ class StudyServiceController extends Controller
             'data' => $data
         ],200);
     }
-    //function ini digunakan untuk mengambil satu data dari study atau program studi dengan mengambil salah satu idnya
-    public function getOneStudy(Request $request, $id)
+    //function ini digunakan untuk mengambil satu data type dari Journal Type dengan mengambil salah satu idnya
+    public function getOneJournalType(Request $request, $id)
     {
-        $data = Study::find($id)->with('departements')->first();
+        $data = JournalType::find($id);
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -36,31 +36,12 @@ class StudyServiceController extends Controller
         }
     }
 
-    /*function ini digunakan untuk mengambil semua data dari
-    study atau program studi dengan mengambil salah satu
-    id dari departement atau jurusan */
-    public function getAllStudyByDepartement(Request $request, $id)
-    {
-        $data = Study::where('departement_id',$id)->get();
-        if($data == null){
-            return response()->json([
-                'message' => 'Data Not Found !'
-            ],500);
-        }else{
-            return response()->json([
-                'data' => $data
-            ],200);
-        }
-    }
-
-    //Fungsi ini gunanya untuk menambah data study atau program studi
+    //Fungsi ini gunanya untuk menambah data type pada Journal Type
     public function create(Request $request){
 
         try {
             $validate = Validator($request->all(),[
-                'departement_id' => 'required',
-                'studies_name' => 'required',
-                'desc' => 'required'
+                'journal_types' => 'required'
             ]);
 
             if($validate->fails()){
@@ -69,10 +50,8 @@ class StudyServiceController extends Controller
                 ]);
             }
 
-            $data = new Study();
-            $data->departement_id = $request->departement_id;
-            $data->studies_name = $request->studies_name;
-            $data->desc = $request->desc;
+            $data = new JournalType();
+            $data->journal_types = $request->journal_types;
 
             $data->save();
 
@@ -86,19 +65,17 @@ class StudyServiceController extends Controller
 
     }
 
-    //Fungsi ini gunanya untuk mengupdate data study atau program studi
+    //Fungsi ini gunanya untuk mengupdate data type pada Journal Type
     public function update(Request $request,$id){
         try {
-            $data = Study::find($id);
+            $data = JournalType::find($id);
             if($data == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
 
-            $data->departement_id = $request->departement_id;
-            $data->studies_name = $request->studies_name;
-            $data->desc = $request->desc;
+            $data->journal_types = $request->journal_types;
 
             $data->save();
 
@@ -111,10 +88,10 @@ class StudyServiceController extends Controller
         }
     }
 
-    //Fungsi ini gunanya untuk menghapus salah satu data pada study atau program studi
+    //Fungsi ini gunanya untuk menghapus salah satu data type pada Journal Type
     public function destroy($id){
         try {
-            $query = Study::find($id);
+            $query = JournalType::find($id);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
@@ -136,4 +113,6 @@ class StudyServiceController extends Controller
         }
 
     }
+
+    // Start new Function HERE
 }

@@ -24,7 +24,7 @@ class CreateInternalResearchTable extends Migration
             $table->dateTime('project_started_at');
             $table->dateTime('project_finish_at');
             $table->string('contract_number');
-            $table->json('team_member');
+            $table->text('team_member');
             $table->text('contract_url');
             $table->text('proposal_url');
             $table->text('document_url');
