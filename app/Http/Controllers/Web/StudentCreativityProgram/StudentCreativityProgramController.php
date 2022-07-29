@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\StudentCreativityProgram;
 
 use App\Http\Controllers\Controller;
 use App\Models\StudentCreativityProgram;
+use App\Models\StudentCreativityProgramType;
 use Illuminate\Http\Request;
 
 class StudentCreativityProgramController extends Controller
@@ -26,7 +27,8 @@ class StudentCreativityProgramController extends Controller
      */
     public function create()
     {
-        //
+        $creativityType = StudentCreativityProgramType::all();
+        return view('admin.departement.add')->with(compact('creativityType'));
     }
 
     /**
@@ -37,7 +39,32 @@ class StudentCreativityProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'users_id' => 'required',
+            'creativity_type' => 'required',
+            'title' => 'required',
+            'abstract' => 'required',
+            'year' => 'required',
+            'thumbnail_url' => 'required',
+            'supervisor' => 'required',
+            'document_url' => 'required'
+        ]);
+
+        try {
+            StudentCreativityProgram::create([
+                'creativity_type' => $request->creativity_type,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'year' => $request->year,
+                'thumbnail_url' => $request->thumbnail_url,
+                'supervisor' => $request->supervisor,
+                'document_url' => $request->document_url
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            // return $th;
+        }
     }
 
     /**
@@ -59,7 +86,9 @@ class StudentCreativityProgramController extends Controller
      */
     public function edit($id)
     {
-        //
+        $creativity = StudentCreativityProgram::find($id);
+        $creativityType = StudentCreativityProgramType::all();
+        return view('admin.departement.edit')->with(compact('creativity','creativityType'));
     }
 
     /**
@@ -71,7 +100,21 @@ class StudentCreativityProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            StudentCreativityProgram::find($id)->update([
+                'creativity_type' => $request->creativity_type,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'year' => $request->year,
+                'thumbnail_url' => $request->thumbnail_url,
+                'supervisor' => $request->supervisor,
+                'document_url' => $request->document_url
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            // return $th;
+        }
     }
 
     /**
