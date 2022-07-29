@@ -19,8 +19,9 @@ class CreateThesesTable extends Migration
             $table->enum('thesis_type',['Tugas Akhir','Skripsi']);
             $table->string('title');
             $table->text('abstract');
+            $table->integer('created_year');
             $table->string('thumbnail_url');
-            $table->json('tags');
+            $table->string('tags');
             $table->timestamps();
         });
     }

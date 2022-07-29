@@ -20,6 +20,7 @@ class CreateJournalTopicsTable extends Migration
             $table->string(' title');
             $table->text('description');
             $table->string('thumbnail_url');
+            $table->foreignId('parent_id')->nullable();
             $table->timestamps();
         });
     }

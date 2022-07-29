@@ -24,14 +24,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1'],function(){
 
-    Route::get('/getUser',[UserController::class,'getUser']);
+    Route::get('/getUser',[UserController::class,'getUser'])->middleware('auth:api');
     Route::post('/login', [UserController::class,'login']);
     Route::post('/register', [UserController::class,'register']);
     Route::get('/logout', [UserController::class,'logout'])->middleware('auth:api');
 
-    Route::post('login',[LoginController::class,'login']);
-    Route::post('register',[LoginController::class,'register']);
-    Route::get('logout',[LoginController::class,'logout'])->middleware('auth:api');
 });
 
 Route::get('/thesis',[ThesisServiceController::class,'getAllThesis']);

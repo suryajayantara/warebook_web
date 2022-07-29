@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Study extends Model
 {
+
     use HasFactory;
     protected $fillable = [
         'departement_id',
