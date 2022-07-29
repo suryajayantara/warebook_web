@@ -8,7 +8,7 @@
                 <p class="lg:mr-24 text-[#828284] sm:mr-0">Temukan ide ide brilian dari apa yang telah dibuat oleh kakak kakakmu terdahulu</p>
             </div>
             <div class="w-1/2">
-                <img class="h-72 ml-40 " src="{{asset('img/backdrop.svg')}}" alt="">
+                <img class="h-72 ml-40 " src="{{asset('img/design/backdrop.svg')}}" alt="">
             </div>
         </div>
         <div class="flex items-center shadow-lg h-16 w-[75%] bg-[#EEEFF3] mx-auto  rounded-md -mt-9 z-20">
@@ -20,7 +20,7 @@
         <h1 class="mt-16 font-bold text-[#828284] text-4xl">Jurnal Jurusanmu</h1>
         <div class="mt-14 grid grid-cols-5 gap-4">
             <a href="" class="block overflow-hidden rounded-md shadow-sm">
-                <img class="object-cover w-full h-36" src="{{asset('img/background.png')}}" alt="" />
+                <img class="object-cover w-full h-36" src="{{asset('img/design/background.png')}}" alt="" />
               
                 <div class="p-4 bg-white h-40">
                   <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">Penelitian</p>
@@ -31,4 +31,5 @@
               </a>
         </div>
     </div>
+    
 @endsection

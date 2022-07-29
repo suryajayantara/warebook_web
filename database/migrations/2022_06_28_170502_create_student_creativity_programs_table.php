@@ -19,6 +19,7 @@ class CreateStudentCreativityProgramsTable extends Migration
             $table->foreignId('creativity_type')->constrained('student_creativity_program_types')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->text('abstract');
+            $table->year('year');
             $table->string('thumbnail_url');
             $table->string('supervisor');
             $table->text('document_url');

@@ -20,7 +20,7 @@ class CreateInternalResearchTable extends Migration
             $table->text('abstract');
             $table->string('thumbnail_url');
             $table->string('budget_type');
-            $table->integer('budget');
+            $table->bigInteger('budget');
             $table->dateTime('project_started_at');
             $table->dateTime('project_finish_at');
             $table->string('contract_number');

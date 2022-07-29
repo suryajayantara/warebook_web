@@ -59,4 +59,9 @@ class User extends Authenticatable
     public function details(){
         return $this->hasOne(UserDetail::class,'users_id','id');
     }
+
+    public function journalTopic(){
+        return $this->hasOne(JournalTopic::class);
+    }
+
 }

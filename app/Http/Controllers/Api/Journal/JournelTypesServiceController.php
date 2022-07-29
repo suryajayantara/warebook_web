@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\Thesis;
+namespace App\Http\Controllers\Api\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\ThesisDocument;
+use App\Models\JournalType;
 use Illuminate\Http\Request;
 
-class ThesisDocumentServiceController extends Controller
+class JournelTypesServiceController extends Controller
 {
-    //function ini digunakan untuk mengambil dan mencari data dari repositori thesis document
-    public function getThesisDocument(Request $request)
+    //function ini digunakan untuk mengambil dan mencari data dari Journal Type
+    public function getJournalType(Request $request)
     {
         $search = request('search','');
-        $data = ThesisDocument::query()->when($search , function($query) use ($search){
-            $query->where('document_name','like','%' . $search . '%');
+        $data = JournalType::query()->when($search , function($query) use ($search){
+            $query->where('journal_types','like','%' . $search . '%');
         })->get();
 
         return response()->json([
@@ -21,10 +21,10 @@ class ThesisDocumentServiceController extends Controller
             'data' => $data
         ],200);
     }
-    //function ini digunakan untuk mengambil satu data dari repositori thesis document dengan mengambil salah satu idnya
-    public function getOneThesisDocument(Request $request, $id)
+    //function ini digunakan untuk mengambil satu data type dari Journal Type dengan mengambil salah satu idnya
+    public function getOneJournalType(Request $request, $id)
     {
-        $data = ThesisDocument::find($id)->with('thesis')->first();
+        $data = JournalType::find($id);
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -36,14 +36,12 @@ class ThesisDocumentServiceController extends Controller
         }
     }
 
-    //Fungsi ini gunanya untuk menambah data thesis document pada Repositori thesis
+    //Fungsi ini gunanya untuk menambah data type pada Journal Type
     public function create(Request $request){
 
         try {
             $validate = Validator($request->all(),[
-                'thesis_id' => 'required',
-                'document_name' => 'required',
-                'url' => 'required'
+                'journal_types' => 'required',
             ]);
 
             if($validate->fails()){
@@ -52,10 +50,8 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
 
-            $data = new ThesisDocument();
-            $data->thesis_id = $request->thesis_id;
-            $data->document_name = $request->document_name;
-            $data->url = $request->url;
+            $data = new JournalType();
+            $data->journal_types = $request->journal_types;
 
             $data->save();
 
@@ -69,19 +65,17 @@ class ThesisDocumentServiceController extends Controller
 
     }
 
-    //Fungsi ini gunanya untuk mengupdate data thesis document pada Repositori thesis
+    //Fungsi ini gunanya untuk mengupdate data type pada Journal Type
     public function update(Request $request,$id){
         try {
-            $data = ThesisDocument::find($id);
+            $data = JournalType::find($id);
             if($data == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
 
-            $data->thesis_id = $request->thesis_id;
-            $data->document_name = $request->document_name;
-            $data->url = $request->url;
+            $data->journal_types = $request->journal_types;
 
             $data->save();
 
@@ -94,10 +88,10 @@ class ThesisDocumentServiceController extends Controller
         }
     }
 
-    //Fungsi ini gunanya untuk menghapus salah satu data pada repositori thesis document
+    //Fungsi ini gunanya untuk menghapus salah satu data type pada Journal Type
     public function destroy($id){
         try {
-            $query = ThesisDocument::find($id);
+            $query = JournalType::find($id);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
@@ -119,4 +113,6 @@ class ThesisDocumentServiceController extends Controller
         }
 
     }
+
+    // Start new Function HER
 }
