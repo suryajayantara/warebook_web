@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('home');
 });
 
 Route::get('/journal', function () {
@@ -32,3 +32,7 @@ Route::get('/home', function(){
 Route::resource('departements',DepartementController::class);
 Route::resource('studies',StudyController::class);
 Route::resource('register',RegisterController::class);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
