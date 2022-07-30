@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Web\Manage;
+namespace App\Http\Controllers\Web\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Departement;
-use App\Models\Study;
+use App\Models\JournalTopic;
+use App\Models\JournalType;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class StudyController extends Controller
+class JournalTopicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,7 @@ class StudyController extends Controller
      */
     public function index()
     {
-        $data = Study::all();
+        $data = JournalTopic::all();
         return view('admin.study.index',compact('data'));
     }
 
@@ -27,8 +28,9 @@ class StudyController extends Controller
      */
     public function create()
     {
-        $departement_data = Departement::all();
-        return view('admin.study.add', compact('departement_data'));
+        $users = User::all();
+        $journalType = JournalType::all();
+        return view('admin.departement.add')->with(compact('journalType','users'));
     }
 
     /**
@@ -40,23 +42,25 @@ class StudyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'departement_id'=>'required',
-            'studies_name' => 'required|unique:studies,studies_name,id',
-            'desc' => 'required'
-        ], [
-            'studies_name.unique' => "Data Sudah Ada !"
+            'users_id' => 'required',
+            'journal_types_id' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+            'thumbnail_url' => 'required',
         ]);
 
         try {
-            Study::create([
-                'departement_id' => $request->departement_id,
-                'studies_name' => $request->studies_name,
-                'desc' => $request->desc
+            JournalTopic::create([
+                'users_id' => $request->users_id,
+                'journal_types_id' => $request->journal_types_id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'thumbnail_url' => $request->thumbnail_url,
             ]);
-            return redirect()->route('studies.index');
+            return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            // return $th;
+            return $th;
         }
     }
 
@@ -79,9 +83,10 @@ class StudyController extends Controller
      */
     public function edit($id)
     {
-        $departement_data = Departement::all();
-        $study_data = Study::find($id);
-        return view('admin.study.edit')->with(compact('departement_data', 'study_data'));
+        $journalTopic = JournalTopic::find($id);
+        $users = User::all();
+        $journalType = JournalType::all();
+        return view('admin.departement.add')->with(compact('journalType','users','journalTopic'));
     }
 
     /**
@@ -93,24 +98,18 @@ class StudyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'departement_id'=>'required',
-            'studies_name' => 'required',
-            'desc' => 'required'
-        ], [
-            'studies_name.unique' => "Data Sudah Ada !"
-        ]);
-
         try {
-            Study::find($id)->update([
-                'departement_id' => $request->departement_id,
-                'studies_name' => $request->studies_name,
-                'desc' => $request->desc
+            JournalTopic::find($id)->update([
+                'users_id' => $request->users_id,
+                'journal_types_id' => $request->journal_types_id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'thumbnail_url' => $request->thumbnail_url,
             ]);
-            return redirect()->route('studies.index');
+            return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            // return $th;
+            return $th;
         }
     }
 
@@ -123,8 +122,8 @@ class StudyController extends Controller
     public function destroy($id)
     {
         try {
-            Study::find($id)->delete();
-            return redirect()->route('studies');
+            JournalTopic::find($id)->delete();
+            return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Web\InternalResearch;
 
 use App\Http\Controllers\Controller;
+use App\Models\InternalResearch;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class InternalResearchController extends Controller
@@ -14,7 +16,8 @@ class InternalResearchController extends Controller
      */
     public function index()
     {
-        //
+        $data = InternalResearch::all();
+        return view('admin.study.index',compact('data'));
     }
 
     /**
@@ -24,7 +27,8 @@ class InternalResearchController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('admin.departement.add')->with(compact('users'));
     }
 
     /**
@@ -35,7 +39,43 @@ class InternalResearchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'users_id' => 'required',
+            'title' => 'required',
+            'abstract' => 'required',
+            'thumbnail_url' => 'required',
+            'budget_type' => 'required',
+            'budget' => 'required',
+            'project_started_at' => 'required',
+            'project_finish_at' => 'required',
+            'contract_number' => 'required',
+            'team_member' => 'required',
+            'contract_url' => 'required',
+            'proposal_url' => 'required',
+            'document_url' => 'required',
+        ]);
+
+        try {
+            InternalResearch::create([
+                'users_id' => $request->users_id,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'thumbnail_url' => $request->thumbnail_url,
+                'budget_type' => $request->budget_type,
+                'budget' => $request->budget,
+                'project_started_at' => $request->project_started_at,
+                'project_finish_at' => $request->project_finish_at,
+                'contract_number' => $request->contract_number,
+                'team_member' => $request->team_member,
+                'contract_url' => $request->contract_url,
+                'proposal_url' => $request->proposal_url,
+                'document_url' => $request->abstract,
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
     /**
@@ -57,7 +97,9 @@ class InternalResearchController extends Controller
      */
     public function edit($id)
     {
-        //
+        $internalResearch =InternalResearch::find($id);
+        $users = User::all();
+        return view('admin.departement.add')->with(compact('users','internalResearch'));
     }
 
     /**
@@ -69,7 +111,27 @@ class InternalResearchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            InternalResearch::find($id)->update([
+                'users_id' => $request->users_id,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'thumbnail_url' => $request->thumbnail_url,
+                'budget_type' => $request->budget_type,
+                'budget' => $request->budget,
+                'project_started_at' => $request->project_started_at,
+                'project_finish_at' => $request->project_finish_at,
+                'contract_number' => $request->contract_number,
+                'team_member' => $request->team_member,
+                'contract_url' => $request->contract_url,
+                'proposal_url' => $request->proposal_url,
+                'document_url' => $request->abstract,
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
     /**
@@ -80,6 +142,11 @@ class InternalResearchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            InternalResearch::find($id)->delete();
+            return redirect()->route('admin.departements.index');
+        } catch (\Throwable $th) {
+            echo 'gagal';
+        }
     }
 }
