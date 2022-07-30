@@ -1,8 +1,17 @@
 <?php
 
+use App\Http\Controllers\Web\InternalResearch\InternalResearchController;
+use App\Http\Controllers\Web\Journal\JournalDocumentController;
+use App\Http\Controllers\Web\Journal\JournalTopicController;
+use App\Http\Controllers\Web\Journal\JournalTypeController;
 use App\Http\Controllers\Web\Manage\DepartementController;
 use App\Http\Controllers\Web\Manage\StudyController;
+use App\Http\Controllers\Web\StudentCreativityProgram\StudentCreativityProgramController;
+use App\Http\Controllers\Web\StudentCreativityProgram\StudentCreativityProgramTypeController;
+use App\Http\Controllers\Web\Thesis\ThesisController;
+use App\Http\Controllers\Web\Thesis\ThesisDocumentController;
 use App\Http\Controllers\Web\User\RegisterController;
+use App\Models\Thesis;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +41,11 @@ Route::get('/home', function(){
 Route::resource('departements',DepartementController::class);
 Route::resource('studies',StudyController::class);
 Route::resource('register',RegisterController::class);
+Route::resource('journalDocument',JournalDocumentController::class);
+Route::resource('journalTopic',JournalTopicController::class);
+Route::resource('journalType',JournalTypeController::class);
+Route::resource('thesis',ThesisController::class);
+Route::resource('thesisDocument',ThesisDocumentController::class);
+Route::resource('creativity',StudentCreativityProgramController::class);
+Route::resource('creativityType',StudentCreativityProgramTypeController::class);
+Route::resource('internalResearch',InternalResearchController::class);
