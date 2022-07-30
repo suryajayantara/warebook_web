@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class InternalResearch extends Model
 {
+    /**
+     * users_id : digunakan untuk menginput data dosen berdasarkan id yang didapatkan dari table users
+     * title : digunakan untuk
+     */
     use HasFactory;
     protected $fillable = [
         'users_id',

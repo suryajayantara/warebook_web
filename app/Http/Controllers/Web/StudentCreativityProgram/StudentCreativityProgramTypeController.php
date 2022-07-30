@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\StudentCreativityProgram;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudentCreativityProgramType;
 use Illuminate\Http\Request;
 
 class StudentCreativityProgramTypeController extends Controller
@@ -14,7 +15,8 @@ class StudentCreativityProgramTypeController extends Controller
      */
     public function index()
     {
-        //
+        $data = StudentCreativityProgramType::all();
+        return view('admin.study.index',compact('data'));
     }
 
     /**
@@ -24,7 +26,7 @@ class StudentCreativityProgramTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.departement.add');
     }
 
     /**
@@ -35,7 +37,23 @@ class StudentCreativityProgramTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type_name' => 'required',
+            'aliases' => 'required',
+            'desc' => 'required',
+        ]);
+
+        try {
+            StudentCreativityProgramType::create([
+                'type_name' => $request->type_name,
+                'aliases' => $request->aliases,
+                'desc' => $request->desc
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            // return $th;
+        }
     }
 
     /**
@@ -57,7 +75,8 @@ class StudentCreativityProgramTypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $creativityType = StudentCreativityProgramType::find($id);
+        return view('admin.departement.edit')->with(compact('creativityType'));
     }
 
     /**
@@ -69,7 +88,17 @@ class StudentCreativityProgramTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            StudentCreativityProgramType::find($id)->update([
+                'type_name' => $request->type_name,
+                'aliases' => $request->aliases,
+                'desc' => $request->desc
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            // return $th;
+        }
     }
 
     /**
@@ -80,6 +109,11 @@ class StudentCreativityProgramTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            StudentCreativityProgramType::find($id)->delete();
+            return redirect()->route('admin.departements.index');
+        } catch (\Throwable $th) {
+            echo 'gagal';
+        }
     }
 }

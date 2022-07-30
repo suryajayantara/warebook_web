@@ -52,7 +52,7 @@ class DepartementController extends Controller
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            return $th;
+            // return $th;
         }
     }
 
@@ -101,7 +101,7 @@ class DepartementController extends Controller
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            return $th;
+            // return $th;
         }
     }
 

@@ -71,7 +71,7 @@ class RegisterController extends Controller
             return redirect()->route('register.index');
 
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
 
         }
     }

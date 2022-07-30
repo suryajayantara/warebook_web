@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Web\Thesis;
 
 use App\Http\Controllers\Controller;
+use App\Models\Thesis;
+use App\Models\ThesisDocument;
 use Illuminate\Http\Request;
 
 class ThesisDocumentController extends Controller
@@ -14,7 +16,8 @@ class ThesisDocumentController extends Controller
      */
     public function index()
     {
-        //
+        $data = ThesisDocument::all();
+        return view('admin.study.index',compact('data'));
     }
 
     /**
@@ -24,7 +27,8 @@ class ThesisDocumentController extends Controller
      */
     public function create()
     {
-        //
+        $thesis = Thesis::all();
+        return view('admin.departement.add')->with(compact('thesis'));
     }
 
     /**
@@ -35,7 +39,23 @@ class ThesisDocumentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'thesis_id' => 'required',
+            'document_name' => 'required',
+            'url' => 'required',
+        ]);
+
+        try {
+            ThesisDocument::create([
+                'thesis_id' => $request->thesis_id,
+                'document_name' => $request->document_name,
+                'url' => $request->url,
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
     /**
@@ -57,7 +77,9 @@ class ThesisDocumentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $thesisDocument = ThesisDocument::find($id);
+        $thesis = Thesis::all();
+        return view('admin.departement.edit')->with(compact('thesisDocument','thesis'));
     }
 
     /**
@@ -69,7 +91,17 @@ class ThesisDocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            ThesisDocument::find($id)->update([
+                'thesis_id' => $request->thesis_id,
+                'document_name' => $request->document_name,
+                'url' => $request->url,
+            ]);
+            return redirect()->route('departements.index');
+
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
     /**
@@ -80,6 +112,11 @@ class ThesisDocumentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            ThesisDocument::find($id)->delete();
+            return redirect()->route('admin.departements.index');
+        } catch (\Throwable $th) {
+            echo 'gagal';
+        }
     }
 }
