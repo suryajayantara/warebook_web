@@ -17,7 +17,7 @@ class CreateJournalTopicsTable extends Migration
             $table->id();
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('journal_types_id')->constrained('journal_types')->onDelete('cascade')->onUpdate('cascade');
-            $table->string(' title');
+            $table->string('title');
             $table->text('description');
             $table->string('thumbnail_url');
             $table->foreignId('parent_id')->nullable();

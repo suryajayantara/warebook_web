@@ -36,6 +36,23 @@ class StudyServiceController extends Controller
         }
     }
 
+    /*function ini digunakan untuk mengambil semua data dari
+    study atau program studi dengan mengambil salah satu
+    id dari departement atau jurusan */
+    public function getAllStudyByDepartement(Request $request, $id)
+    {
+        $data = Study::where('departement_id',$id)->get();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data Not Found !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
+    }
+
     //Fungsi ini gunanya untuk menambah data study atau program studi
     public function create(Request $request){
 

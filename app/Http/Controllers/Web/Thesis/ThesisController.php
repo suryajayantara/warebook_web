@@ -24,7 +24,7 @@ class ThesisController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**

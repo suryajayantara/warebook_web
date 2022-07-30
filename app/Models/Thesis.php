@@ -14,8 +14,9 @@ class Thesis extends Model
         'thesis_type',
         'thumbnail_url',
         'title',
-        'created_year',
-        'abstract'
+        'abstract',
+        'tags'
+
     ];
 
 

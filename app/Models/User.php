@@ -63,5 +63,4 @@ class User extends Authenticatable
     public function journalTopic(){
         return $this->hasOne(JournalTopic::class);
     }
-
 }
