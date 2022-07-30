@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\Thesis;
+namespace App\Http\Controllers\Api\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Thesis;
-use Dotenv\Validator;
+use App\Models\JournalTopic;
 use Illuminate\Http\Request;
 
-class ThesisController extends Controller
+class JournalTopicsServiceController extends Controller
 {
-
-    /* Function ini digunakan untuk mengambil data dari database */
-    public function getThesis(Request $request){
+    //function ini digunakan untuk mengambil dan mencari data dari repositori Journal Topic
+    public function getJournalTopic(Request $request)
+    {
         $search = request('search','');
-        $data = Thesis::query()->when($search , function($query) use ($search){
+        $data = JournalTopic::query()->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -21,29 +20,32 @@ class ThesisController extends Controller
             'search_keyword' => $search,
             'data' => $data
         ],200);
-
+    }
+    //function ini digunakan untuk mengambil satu data dari repositori Topic dengan mengambil salah satu idnya
+    public function getOneJournalTopic(Request $request, $id)
+    {
+        $data = JournalTopic::find($id)->with('journalType')->first();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data Not Found !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
     }
 
-    // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
-    // Kalo ini work , biarin , gausah dikutak kutik lagi
-    public function getOneThesis($id){
-        $data = Thesis::find($id)->with('documents')->first();
-        return response()->json([
-            'data' => $data
-        ],200);
-    }
-
-    //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
+    //Fungsi ini gunanya untuk menambah data Topic pada Repositori Journal Topic
     public function create(Request $request){
 
         try {
             $validate = Validator($request->all(),[
                 'users_id' => 'required',
-                'thesis_type' => 'required',
+                'journal_types_id' => 'required',
                 'title' => 'required',
-                'abstract' => 'required',
-                'thumbnail_url' => 'required',
-                'tags' => 'required',
+                'description' => 'required',
+                'thumbnail_url' => 'required'
             ]);
 
             if($validate->fails()){
@@ -52,13 +54,12 @@ class ThesisController extends Controller
                 ]);
             }
 
-            $data = new Thesis();
+            $data = new JournalTopic();
             $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;
-            $data->abstract = $request->abstract;
+            $data->description = $request->description;
             $data->thumbnail_url = $request->thumbnail_url;
-            $data->tags = $request->tags;
 
             $data->save();
 
@@ -67,27 +68,25 @@ class ThesisController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
         }
 
     }
 
-    //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
-    public function update(Request $request, $id){
+    //Fungsi ini gunanya untuk mengupdate data Topic pada Repositori Journal Topic
+    public function update(Request $request,$id){
         try {
-
-            $data = Thesis::find($id);
+            $data = JournalTopic::find($id);
             if($data == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
             $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;
-            $data->abstract = $request->abstract;
+            $data->description = $request->description;
             $data->thumbnail_url = $request->thumbnail_url;
-            $data->tags = $request->tags;
 
             $data->save();
 
@@ -100,14 +99,16 @@ class ThesisController extends Controller
         }
     }
 
+    //Fungsi ini gunanya untuk menghapus salah satu data pada repositori Journal Topic
     public function destroy($id){
         try {
-            $query = Thesis::find($id);
+            $query = JournalTopic::find($id);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
+
             $query->delete();
             if($query){
                 return response()->json([
@@ -125,6 +126,4 @@ class ThesisController extends Controller
     }
 
     // Start new Function HERE
-
-
 }

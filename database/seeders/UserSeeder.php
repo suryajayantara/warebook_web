@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -16,10 +17,20 @@ class UserSeeder extends Seeder
     {
         // Creating Dummy User
         $user = new User();
+        $userDetails = new UserDetail();
         $user->name = 'Surya Jayantara';
         $user->email = 'suryajayantara@pnb.ac.id';
         $user->password = bcrypt('12345678');
-
+        $user->assignRole('student');
         $user->save();
+
+        $userDetails->users_id = 1;
+        $userDetails->unique_id = "1915323025";
+        $userDetails->departement_id = 1;
+        $userDetails->study_id = 1;
+
+        $userDetails->save();
+
+       
     }
 }

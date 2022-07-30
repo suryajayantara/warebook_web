@@ -120,5 +120,5 @@ class StudentCreativityProgramTypeServiceController extends Controller
 
     }
 
-    // Start new Function HER
+    // Start new Function HERE
 }

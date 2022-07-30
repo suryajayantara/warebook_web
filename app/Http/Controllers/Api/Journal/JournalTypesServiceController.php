@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JournalType;
 use Illuminate\Http\Request;
 
-class JournelTypesServiceController extends Controller
+class JournalTypesServiceController extends Controller
 {
     //function ini digunakan untuk mengambil dan mencari data dari Journal Type
     public function getJournalType(Request $request)
@@ -41,7 +41,7 @@ class JournelTypesServiceController extends Controller
 
         try {
             $validate = Validator($request->all(),[
-                'journal_types' => 'required',
+                'journal_types' => 'required'
             ]);
 
             if($validate->fails()){
@@ -114,5 +114,5 @@ class JournelTypesServiceController extends Controller
 
     }
 
-    // Start new Function HER
+    // Start new Function HERE
 }

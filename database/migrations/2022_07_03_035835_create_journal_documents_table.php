@@ -17,7 +17,7 @@ class CreateJournalDocumentsTable extends Migration
             $table->id();
             $table->foreignId('journal_topics_id')->constrained('journal_topics')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
-            $table->json('author');
+            $table->text('author');
             $table->text('abstract');
             $table->year('year');
             $table->timestamps();

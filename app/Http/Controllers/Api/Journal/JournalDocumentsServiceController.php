@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\JournalTopic;
+use App\Models\JournalDocument;
 use Illuminate\Http\Request;
 
-class JournelTopicsServiceController extends Controller
+class JournalDocumentsServiceController extends Controller
 {
-    /* Function ini digunakan untuk mengambil data dari database */
-    public function getJournalTopic(Request $request){
+    //function ini digunakan untuk mengambil dan mencari data dari repositori Journal Document
+    public function getJournalDocument(Request $request)
+    {
         $search = request('search','');
-        $data = JournalTopic::query()->when($search , function($query) use ($search){
+        $data = JournalDocument::query()->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -19,28 +20,32 @@ class JournelTopicsServiceController extends Controller
             'search_keyword' => $search,
             'data' => $data
         ],200);
-
+    }
+    //function ini digunakan untuk mengambil satu data dari repositori Document dengan mengambil salah satu idnya
+    public function getOneJournalDocument(Request $request, $id)
+    {
+        $data = JournalDocument::find($id)->with('journalTopic')->first();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data Not Found !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
     }
 
-    // Fungsi ini gunanya untuk mengambil detail dari 1 data Journal Topic
-    // Kalo ini work , biarin , gausah dikutak kutik lagi
-    public function getOneJournalTopic($id){
-        $data = JournalTopic::find($id)->with('journalType')->first();
-        return response()->json([
-            'data' => $data
-        ],200);
-    }
-
-    //Fungsi ini gunanya untuk menambah data Journal Topic
+    //Fungsi ini gunanya untuk menambah data Document pada Repositori Journal Document
     public function create(Request $request){
 
         try {
             $validate = Validator($request->all(),[
-                'users_id' => 'required',
-                'journal_types_id' => 'required',
+                'journal_topics_id' => 'required',
                 'title' => 'required',
-                'description' => 'required',
-                'thumbnail_url' => 'required'
+                'author' => 'required',
+                'abstract' => 'required',
+                'year' => 'required'
             ]);
 
             if($validate->fails()){
@@ -49,12 +54,12 @@ class JournelTopicsServiceController extends Controller
                 ]);
             }
 
-            $data = new JournalTopic();
-            $data->users_id = $request->users_id;
-            $data->journal_types_id = $request->journal_types_id;
+            $data = new JournalDocument();
+            $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
-            $data->description = $request->description;
-            $data->thumbnail_url = $request->thumbnail_url;
+            $data->author = $request->author;
+            $data->abstract = $request->abstract;
+            $data->year = $request->year;
 
             $data->save();
 
@@ -68,16 +73,21 @@ class JournelTopicsServiceController extends Controller
 
     }
 
-    //Fungsi ini gunanya untuk mengupdate data Journal Topic
+    //Fungsi ini gunanya untuk mengupdate data Document pada Repositori Journal Document
     public function update(Request $request,$id){
         try {
+            $data = JournalDocument::find($id);
+            if($data == null){
+                return response()->json([
+                    'message' => 'Data Not Found !'
+                ],500);
+            }
 
-            $data = JournalTopic::find($id);
-            $data->users_id = $request->users_id;
-            $data->journal_types_id = $request->journal_types_id;
+            $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
-            $data->description = $request->description;
-            $data->thumbnail_url = $request->thumbnail_url;
+            $data->author = $request->author;
+            $data->abstract = $request->abstract;
+            $data->year = $request->year;
 
             $data->save();
 
@@ -90,14 +100,16 @@ class JournelTopicsServiceController extends Controller
         }
     }
 
+    //Fungsi ini gunanya untuk menghapus salah satu data pada repositori Journal Document
     public function destroy($id){
         try {
-            $query = JournalTopic::find($id);
+            $query = JournalDocument::find($id);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
+
             $query->delete();
             if($query){
                 return response()->json([
@@ -115,5 +127,4 @@ class JournelTopicsServiceController extends Controller
     }
 
     // Start new Function HERE
-
 }
