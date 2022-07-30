@@ -22,7 +22,8 @@ class UniversitySeeder extends Seeder
 
         Study::create([
             'departement_id' => 1,
-            'study_name' => 'D3 Manajemen Informatika'
+            'studies_name' => 'D3 Manajemen Informatika',
+            'desc' => 'Prodi D3 Manajemen Informatika !'
         ]);
     }
 }

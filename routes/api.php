@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\UserController;
+
 use App\Http\Controllers\Api\InternalResearch\InternalResearchServiceController;
 use App\Http\Controllers\Api\Journal\JournalDocumentsServiceController;
 use App\Http\Controllers\Api\Journal\JournalTopicsServiceController;
@@ -32,6 +34,12 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::prefix('v1')->group(function(){
+
+
+    Route::get('/getUser',[UserController::class,'getUser'])->middleware('auth:api');
+    Route::post('/login', [UserController::class,'login']);
+    Route::post('/register', [UserController::class,'register']);
+    Route::get('/logout', [UserController::class,'logout'])->middleware('auth:api');
 
     //StudentCreativityProgram => Ade part
     //route untuk get all data, get one data by id, post data, put data and delete data PKM

@@ -43,6 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
     public function theses(){
         return $this->hasOne(Thesis::class);
     }
@@ -56,7 +57,7 @@ class User extends Authenticatable
     }
 
     public function details(){
-        return $this->hasOne(UserDetail::class);
+        return $this->hasOne(UserDetail::class,'users_id','id');
     }
 
     public function journalTopic(){
