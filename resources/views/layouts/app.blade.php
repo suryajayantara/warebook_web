@@ -38,21 +38,38 @@
               <a href="/home" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Beranda
               </a>
-              <a href="/repositori" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
+              <a href="/home/create" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Repositori
               </a>
               <a href="/Favorite" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Favorite
               </a>
               <div class="py-5">
-                <a href="" class="bg-blue-600 px-3 py-1 font-extrabold text-white rounded-md">Akunku</a>
+                <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"  class="bg-blue-600 px-3 py-1 font-extrabold text-white rounded-md">Akunku</button>
               </div>
             </nav>
           </div>
         </div>
       </header>
 
+<!-- Dropdown menu -->
+<div id="dropdownDivider" class="hidden z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(289px, 70px);">
+    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+      <li>
+        <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+      </li>
+      <li>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+          <button type="submit" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logout</button>
+        </form>
+      </li>
+    </ul>
+</div>
+
+
       @yield('contents')
+      <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
 
 </body>
 </html>

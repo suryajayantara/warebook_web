@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Web\InternalResearch\InternalResearchController;
 use App\Http\Controllers\Web\Journal\JournalDocumentController;
 use App\Http\Controllers\Web\Journal\JournalTopicController;
@@ -27,12 +28,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('index');
 });
 
-Route::get('/journal', function () {
-    return view('journal.index');
-});
+// 
+
 Route::get('/home', function(){
     return view('user.index');
 });
@@ -40,11 +40,14 @@ Route::get('/home', function(){
 
 Route::resource('departements',DepartementController::class);
 Route::resource('studies',StudyController::class);
-Route::resource('register',RegisterController::class);
+// Route::resource('register',RegisterController::class);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('home', HomeController::class);
+
 Route::resource('journalDocument',JournalDocumentController::class);
 Route::resource('journalTopic',JournalTopicController::class);
 Route::resource('journalType',JournalTypeController::class);
