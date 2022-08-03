@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Thesis;
 use App\Models\ThesisDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThesisDocumentController extends Controller
 {
@@ -16,8 +17,7 @@ class ThesisDocumentController extends Controller
      */
     public function index()
     {
-        $data = ThesisDocument::all();
-        return view('admin.study.index',compact('data'));
+        
     }
 
     /**
@@ -25,10 +25,10 @@ class ThesisDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $thesis = Thesis::all();
-        return view('admin.departement.add')->with(compact('thesis'));
+        $thesis_id = $request->thesis_id;
+        return view('thesis.document.add', compact('thesis_id'));
     }
 
     /**
@@ -42,22 +42,32 @@ class ThesisDocumentController extends Controller
         $request->validate([
             'thesis_id' => 'required',
             'document_name' => 'required',
-            'url' => 'required',
+            'document' => 'required',
         ]);
 
-        $pdf = $request->file('url');
-        $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+        $file_name = rand().date('YmdHis');
+        $url = $file_name.'.'.$request->file('document')->extension();
+        $request->file('document')->storeAs('document/thesis', $url, 'public');
+        
+        //fungsi upload file by ade
+        //$pdf = $request->file('url');
+        //$pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
 
         try {
             ThesisDocument::create([
                 'thesis_id' => $request->thesis_id,
-                'document_name' => $pdf_name,
-                'url' => $pdf_name,
+                'document_name' => $request->document_name,
+                'url' => $url,
             ]);
+            return redirect('thesis/'.$request->thesis_id);
+            
+            //fungsi upload file by ade
+                //'document_name' => $pdf_name,
+                //'url' => $pdf_name,
+            //]);
 
-            $pdf->move('files/thesis/',$pdf_name);
-
-            return redirect()->route('departements.index');
+            //$pdf->move('files/thesis/',$pdf_name);
 
         } catch (\Throwable $th) {
             return $th;

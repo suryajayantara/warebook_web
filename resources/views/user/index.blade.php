@@ -19,16 +19,18 @@
     <div class="container w-[75%] flex flex-col items-center mx-auto mb-80">
         <h1 class="mt-16 font-bold text-[#828284] text-4xl">Jurnal Jurusanmu</h1>
         <div class="mt-14 grid grid-cols-5 gap-4">
-            <a href="" class="block overflow-hidden rounded-md shadow-sm">
+            @foreach ($thesis as $item)
+            <a href="{{'thesis/index/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('img/design/background.png')}}" alt="" />
               
                 <div class="p-4 bg-white h-40">
-                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">Penelitian</p>
+                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ $item->thesis_type }}</p>
               
-                  <h5 class="text-xs mt-2 font-bold">How to position your furniture for positivity</h5>
+                  <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
               
                 </div>
               </a>
+            @endforeach
         </div>
     </div>
     

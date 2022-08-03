@@ -17,7 +17,6 @@ class Thesis extends Model
         'title',
         'abstract',
         'tags'
-
     ];
 
 

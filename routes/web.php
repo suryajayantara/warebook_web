@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RepositoryController;
 use App\Http\Controllers\Web\InternalResearch\InternalResearchController;
 use App\Http\Controllers\Web\Journal\JournalDocumentController;
 use App\Http\Controllers\Web\Journal\JournalTopicController;
@@ -47,12 +48,19 @@ Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('home', HomeController::class);
+Route::resource('repository', RepositoryController::class);
+
+//Thesis Route
+Route::get('thesis/create/{type}', [ThesisController::class, 'create']);
+Route::get('thesis/{id}' , [ThesisController::class, 'index']);
+Route::resource('thesis',ThesisController::class);
+Route::post('thesisDocument/create', [ThesisDocumentController::class, 'create']);
+Route::resource('thesisDocument',ThesisDocumentController::class);
+
 
 Route::resource('journalDocument',JournalDocumentController::class);
 Route::resource('journalTopic',JournalTopicController::class);
 Route::resource('journalType',JournalTypeController::class);
-Route::resource('thesis',ThesisController::class);
-Route::resource('thesisDocument',ThesisDocumentController::class);
 Route::resource('creativity',StudentCreativityProgramController::class);
 Route::resource('creativityType',StudentCreativityProgramTypeController::class);
 Route::resource('internalResearch',InternalResearchController::class);

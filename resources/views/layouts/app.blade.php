@@ -38,7 +38,7 @@
               <a href="/home" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Beranda
               </a>
-              <a href="/home/create" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
+              <a href="{{ route('repository.index')}}" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Repositori
               </a>
               <a href="/Favorite" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
