@@ -52,10 +52,17 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
 
+            //create request and name for file pdf
+            $pdf = $request->file('url');
+            $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
             $data = new ThesisDocument();
             $data->thesis_id = $request->thesis_id;
             $data->document_name = $request->document_name;
-            $data->url = $request->url;
+            $data->url = $pdf_name;
+
+            //move file pdf to file public/files/thesis
+            $pdf->move('files/thesis/',$pdf_name);
 
             $data->save();
 
@@ -79,9 +86,18 @@ class ThesisDocumentServiceController extends Controller
                 ],500);
             }
 
+            if ($request->file('url')!=NULL) {
+                unlink('files/thesis/'.$data['url']);
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
+                $data->url = $pdf_name;
+
+                $pdf->move('files/thesis/',$pdf_name);
+            }
+
             $data->thesis_id = $request->thesis_id;
             $data->document_name = $request->document_name;
-            $data->url = $request->url;
 
             $data->save();
 
@@ -98,12 +114,13 @@ class ThesisDocumentServiceController extends Controller
     public function destroy($id){
         try {
             $query = ThesisDocument::find($id);
+            unlink('files/thesis/'.$query['url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
-
+            unlink('files/thesis/'.$query['url']);
             $query->delete();
             if($query){
                 return response()->json([
@@ -115,7 +132,7 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
 
     }

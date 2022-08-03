@@ -13,6 +13,7 @@ class JournalDocument extends Model
         'title',
         'author',
         'abstract',
+        'url',
         'year'
     ];
 

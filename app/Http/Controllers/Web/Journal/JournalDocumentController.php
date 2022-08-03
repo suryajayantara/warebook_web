@@ -44,8 +44,12 @@ class JournalDocumentController extends Controller
             'title' => 'required',
             'author' => 'required',
             'abstract' => 'required',
+            'url' => 'required',
             'year' => 'required',
         ]);
+
+        $pdf = $request->file('url');
+        $pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
         try {
             JournalDocument::create([
@@ -53,8 +57,12 @@ class JournalDocumentController extends Controller
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
+                'url' => $pdf_name,
                 'year' => $request->year,
             ]);
+
+            $pdf->move('files/journal/',$pdf_name);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -95,13 +103,25 @@ class JournalDocumentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            JournalDocument::find($id)->update([
+            $update=[
                 'journal_topics_id' => $request->journal_topics_id,
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-            ]);
+            ];
+
+            if($request->file('url') !== NULL){
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
+                $update = [
+                    'url' => $pdf_name,
+                ];
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $pdf->move('files/journal/',$pdf_name);
+            }
+
+            JournalDocument::find($id)->update($update);
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -118,7 +138,9 @@ class JournalDocumentController extends Controller
     public function destroy($id)
     {
         try {
-            JournalDocument::find($id)->delete();
+            $data = JournalDocument::find($id);
+            unlink('files/journal/'.$data['url']);
+            $data = JournalDocument::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';
