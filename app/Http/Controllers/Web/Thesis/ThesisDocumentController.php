@@ -98,6 +98,7 @@ class ThesisDocumentController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $data = ThesisDocument::find($id);
             $update = [
                 'thesis_id' => $request->thesis_id,
                 'document_name' => $request->document_name,
@@ -110,6 +111,7 @@ class ThesisDocumentController extends Controller
                 $update = [
                     'url' => $pdf_name,
                 ];
+                unlink('files/thesis/'.$data['url']);
                 //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
                 $pdf->move('files/thesis/',$pdf_name);
             }

@@ -78,59 +78,35 @@ class ThesisDocumentServiceController extends Controller
 
     //Fungsi ini gunanya untuk mengupdate data thesis document pada Repositori thesis
     public function update(Request $request,$id){
-            if ($request->file('url')!=NULL) {
-                try {
-                    $data = ThesisDocument::find($id);
-                    if($data == null){
-                        return response()->json([
-                            'message' => 'Data Not Found !'
-                        ],500);
-                    }
-                    //create request and name for file pdf
-                    $pdf = $request->file('url');
-                    $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
-
-                    $data = new ThesisDocument();
-                    $data->thesis_id = $request->thesis_id;
-                    $data->document_name = $request->document_name;
-                    $data->url = $pdf_name;
-
-                    //move file pdf to file public/files/thesis
-                    $thesis_path=public_path('files/thesis/'.$data->url);
-                    if(file_exists($thesis_path)){
-                        unlink($thesis_path);
-                    }
-                    $pdf->move('files/thesis/',$pdf_name);
-                    $data->save();
-
-                    return response()->json([
-                        'data' => $data,
-                        'message' => 'Succesful Update Data'
-                    ],200);
-                } catch (\Throwable $th) {
-                    //throw $th;
-                }
+        try {
+            $data = ThesisDocument::find($id);
+            if($data == null){
+                return response()->json([
+                    'message' => 'Data Not Found !'
+                ],500);
             }
 
-            try {
-                $data = ThesisDocument::find($id);
-                    if($data == null){
-                        return response()->json([
-                            'message' => 'Data Not Found !'
-                        ],500);
-                    }
+            if ($request->file('url')!=NULL) {
+                unlink('files/thesis/'.$data['url']);
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
 
-                $data->thesis_id = $request->thesis_id;
-                $data->document_name = $request->document_name;
+                $data->url = $pdf_name;
 
-                $data->save();
+                $pdf->move('files/thesis/',$pdf_name);
+            }
 
-                return response()->json([
-                    'data' => $data,
-                    'message' => 'Succesful Update Data'
-                ],200);
-            } catch (\Throwable $th) {
-                //throw $th;
+            $data->thesis_id = $request->thesis_id;
+            $data->document_name = $request->document_name;
+
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+                'message' => 'Succesful Update Data'
+            ],200);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 
@@ -138,12 +114,13 @@ class ThesisDocumentServiceController extends Controller
     public function destroy($id){
         try {
             $query = ThesisDocument::find($id);
+            unlink('files/thesis/'.$query['url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
-
+            unlink('files/thesis/'.$query['url']);
             $query->delete();
             if($query){
                 return response()->json([
@@ -155,7 +132,7 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
 
     }

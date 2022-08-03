@@ -20,6 +20,7 @@ class CreateJournalDocumentsTable extends Migration
             $table->text('author');
             $table->text('abstract');
             $table->year('year');
+            $table->string('url');
             $table->timestamps();
         });
     }

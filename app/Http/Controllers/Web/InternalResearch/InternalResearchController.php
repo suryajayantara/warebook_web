@@ -71,7 +71,7 @@ class InternalResearchController extends Controller
                 'users_id' => $request->users_id,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'thumbnail_url' => 'img/internalResearch/thumbnail/'.$thumbnail_name,
+                'thumbnail_url' => $thumbnail_name,
                 'budget_type' => $request->budget_type,
                 'budget' => $request->budget,
                 'project_started_at' => $request->project_started_at,
@@ -129,6 +129,8 @@ class InternalResearchController extends Controller
     {
 
         try {
+            $data=InternalResearch::find($id);
+
             $update = [
                 'users_id' => $request->users_id,
                 'title' => $request->title,
@@ -148,8 +150,10 @@ class InternalResearchController extends Controller
                 $thumbnail = $request->file('thumbnail_url');
                 $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
                 $update = [
-                    'thumbnail_url' => 'img/internalResearch/thumbnail/'.$thumbnail_name,
+                    'thumbnail_url' => $thumbnail_name,
                 ];
+
+                unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
                 //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
                 $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
             }
@@ -160,7 +164,8 @@ class InternalResearchController extends Controller
                 $update = [
                     'proposal_url' => $proposal_name,
                 ];
-                $proposal->move('files/internalResearch',$proposal_name);
+                unlink('files/internalResearch/'.$data['proposal_url']);
+                $proposal->move('files/internalResearch/',$proposal_name);
             }
 
             if($request->file('document_url') !== NULL){
@@ -169,7 +174,10 @@ class InternalResearchController extends Controller
                 $update = [
                     'document_url' => $document_name,
                 ];
-                $document->move('files/internalResearch',$document_name);
+
+                unlink('files/internalResearch/'.$data['document_url']);
+
+                $document->move('files/internalResearch/',$document_name);
             }
 
             InternalResearch::find($id)->update($update);
@@ -190,13 +198,13 @@ class InternalResearchController extends Controller
     {
         try {
             $data = InternalResearch::find($id);
-            unlink($data['thumbnail_url']);
-            unlink('files/internalResearch'.$data['proposal_url']);
-            unlink('files/internalResearch'.$data['document_url']);
+            unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
+            unlink('files/internalResearch/'.$data['proposal_url']);
+            unlink('files/internalResearch/'.$data['document_url']);
             $data = InternalResearch::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
-            echo 'gagal';
+            // echo 'gagal';
         }
     }
 }

@@ -46,6 +46,7 @@ class ThesisController extends Controller
             'thumbnail_url' => 'required',
             'title' => 'required',
             'abstract' => 'required',
+            'created_year' => 'required',
         ]);
 
         try {
@@ -56,7 +57,8 @@ class ThesisController extends Controller
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
                 'title' => $request->title,
-                'abstract' => $request->abstract
+                'abstract' => $request->abstract,
+                'created_year' => $request->created_year,
             ]);
 
             //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
@@ -103,12 +105,14 @@ class ThesisController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $data=Thesis::find($id);
             $update = [
                 'users_id' => $request->users_id,
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => $request->thumbnail_url,
                 'title' => $request->title,
-                'abstract' => $request->abstract
+                'abstract' => $request->abstract,
+                'created_year' => $request->created_year,
             ];
 
             if($request->file('thumbnail_url') !== NULL){
@@ -118,12 +122,12 @@ class ThesisController extends Controller
                     'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
                 ];
 
-                Thesis::find($id)->update($update);
-
+                unlink($data['thumbnail_url']);
                 //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
                 $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
             }
 
+            Thesis::find($id)->update($update);
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {

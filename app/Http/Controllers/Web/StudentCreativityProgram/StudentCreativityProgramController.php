@@ -116,6 +116,7 @@ class StudentCreativityProgramController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $data = StudentCreativityProgram::find($id);
             $update=[
                 'creativity_type' => $request->creativity_type,
                 'title' => $request->title,
@@ -130,6 +131,8 @@ class StudentCreativityProgramController extends Controller
                 $update = [
                     'thumbnail_url' => 'img/creativity/thumbnail/'.$thumbnail_name,
                 ];
+
+                unlink($data['thumbnail_url']);
                 //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/creativity/thumbnail
                 $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
             }
@@ -140,6 +143,8 @@ class StudentCreativityProgramController extends Controller
                 $update = [
                     'document_url' => $document_name,
                 ];
+
+                unlink('files/creativity/'.$data['document_url']);
                 $document->move('files/creativity/',$document_name);
             }
 
