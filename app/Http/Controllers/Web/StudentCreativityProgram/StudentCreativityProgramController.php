@@ -50,16 +50,31 @@ class StudentCreativityProgramController extends Controller
             'document_url' => 'required'
         ]);
 
+        //request untuk menguload dalam bentuk file
+        $thumbnail = $request->file('thumbnail_url');
+        $document = $request->file('document_url');
+
+        //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
+        //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
+        //getClientOriginalExtension digunakan untuk mencari format asli pada file
+        $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+        $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+
         try {
             StudentCreativityProgram::create([
                 'creativity_type' => $request->creativity_type,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-                'thumbnail_url' => $request->thumbnail_url,
+                'thumbnail_url' => 'img/creativity/thumbnail/'.$thumbnail_name,
                 'supervisor' => $request->supervisor,
                 'document_url' => $request->document_url
             ]);
+
+            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
+            $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
+            $document->move('files/creativity/',$document_name);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -101,15 +116,35 @@ class StudentCreativityProgramController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            StudentCreativityProgram::find($id)->update([
+            $update=[
                 'creativity_type' => $request->creativity_type,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-                'thumbnail_url' => $request->thumbnail_url,
                 'supervisor' => $request->supervisor,
-                'document_url' => $request->document_url
-            ]);
+            ];
+
+            if($request->file('thumbnail_url') !== NULL){
+                $thumbnail = $request->file('thumbnail_url');
+                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+                $update = [
+                    'thumbnail_url' => 'img/creativity/thumbnail/'.$thumbnail_name,
+                ];
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/creativity/thumbnail
+                $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
+            }
+
+            if($request->file('document_url') !== NULL){
+                $document = $request->file('document_url');
+                $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+                $update = [
+                    'document_url' => $document_name,
+                ];
+                $document->move('files/creativity/',$document_name);
+            }
+
+            StudentCreativityProgram::find($id)->update($update);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -126,7 +161,10 @@ class StudentCreativityProgramController extends Controller
     public function destroy($id)
     {
         try {
-            StudentCreativityProgram::find($id)->delete();
+            $data=StudentCreativityProgram::find($id);
+            unlink($data['thumbnail_url']);
+            unlink('files/creativity/'.$data['document_url']);
+            $data = StudentCreativityProgram::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';

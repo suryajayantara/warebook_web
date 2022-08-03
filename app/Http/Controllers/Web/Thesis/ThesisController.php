@@ -49,13 +49,19 @@ class ThesisController extends Controller
         ]);
 
         try {
+            $thumbnail = $request->file('thumbnail_url');
+            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
             Thesis::create([
                 'users_id' => $request->users_id,
                 'thesis_type' => $request->thesis_type,
-                'thumbnail_url' => $request->thumbnail_url,
+                'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
                 'title' => $request->title,
                 'abstract' => $request->abstract
             ]);
+
+            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
+            $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -97,13 +103,27 @@ class ThesisController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            Thesis::find($id)->update([
+            $update = [
                 'users_id' => $request->users_id,
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => $request->thumbnail_url,
                 'title' => $request->title,
                 'abstract' => $request->abstract
-            ]);
+            ];
+
+            if($request->file('thumbnail_url') !== NULL){
+                $thumbnail = $request->file('thumbnail_url');
+                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+                $update = [
+                    'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
+                ];
+
+                Thesis::find($id)->update($update);
+
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
+            }
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -120,7 +140,9 @@ class ThesisController extends Controller
     public function destroy($id)
     {
         try {
-            Thesis::find($id)->delete();
+            $data = Thesis::find($id);
+            unlink($data['thumbnail_url']);
+            $data = Thesis::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';
