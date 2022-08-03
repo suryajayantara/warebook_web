@@ -45,12 +45,18 @@ class ThesisDocumentController extends Controller
             'url' => 'required',
         ]);
 
+        $pdf = $request->file('url');
+        $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
         try {
             ThesisDocument::create([
                 'thesis_id' => $request->thesis_id,
-                'document_name' => $request->document_name,
-                'url' => $request->url,
+                'document_name' => $pdf_name,
+                'url' => $pdf_name,
             ]);
+
+            $pdf->move('files/thesis/',$pdf_name);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -92,11 +98,26 @@ class ThesisDocumentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            ThesisDocument::find($id)->update([
+            $data = ThesisDocument::find($id);
+            $update = [
                 'thesis_id' => $request->thesis_id,
                 'document_name' => $request->document_name,
                 'url' => $request->url,
-            ]);
+            ];
+
+            if($request->file('url') !== NULL){
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
+                $update = [
+                    'url' => $pdf_name,
+                ];
+                unlink('files/thesis/'.$data['url']);
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $pdf->move('files/thesis/',$pdf_name);
+            }
+
+            ThesisDocument::find($id)->update($update);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -113,7 +134,9 @@ class ThesisDocumentController extends Controller
     public function destroy($id)
     {
         try {
-            ThesisDocument::find($id)->delete();
+            $data = Thesis::find($id);
+            unlink('files/thesis/'.$data['url']);
+            $data = Thesis::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';
