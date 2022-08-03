@@ -27,6 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $thesis = Thesis::all();
+        // var_dump($thesis);
+        return view('user.index', compact('thesis'));
+
+        
     }
 }

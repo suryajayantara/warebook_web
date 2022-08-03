@@ -7,6 +7,8 @@ use App\Models\Thesis;
 use App\Models\ThesisDocument;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Input\Input;
 
 class ThesisController extends Controller
 {
@@ -15,10 +17,12 @@ class ThesisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $data = Thesis::all();
-        return view('admin.study.index',compact('data'));
+        $data = Thesis::find($id)->with('User')->first();
+        $document = ThesisDocument::where('thesis_id', $id)->get();
+        // var_dump($data);
+        return view('thesis.index',compact('data', 'document'));
     }
 
     /**
@@ -26,13 +30,15 @@ class ThesisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($type)
     {
-        $users = User::all();
-        return view('admin.departement.add')->with(compact('users'));
+        $thesis_type = $type;
+        // $users = User::all();
+        // var_dump($thesis_type);
+        return view('thesis.add')->with(compact('thesis_type'));
     }
-
     /**
+     * 
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,25 +47,32 @@ class ThesisController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'users_id' => 'required',
             'thesis_type' => 'required',
-            'thumbnail_url' => 'required',
             'title' => 'required',
             'abstract' => 'required',
+            'tags' => 'required'
         ]);
 
+        $thumnail_url = 'img/design/background.png';
+        if ($request->hasFile('thumbnail_url')){
+            $file_name = rand().date('YmdHis');
+            $thumnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
+            $request->file('thumbnail_url')->storeAs('img/thumbnail', $thumnail_url, 'public');
+        }
+        
         try {
             Thesis::create([
-                'users_id' => $request->users_id,
+                'users_id' => Auth::user()->id,
                 'thesis_type' => $request->thesis_type,
-                'thumbnail_url' => $request->thumbnail_url,
+                'thumbnail_url' => $thumnail_url,
                 'title' => $request->title,
+                'tags' => $request->tags,
                 'abstract' => $request->abstract
             ]);
-            return redirect()->route('departements.index');
+            return redirect()->route('repository.index');
 
         } catch (\Throwable $th) {
-            // return $th;
+            var_dump($th);
         }
     }
 

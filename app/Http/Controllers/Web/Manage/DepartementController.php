@@ -16,6 +16,7 @@ class DepartementController extends Controller
     public function index()
     {
         $data = Departement::all();
+        var_dump($data);
         return view('admin.departement.index', compact('data'));
     }
 
