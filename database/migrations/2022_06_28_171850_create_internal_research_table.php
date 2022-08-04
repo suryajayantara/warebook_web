@@ -25,7 +25,6 @@ class CreateInternalResearchTable extends Migration
             $table->dateTime('project_finish_at');
             $table->string('contract_number');
             $table->text('team_member');
-            $table->text('contract_url');
             $table->text('proposal_url');
             $table->text('document_url');
             $table->timestamps();

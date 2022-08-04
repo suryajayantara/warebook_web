@@ -23,7 +23,6 @@ class InternalResearch extends Model
         'project_finish_at',
         'contract_number',
         'team_member',
-        'contract_url',
         'proposal_url',
         'document_url'
     ];

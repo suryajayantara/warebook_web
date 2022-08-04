@@ -46,6 +46,7 @@ class JournalDocumentController extends Controller
             'author' => 'required',
             'abstract' => 'required',
             'tags' => 'required',
+            'url' => 'required',
             'year' => 'required',
             'document' => 'required',
         ]);
@@ -53,6 +54,8 @@ class JournalDocumentController extends Controller
         $file_name = rand().date('YmdHis');
         $document_url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/journal', $document_url, 'public');
+        //$pdf = $request->file('url');
+        //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
         try {
             JournalDocument::create([
@@ -61,6 +64,7 @@ class JournalDocumentController extends Controller
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
+                'url' => $pdf_name,
                 'year' => $request->year,
                 'tags' => $request->tags,
                 'doi' => $request->doi,
@@ -68,6 +72,10 @@ class JournalDocumentController extends Controller
                 'document_url' => $document_url,
             ]);
             return redirect('journalTopics/index/'.$request->journal_topics_id);
+
+            //$pdf->move('files/journal/',$pdf_name);
+
+            //return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
             var_dump($th) ;
@@ -107,13 +115,25 @@ class JournalDocumentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            JournalDocument::find($id)->update([
+            $update=[
                 'journal_topics_id' => $request->journal_topics_id,
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-            ]);
+            ];
+
+            if($request->file('url') !== NULL){
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
+                $update = [
+                    'url' => $pdf_name,
+                ];
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $pdf->move('files/journal/',$pdf_name);
+            }
+
+            JournalDocument::find($id)->update($update);
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -130,7 +150,9 @@ class JournalDocumentController extends Controller
     public function destroy($id)
     {
         try {
-            JournalDocument::find($id)->delete();
+            $data = JournalDocument::find($id);
+            unlink('files/journal/'.$data['url']);
+            $data = JournalDocument::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';

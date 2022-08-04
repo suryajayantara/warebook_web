@@ -45,6 +45,7 @@ class JournalDocumentsServiceController extends Controller
                 'title' => 'required',
                 'author' => 'required',
                 'abstract' => 'required',
+                'url' => 'required',
                 'year' => 'required'
             ]);
 
@@ -54,12 +55,22 @@ class JournalDocumentsServiceController extends Controller
                 ]);
             }
 
+            //create request and name for file pdf
+            $pdf = $request->file('url');
+            $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
+
             $data = new JournalDocument();
             $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
+            $data->url = $pdf_name;
             $data->year = $request->year;
+
+            //move file pdf to file public/files/thesis
+            $pdf->move('files/journal/',$pdf_name);
+
 
             $data->save();
 
@@ -68,7 +79,7 @@ class JournalDocumentsServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
 
     }
@@ -81,6 +92,16 @@ class JournalDocumentsServiceController extends Controller
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
+            }
+
+            if ($request->file('url')!=NULL) {
+                unlink('files/journal/'.$data['url']);
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
+                $data->url = $pdf_name;
+
+                $pdf->move('files/journal/',$pdf_name);
             }
 
             $data->journal_topics_id = $request->journal_topics_id;
@@ -104,6 +125,7 @@ class JournalDocumentsServiceController extends Controller
     public function destroy($id){
         try {
             $query = JournalDocument::find($id);
+            unlink('files/journal/'.$query['url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
@@ -121,7 +143,7 @@ class JournalDocumentsServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
 
     }

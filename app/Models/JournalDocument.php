@@ -19,6 +19,7 @@ class JournalDocument extends Model
         'doi',
         'original_url',
         'document_url'
+        'url',
     ];
 
     public function user(){

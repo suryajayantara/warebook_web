@@ -50,27 +50,43 @@ class InternalResearchController extends Controller
             'project_finish_at' => 'required',
             'contract_number' => 'required',
             'team_member' => 'required',
-            'contract_url' => 'required',
             'proposal_url' => 'required',
             'document_url' => 'required',
         ]);
+
+        //request untuk menguload dalam bentuk file
+        $thumbnail = $request->file('thumbnail_url');
+        $proposal = $request->file('proposal_url');
+        $document = $request->file('document_url');
+
+        //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
+        //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
+        //getClientOriginalExtension digunakan untuk mencari format asli pada file
+        $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+        $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
+        $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
 
         try {
             InternalResearch::create([
                 'users_id' => $request->users_id,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'thumbnail_url' => $request->thumbnail_url,
+                'thumbnail_url' => $thumbnail_name,
                 'budget_type' => $request->budget_type,
                 'budget' => $request->budget,
                 'project_started_at' => $request->project_started_at,
                 'project_finish_at' => $request->project_finish_at,
                 'contract_number' => $request->contract_number,
                 'team_member' => $request->team_member,
-                'contract_url' => $request->contract_url,
-                'proposal_url' => $request->proposal_url,
-                'document_url' => $request->abstract,
+                'proposal_url' => $proposal_name,
+                'document_url' => $document_name,
             ]);
+
+            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
+            $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
+            $proposal->move('files/internalResearch/',$proposal_name);
+            $document->move('files/internalResearch/',$document_name);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -111,12 +127,14 @@ class InternalResearchController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         try {
-            InternalResearch::find($id)->update([
+            $data=InternalResearch::find($id);
+
+            $update = [
                 'users_id' => $request->users_id,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'thumbnail_url' => $request->thumbnail_url,
                 'budget_type' => $request->budget_type,
                 'budget' => $request->budget,
                 'project_started_at' => $request->project_started_at,
@@ -124,13 +142,49 @@ class InternalResearchController extends Controller
                 'contract_number' => $request->contract_number,
                 'team_member' => $request->team_member,
                 'contract_url' => $request->contract_url,
-                'proposal_url' => $request->proposal_url,
-                'document_url' => $request->abstract,
-            ]);
+
+            ];
+
+
+            if($request->file('thumbnail_url') !== NULL){
+                $thumbnail = $request->file('thumbnail_url');
+                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+                $update = [
+                    'thumbnail_url' => $thumbnail_name,
+                ];
+
+                unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
+            }
+
+            if($request->file('proposal_url') !== NULL){
+                $proposal = $request->file('proposal_url');
+                $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
+                $update = [
+                    'proposal_url' => $proposal_name,
+                ];
+                unlink('files/internalResearch/'.$data['proposal_url']);
+                $proposal->move('files/internalResearch/',$proposal_name);
+            }
+
+            if($request->file('document_url') !== NULL){
+                $document = $request->file('document_url');
+                $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+                $update = [
+                    'document_url' => $document_name,
+                ];
+
+                unlink('files/internalResearch/'.$data['document_url']);
+
+                $document->move('files/internalResearch/',$document_name);
+            }
+
+            InternalResearch::find($id)->update($update);
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            return $th;
+            // return $th;
         }
     }
 
@@ -143,10 +197,14 @@ class InternalResearchController extends Controller
     public function destroy($id)
     {
         try {
-            InternalResearch::find($id)->delete();
+            $data = InternalResearch::find($id);
+            unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
+            unlink('files/internalResearch/'.$data['proposal_url']);
+            unlink('files/internalResearch/'.$data['document_url']);
+            $data = InternalResearch::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
-            echo 'gagal';
+            // echo 'gagal';
         }
     }
 }

@@ -25,6 +25,8 @@ class InternalResearchServiceController extends Controller
     public function getOneResearch(Request $request, $id)
     {
         $data = InternalResearch::find($id);
+
+        //digunakan saat
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -51,7 +53,6 @@ class InternalResearchServiceController extends Controller
                 'project_finish_at' => 'required',
                 'contract_number' => 'required',
                 'team_member' => 'required',
-                'contract_url' => 'required',
                 'proposal_url' => 'required',
                 'document_url' => 'required',
             ]);
@@ -62,20 +63,37 @@ class InternalResearchServiceController extends Controller
                 ]);
             }
 
+            //request untuk menguload dalam bentuk file
+            $thumbnail = $request->file('thumbnail_url');
+            $proposal = $request->file('proposal_url');
+            $document = $request->file('document_url');
+
+            //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
+            //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
+            //getClientOriginalExtension digunakan untuk mencari format asli pada file
+            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+            $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
+            $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+
+
             $data = new InternalResearch();
             $data->users_id = $request->users_id;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
-            $data->thumbnail_url = $request->thumbnail_url;
+            $data->thumbnail_url = $thumbnail_name;
             $data->budget_type = $request->budget_type;
             $data->budget = $request->budget;
             $data->project_started_at = $request->project_started_at;
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
-            $data->contract_url = $request->contract_url;
-            $data->proposal_url = $request->proposal_url;
-            $data->document_url = $request->document_url;
+            $data->proposal_url = $proposal_name;
+            $data->document_url = $document_name;
+
+            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
+            $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
+            $proposal->move('files/internalResearch/',$proposal_name);
+            $document->move('files/internalResearch/',$document_name);
 
             $data->save();
 
@@ -108,19 +126,56 @@ class InternalResearchServiceController extends Controller
                 ],500);
             }
 
+            //fungsi ini untuk update yang berjalan saat field thumbnail_url tidak kosong
+            if($request->file('thumbnail_url') !== NULL){
+
+                //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
+                unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
+
+                $thumbnail = $request->file('thumbnail_url');
+                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+
+                $data->thumbnail_url = $thumbnail_name;
+
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
+            }
+
+            if($request->file('proposal_url') !== NULL){
+
+                //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
+                unlink('files/internalResearch/'.$data['proposal_url']);
+
+                $proposal = $request->file('proposal_url');
+                $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
+
+                $data->proposal_url = $proposal_name;
+
+                $proposal->move('files/internalResearch/',$proposal_name);
+            }
+
+            if($request->file('document_url') !== NULL){
+
+                //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
+                unlink('files/internalResearch/'.$data['document_url']);
+
+                $document = $request->file('document_url');
+                $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+
+                $data->document_url = $document_name;
+
+                $document->move('files/internalResearch/',$document_name);
+            }
+
             $data->users_id = $request->users_id;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
-            $data->thumbnail_url = $request->thumbnail_url;
             $data->budget_type = $request->budget_type;
             $data->budget = $request->budget;
             $data->project_started_at = $request->project_started_at;
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
-            $data->contract_url = $request->contract_url;
-            $data->proposal_url = $request->proposal_url;
-            $data->document_url = $request->document_url;
 
             $data->save();
 
@@ -143,6 +198,12 @@ class InternalResearchServiceController extends Controller
     public function destroy($id){
         try {
             $query = InternalResearch::find($id);
+
+            //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
+            unlink('img/internalResearch/thumbnail/'.$query['thumbnail_url']);
+            unlink('files/internalResearch/'.$query['proposal_url']);
+            unlink('files/internalResearch/'.$query['document_url']);
+
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'

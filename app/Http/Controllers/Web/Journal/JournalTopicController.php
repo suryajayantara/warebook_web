@@ -57,6 +57,9 @@ class JournalTopicController extends Controller
         }
 
         try {
+            $thumbnail = $request->file('thumbnail_url');
+            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+
             JournalTopic::create([
                 'users_id' => Auth::user()->id,
                 'subject' => $request->subject,
@@ -105,13 +108,27 @@ class JournalTopicController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            JournalTopic::find($id)->update([
+            $data = JournalTopic::find($id);
+            $update = [
                 'users_id' => $request->users_id,
                 'journal_types_id' => $request->journal_types_id,
                 'title' => $request->title,
                 'description' => $request->description,
-                'thumbnail_url' => $request->thumbnail_url,
-            ]);
+            ];
+
+            if($request->file('thumbnail_url') !== NULL){
+                $thumbnail = $request->file('thumbnail_url');
+                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+                $update = [
+                    'thumbnail_url' => 'img/journal/thumbnail/'.$thumbnail_name,
+                ];
+
+                unlink($data['thumbnail_url']);
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $thumbnail->move('img/journal/thumbnail/',$thumbnail_name);
+            }
+
+            JournalTopic::find($id)->update($update);
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -128,7 +145,9 @@ class JournalTopicController extends Controller
     public function destroy($id)
     {
         try {
-            JournalTopic::find($id)->delete();
+            $data = JournalTopic::find($id);
+            unlink($data['thumbnail_url']);
+            $data = JournalTopic::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';

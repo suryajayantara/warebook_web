@@ -20,7 +20,7 @@ class CreateJournalDocumentsTable extends Migration
             $table->string('title');
             $table->string('author');
             $table->text('abstract');
-            $table->year('year');
+            $table->string('year');
             $table->string('tags');
             $table->string('doi')->nullable();
             $table->string('original_url')->nullable();

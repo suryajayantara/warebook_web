@@ -13,6 +13,7 @@ class Thesis extends Model
         'users_id',
         'thesis_type',
         'thumbnail_url',
+        'created_year',
         'title',
         'created_year',
         'abstract',
