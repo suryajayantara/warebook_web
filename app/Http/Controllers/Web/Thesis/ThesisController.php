@@ -19,10 +19,10 @@ class ThesisController extends Controller
      */
     public function index($id)
     {
-        $data = Thesis::find($id)->with('User')->first();
+        $thesis = Thesis::where('id', $id)->with('User')->first();
         $document = ThesisDocument::where('thesis_id', $id)->get();
-        // var_dump($data);
-        return view('thesis.index',compact('data', 'document'));
+        // var_dump($data); 
+        return view('thesis.index',compact('thesis', 'document'));
     }
 
     /**
@@ -50,11 +50,11 @@ class ThesisController extends Controller
             'thesis_type' => 'required',
             'title' => 'required',
             'abstract' => 'required',
-            'tags' => 'required'
-            'created_year' => 'required',
+            'tags' => 'required',
+            'created_year' => 'required'
         ]);
 
-        $thumnail_url = 'img/design/background.png';
+        $thumnail_url = 'background.png';
         if ($request->hasFile('thumbnail_url')){
             $file_name = rand().date('YmdHis');
             $thumnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
@@ -69,6 +69,7 @@ class ThesisController extends Controller
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
                 'title' => $request->title,
+                'created_year' => $request->created_year,
                 'tags' => $request->tags,
                 'abstract' => $request->abstract,
                 'created_year' => $request->created_year,
@@ -125,8 +126,8 @@ class ThesisController extends Controller
                 'thumbnail_url' => $request->thumbnail_url,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'created_year' => $request->created_year,
-            ];
+                'created_year' => $request->created_year
+            ]);
 
             if($request->file('thumbnail_url') !== NULL){
                 $thumbnail = $request->file('thumbnail_url');

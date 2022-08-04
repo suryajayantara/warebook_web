@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Web\Journal;
 
 use App\Http\Controllers\Controller;
+use App\Models\JournalDocument;
 use App\Models\JournalTopic;
 use App\Models\JournalType;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JournalTopicController extends Controller
 {
@@ -15,10 +17,12 @@ class JournalTopicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $data = JournalTopic::all();
-        return view('admin.study.index',compact('data'));
+        $data = JournalTopic::where('id', $id)  ->first();
+        $document = JournalDocument::where('journal_topics_id', $id)->with('User')->get();
+        // var_dump($data);
+        return view('journal.index',compact('data', 'document'));
     }
 
     /**
@@ -28,9 +32,7 @@ class JournalTopicController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        $journalType = JournalType::all();
-        return view('admin.departement.add')->with(compact('journalType','users'));
+        return view('journal.add');
     }
 
     /**
@@ -42,27 +44,30 @@ class JournalTopicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'users_id' => 'required',
-            'journal_types_id' => 'required',
+            'subject' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'thumbnail_url' => 'required',
         ]);
+
+        $thumbnail_url = 'background.png'; 
+        if($request->hasFile('thumbnail_url')) {
+            $file_name = rand().date('YmdHis');
+            $thumbnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
+            $request->file('thumbnail_url')->storeAs('img/thumbnail', $thumbnail_url, 'public');
+        }
 
         try {
             $thumbnail = $request->file('thumbnail_url');
             $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
 
             JournalTopic::create([
-                'users_id' => $request->users_id,
-                'journal_types_id' => $request->journal_types_id,
+                'users_id' => Auth::user()->id,
+                'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-                'thumbnail_url' => 'img/journal/thumbnail/'.$thumbnail_name,
+                'thumbnail_url' => $thumbnail_url,
             ]);
-
-            $thumbnail->move('img/journal/thumbnail/',$thumbnail_name);
-            return redirect()->route('departements.index');
+            return redirect()->route('repository.index');
 
         } catch (\Throwable $th) {
             return $th;
@@ -90,7 +95,6 @@ class JournalTopicController extends Controller
     {
         $journalTopic = JournalTopic::find($id);
         $users = User::all();
-        $journalType = JournalType::all();
         return view('admin.departement.add')->with(compact('journalType','users','journalTopic'));
     }
 
