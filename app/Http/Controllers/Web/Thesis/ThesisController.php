@@ -19,10 +19,10 @@ class ThesisController extends Controller
      */
     public function index($id)
     {
-        $data = Thesis::find($id)->with('User')->first();
+        $thesis = Thesis::where('id', $id)->with('User')->first();
         $document = ThesisDocument::where('thesis_id', $id)->get();
-        // var_dump($data);
-        return view('thesis.index',compact('data', 'document'));
+        // var_dump($data); 
+        return view('thesis.index',compact('thesis', 'document'));
     }
 
     /**
@@ -50,10 +50,11 @@ class ThesisController extends Controller
             'thesis_type' => 'required',
             'title' => 'required',
             'abstract' => 'required',
-            'tags' => 'required'
+            'tags' => 'required',
+            'created_year' => 'required'
         ]);
 
-        $thumnail_url = 'img/design/background.png';
+        $thumnail_url = 'background.png';
         if ($request->hasFile('thumbnail_url')){
             $file_name = rand().date('YmdHis');
             $thumnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
@@ -66,8 +67,9 @@ class ThesisController extends Controller
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => $thumnail_url,
                 'title' => $request->title,
+                'created_year' => $request->created_year,
                 'tags' => $request->tags,
-                'abstract' => $request->abstract
+                'abstract' => $request->abstract,
             ]);
             return redirect()->route('repository.index');
 
@@ -115,7 +117,8 @@ class ThesisController extends Controller
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => $request->thumbnail_url,
                 'title' => $request->title,
-                'abstract' => $request->abstract
+                'abstract' => $request->abstract,
+                'created_year' => $request->created_year
             ]);
             return redirect()->route('departements.index');
 

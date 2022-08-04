@@ -2,7 +2,7 @@
 
 @section('contents')
 
-    <div class="container mx-auto w-[80%] ">
+    <div class="container mx-auto w-[80%]">
         <div class="flex mt-24">
             <div class="rounded-md w-[25%] h-[26rem]">
                 <div class=" w-full h-[25rem] bg-blue-300 overflow-hidden rounded-md">
@@ -13,15 +13,15 @@
                 </a>
             </div>
             <div class="flex w-[75%] pl-14">
-                <div class="flex flex-col">
+                <div class="flex flex-col w-full">
                     <div class="max-h-[7.5rem] overflow-hidden">
-                        <h1 class="text-4xl font-extrabold" >{{$data->title}}</h1>
+                        <h1 class="text-4xl font-extrabold" >{{$thesis->title}}</h1>
                     </div>
                     <div class="flex mx-1 my-2 items-center">
                         <img class="rounded-full h-8 w-8" src="{{asset('img/design/panji.svg')}}" alt="">
                         <div class="text-sm mx-2">
-                            <h1 class="font-bold opacity-90">{{ $data->user->name}}</h1>
-                            <p class="-mt-1 text-[12px]">Diterbitkan tahun 2019</p>
+                            <h1 class="font-bold opacity-90">{{ $thesis->user->name}}</h1>
+                            <p class="-mt-1 text-[12px]">Diterbitkan tahun {{$thesis->created_year}}</p>
                         </div>
                     </div>
                     <nav class="flex text-lg font-bold border-b border-gray-100">
@@ -32,12 +32,12 @@
                           Dokumen
                         </button>
                         @php
-                            if ($data->user->id == Auth::user()->id) :
+                            if ($thesis->user->id == Auth::user()->id) :
                         @endphp
                                 <div id="add" class="w-full">
                                     <form action="/thesisDocument/create" method="post">
                                         @csrf
-                                        <input type="hidden" name="thesis_id" value="{{$data->id}}">
+                                        <input type="hidden" name="thesis_id" value="{{$thesis->id}}">
                                         <button type="submit"  class="float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                             Tambah Dokumen
                                         </button>
@@ -49,7 +49,7 @@
                     </nav>
                     <div class="py-5">
                         <div class="h-36 overflow-hidden duration-300 " id="abstract">
-                            {{$data->abstract}}
+                            {{$thesis->abstract}}
                         </div>
                         <div class="grid grid-cols-2 gap-3 h-[9rem] overflow-auto duration-300" id="document">
                             {{-- @for ($i = 0; $i < 3 $i++); --}}
