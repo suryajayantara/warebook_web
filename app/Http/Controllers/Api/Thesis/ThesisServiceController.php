@@ -32,7 +32,21 @@ class ThesisServiceController extends Controller
     }
 
     //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
-    public function create(Request $request){
+    public function create(Request $request){ 
+        // Check apakah user sudah login atau belum
+        if(!auth('api')->check()){
+            return response()->json([
+                'message' => 'Anda Belum Login',
+            ],401);
+        }
+
+        // Data dari Token , Disimpan di variable ini
+        $user = auth()->guard('api')->user();  
+
+        // Olahan file disini
+        $file = $request->file('thumbnail_img');
+        $filename = date('yymmdd')."$user->id-"."." . $file->getClientOriginalExtension();
+        $path = $file->storeAs('public/thesis/background',$filename);        
 
         try {
             $validate = Validator($request->all(),[
@@ -50,10 +64,12 @@ class ThesisServiceController extends Controller
                 ]);
             }
 
+
             $data = new Thesis();
-            $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->users_id = $user->id;
+            $data->thesis_type = 'Tugas Akhir';
             $data->title = $request->title;
+            $data->created_year = 2021;
             $data->abstract = $request->abstract;
             $data->created_year = $request->created_year;
             $data->tags = $request->tags;
@@ -65,10 +81,9 @@ class ThesisServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
-        }
-
-    }
+            throw $th;
+        }}
+    
 
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){
