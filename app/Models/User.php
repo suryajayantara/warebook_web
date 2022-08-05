@@ -43,23 +43,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
+    // fungsi ini digunakan untuk melakukan relasi dengan model Thesis
     public function theses(){
         return $this->hasOne(Thesis::class);
     }
 
+    // fungsi ini digunakan untuk melakukan relasi dengan model StudentCreativityProgram
     public function creativity(){
         return $this->hasOne(StudentCreativityProgram::class);
     }
 
+    // fungsi ini digunakan untuk melakukan relasi dengan model InternalResearch
     public function internalResearch(){
         return $this->hasOne(InternalResearch::class);
     }
 
+    // fungsi ini digunakan untuk melakukan relasi dengan model UserDetail
     public function details(){
         return $this->hasOne(UserDetail::class,'users_id','id');
     }
 
+    // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic
     public function journalTopic(){
         return $this->hasOne(JournalTopic::class);
     }

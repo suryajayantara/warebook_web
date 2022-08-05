@@ -43,7 +43,6 @@ class InternalResearchController extends Controller
             'users_id' => 'required',
             'title' => 'required',
             'abstract' => 'required',
-            'thumbnail_url' => 'required',
             'budget_type' => 'required',
             'budget' => 'required',
             'project_started_at' => 'required',
@@ -55,14 +54,12 @@ class InternalResearchController extends Controller
         ]);
 
         //request untuk menguload dalam bentuk file
-        $thumbnail = $request->file('thumbnail_url');
         $proposal = $request->file('proposal_url');
         $document = $request->file('document_url');
 
         //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
         //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
         //getClientOriginalExtension digunakan untuk mencari format asli pada file
-        $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
         $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
         $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
 
@@ -71,7 +68,6 @@ class InternalResearchController extends Controller
                 'users_id' => $request->users_id,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'thumbnail_url' => $thumbnail_name,
                 'budget_type' => $request->budget_type,
                 'budget' => $request->budget,
                 'project_started_at' => $request->project_started_at,
@@ -83,7 +79,6 @@ class InternalResearchController extends Controller
             ]);
 
             //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
-            $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
             $proposal->move('files/internalResearch/',$proposal_name);
             $document->move('files/internalResearch/',$document_name);
 
@@ -130,7 +125,6 @@ class InternalResearchController extends Controller
 
         try {
             $data=InternalResearch::find($id);
-
             $update = [
                 'users_id' => $request->users_id,
                 'title' => $request->title,
@@ -144,19 +138,6 @@ class InternalResearchController extends Controller
                 'contract_url' => $request->contract_url,
 
             ];
-
-
-            if($request->file('thumbnail_url') !== NULL){
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-                $update = [
-                    'thumbnail_url' => $thumbnail_name,
-                ];
-
-                unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $thumbnail->move('img/internalResearch/thumbnail/',$thumbnail_name);
-            }
 
             if($request->file('proposal_url') !== NULL){
                 $proposal = $request->file('proposal_url');
@@ -198,7 +179,6 @@ class InternalResearchController extends Controller
     {
         try {
             $data = InternalResearch::find($id);
-            unlink('img/internalResearch/thumbnail/'.$data['thumbnail_url']);
             unlink('files/internalResearch/'.$data['proposal_url']);
             unlink('files/internalResearch/'.$data['document_url']);
             $data = InternalResearch::destroy($id);

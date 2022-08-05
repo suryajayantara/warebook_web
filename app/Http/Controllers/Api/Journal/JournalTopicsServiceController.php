@@ -24,7 +24,7 @@ class JournalTopicsServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori Topic dengan mengambil salah satu idnya
     public function getOneJournalTopic(Request $request, $id)
     {
-        $data = JournalTopic::find($id)->with('journalType')->first();
+        $data = JournalTopic::where('id',$id)->with('journalType')->first();
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -45,7 +45,6 @@ class JournalTopicsServiceController extends Controller
                 'journal_types_id' => 'required',
                 'title' => 'required',
                 'description' => 'required',
-                'thumbnail_url' => 'required'
             ]);
 
             if($validate->fails()){
@@ -54,17 +53,11 @@ class JournalTopicsServiceController extends Controller
                 ]);
             }
 
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
             $data = new JournalTopic();
             $data->users_id = $request->users_id;
             $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;
             $data->description = $request->description;
-            $data->thumbnail_url = $thumbnail_name;
-
-            $thumbnail->move('img/journal/thumbnail/',$thumbnail_name);
 
             $data->save();
 
@@ -88,17 +81,6 @@ class JournalTopicsServiceController extends Controller
                 ],500);
             }
 
-            if($request->file('thumbnail_url') !== NULL){
-                unlink('img/journal/thumbnail/'.$data['thumbnail_url']);
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
-                $data->thumbnail_url = $thumbnail_name;
-
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $thumbnail->move('img/journal/thumbnail/',$thumbnail_name);
-            }
-
             $data->users_id = $request->users_id;
             $data->journal_types_id = $request->journal_types_id;
             $data->title = $request->title;
@@ -119,7 +101,6 @@ class JournalTopicsServiceController extends Controller
     public function destroy($id){
         try {
             $query = JournalTopic::find($id);
-            unlink('img/journal/thumbnail/'.$query['thumbnail_url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'

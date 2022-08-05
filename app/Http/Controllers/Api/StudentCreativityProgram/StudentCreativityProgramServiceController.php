@@ -24,7 +24,7 @@ class StudentCreativityProgramServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori PKM dengan mengambil salah satu idnya
     public function getOneCreativity(Request $request, $id)
     {
-        $data = StudentCreativityProgram::find($id)->with('creativityType')->first();
+        $data = StudentCreativityProgram::where('id',$id)->with('creativityType')->first();
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -43,10 +43,10 @@ class StudentCreativityProgramServiceController extends Controller
             $validate = Validator($request->all(),[
                 'users_id' => 'required',
                 'creativity_type' => 'required',
+                'aliases' => 'required',
                 'title' => 'required',
                 'abstract' => 'required',
                 'year' => 'required',
-                'thumbnail_url' => 'required',
                 'supervisor' => 'required',
                 'document_url' => 'required',
             ]);
@@ -58,27 +58,24 @@ class StudentCreativityProgramServiceController extends Controller
             }
 
             //request untuk menguload dalam bentuk file
-            $thumbnail = $request->file('thumbnail_url');
             $document = $request->file('document_url');
 
             //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
             //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
             //getClientOriginalExtension digunakan untuk mencari format asli pada file
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
             $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
 
 
             $data = new StudentCreativityProgram();
             $data->users_id = $request->users_id;
             $data->creativity_type = $request->creativity_type;
+            $data->aliases = $request->aliases;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
             $data->year = $request->year;
-            $data->thumbnail_url = $thumbnail_name;
             $data->supervisor = $request->supervisor;
             $data->document_url = $document_name;
 
-            $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
             $document->move('files/creativity/',$document_name);
 
             $data->save();
@@ -103,19 +100,6 @@ class StudentCreativityProgramServiceController extends Controller
                 ],500);
             }
 
-            if($request->file('thumbnail_url') !== NULL){
-
-                unlink('img/creativity/thumbnail/'.$data['thumbnail_url']);
-
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
-                $data->thumbnail_url = $thumbnail_name;
-
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/creativity/thumbnail
-                $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
-            }
-
             if($request->file('document_url') !== NULL){
 
                 unlink('files/creativity/'.$data['document_url']);
@@ -130,6 +114,7 @@ class StudentCreativityProgramServiceController extends Controller
 
             $data->users_id = $request->users_id;
             $data->creativity_type = $request->creativity_type;
+            $data->aliases = $request->aliases;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
             $data->year = $request->year;
@@ -150,7 +135,6 @@ class StudentCreativityProgramServiceController extends Controller
     public function destroy($id){
         try {
             $query = StudentCreativityProgram::find($id);
-            unlink('img/creativity/thumbnail/'.$query['thumbnail_url']);
             unlink('files/creativity/'.$query['document_url']);
             if($query == null){
                 return response()->json([

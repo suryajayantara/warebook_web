@@ -24,7 +24,7 @@ class JournalDocumentsServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori Document dengan mengambil salah satu idnya
     public function getOneJournalDocument(Request $request, $id)
     {
-        $data = JournalDocument::find($id)->with('journalTopic')->first();
+        $data = JournalDocument::where('id',$id)->with('journalTopic')->first();
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'

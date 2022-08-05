@@ -17,7 +17,6 @@ class ThesisSeeder extends Seeder
         $thesis = new Thesis();
 
         $thesis->users_id = 1;
-        $thesis->thumbnail_url = 'www.google.com';
         $thesis->thesis_type = 'Tugas Akhir';
         $thesis->title = 'Pengembangan Perangkat Bergerak berbasis Flutter untuk Pembuatan API';
         $thesis->created_year = 2022;
