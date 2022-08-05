@@ -17,12 +17,14 @@ class Departement extends Model
         'desc'
     ];
 
+    // fungsi ini digunakan untuk melakukan relasi dengan model Study
     public function study()
     {
         return $this->hasMany(Study::class);
     }
 
-    public function users()
+    // fungsi ini digunakan untuk melakukan relasi dengan model UserDetail
+    public function userdetail()
     {
         return $this->hasMany(UserDetail::class);
     }

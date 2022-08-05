@@ -25,7 +25,7 @@ class ThesisServiceController extends Controller
     // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
     // Kalo ini work , biarin , gausah dikutak kutik lagi
     public function getOneThesis($id){
-        $data = Thesis::where('id',$id)->with('documents')->first();
+        $data = Thesis::where('id',$id)->with('user')->first();
         return response()->json([
             'data' => $data
         ],200);
@@ -49,24 +49,21 @@ class ThesisServiceController extends Controller
         $path = $file->storeAs('public/thesis/background',$filename);        
 
         try {
-            
-            // $validate = Validator($request->all(),[
-            //     'users_id' => 'required',
-            //     'thesis_type' => 'required',
-            //     'thumbnail_url' => 'required',
-            //     'title' => 'required',
-            //     'abstract' => 'required',
-            //     'tags' => 'required',
-            // ]);
+            $validate = Validator($request->all(),[
+                'users_id' => 'required',
+                'thesis_type' => 'required',
+                'title' => 'required',
+                'abstract' => 'required',
+                'created_year' => 'required',
+                'tags' => 'required',
+            ]);
 
-            // if($validate->fails()){
-            //     return response()->json([
-            //         'validate' => $validate->errors()
-            //     ]);
-            // }
+            if($validate->fails()){
+                return response()->json([
+                    'validate' => $validate->errors()
+                ]);
+            }
 
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
 
             $data = new Thesis();
             $data->users_id = $user->id;
@@ -74,10 +71,9 @@ class ThesisServiceController extends Controller
             $data->title = $request->title;
             $data->created_year = 2021;
             $data->abstract = $request->abstract;
-            $data->thumbnail_url = "storage/thesis/background/" . $filename;
+            $data->created_year = $request->created_year;
             $data->tags = $request->tags;
 
-            $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
             $data->save();
 
             return response()->json([
@@ -99,16 +95,6 @@ class ThesisServiceController extends Controller
                 ],500);
             }
 
-            if($request->file('thumbnail_url') !== NULL){
-                unlink('img/thesis/thumbnail/'.$data['thumbnail_url']);
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
-                $data->thumbnail_url = $thumbnail_name;
-
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
-            }
 
             $data->users_id = $request->users_id;
             $data->thesis_type = $request->thesis_type;
@@ -132,7 +118,6 @@ class ThesisServiceController extends Controller
     public function destroy($id){
         try {
             $query = Thesis::find($id);
-            unlink('img/thesis/thumbnail/'.$query['thumbnail_url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'

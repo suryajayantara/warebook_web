@@ -18,7 +18,6 @@ class CreateInternalResearchTable extends Migration
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->text('abstract');
-            $table->string('thumbnail_url');
             $table->string('budget_type');
             $table->bigInteger('budget');
             $table->dateTime('project_started_at');

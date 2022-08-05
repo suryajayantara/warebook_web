@@ -27,8 +27,7 @@ class StudentCreativityProgramController extends Controller
      */
     public function create()
     {
-        $creativityType = StudentCreativityProgramType::all();
-        return view('admin.departement.add')->with(compact('creativityType'));
+        return view('admin.departement.add');
     }
 
     /**
@@ -42,6 +41,7 @@ class StudentCreativityProgramController extends Controller
         $request->validate([
             'users_id' => 'required',
             'creativity_type' => 'required',
+            'aliases' => 'required',
             'title' => 'required',
             'abstract' => 'required',
             'year' => 'required',
@@ -51,28 +51,25 @@ class StudentCreativityProgramController extends Controller
         ]);
 
         //request untuk menguload dalam bentuk file
-        $thumbnail = $request->file('thumbnail_url');
         $document = $request->file('document_url');
 
         //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
         //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
         //getClientOriginalExtension digunakan untuk mencari format asli pada file
-        $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
         $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
 
         try {
             StudentCreativityProgram::create([
                 'creativity_type' => $request->creativity_type,
+                'aliases' => $request->aliases,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-                'thumbnail_url' => 'img/creativity/thumbnail/'.$thumbnail_name,
                 'supervisor' => $request->supervisor,
                 'document_url' => $request->document_url
             ]);
 
             //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
-            $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
             $document->move('files/creativity/',$document_name);
 
             return redirect()->route('departements.index');
@@ -102,8 +99,7 @@ class StudentCreativityProgramController extends Controller
     public function edit($id)
     {
         $creativity = StudentCreativityProgram::find($id);
-        $creativityType = StudentCreativityProgramType::all();
-        return view('admin.departement.edit')->with(compact('creativity','creativityType'));
+        return view('admin.departement.edit')->with(compact('creativity'));
     }
 
     /**
@@ -119,23 +115,12 @@ class StudentCreativityProgramController extends Controller
             $data = StudentCreativityProgram::find($id);
             $update=[
                 'creativity_type' => $request->creativity_type,
+                'aliases' => $request->aliases,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
                 'supervisor' => $request->supervisor,
             ];
-
-            if($request->file('thumbnail_url') !== NULL){
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-                $update = [
-                    'thumbnail_url' => 'img/creativity/thumbnail/'.$thumbnail_name,
-                ];
-
-                unlink($data['thumbnail_url']);
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/creativity/thumbnail
-                $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
-            }
 
             if($request->file('document_url') !== NULL){
                 $document = $request->file('document_url');
@@ -167,7 +152,6 @@ class StudentCreativityProgramController extends Controller
     {
         try {
             $data=StudentCreativityProgram::find($id);
-            unlink($data['thumbnail_url']);
             unlink('files/creativity/'.$data['document_url']);
             $data = StudentCreativityProgram::destroy($id);
             return redirect()->route('admin.departements.index');
