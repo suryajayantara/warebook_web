@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JournalDocument;
 use App\Models\JournalTopic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JournalDocumentController extends Controller
 {
@@ -14,10 +15,10 @@ class JournalDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $data = JournalDocument::all();
-        return view('admin.study.index',compact('data'));
+        $data = JournalDocument::where('id', $id)->with('User')->first();
+        return view('journal.document.index',compact('data'));
     }
 
     /**
@@ -25,10 +26,10 @@ class JournalDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        $journalTopic = JournalTopic::all();
-        return view('admin.departement.add')->with(compact('journalTopic'));
+        $journal_id = $id;
+        return view('journal.document.add', compact('journal_id'));
     }
 
     /**
@@ -44,29 +45,40 @@ class JournalDocumentController extends Controller
             'title' => 'required',
             'author' => 'required',
             'abstract' => 'required',
+            'tags' => 'required',
             'url' => 'required',
             'year' => 'required',
+            'document' => 'required',
         ]);
 
-        $pdf = $request->file('url');
-        $pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
+        $file_name = rand().date('YmdHis');
+        $document_url = $file_name.'.'.$request->file('document')->extension();
+        $request->file('document')->storeAs('document/journal', $document_url, 'public');
+        //$pdf = $request->file('url');
+        //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
         try {
             JournalDocument::create([
+                'users_id' => Auth::user()->id,
                 'journal_topics_id' => $request->journal_topics_id,
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
                 'url' => $pdf_name,
                 'year' => $request->year,
+                'tags' => $request->tags,
+                'doi' => $request->doi,
+                'original_url' => $request->original_url,
+                'document_url' => $document_url,
             ]);
+            return redirect('journalTopics/index/'.$request->journal_topics_id);
 
-            $pdf->move('files/journal/',$pdf_name);
+            //$pdf->move('files/journal/',$pdf_name);
 
-            return redirect()->route('departements.index');
+            //return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            return $th;
+            var_dump($th) ;
         }
     }
 
