@@ -25,37 +25,53 @@ class ThesisServiceController extends Controller
     // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
     // Kalo ini work , biarin , gausah dikutak kutik lagi
     public function getOneThesis($id){
-        $data = Thesis::find($id)->with('documents')->first();
+        $data = Thesis::where('id',$id)->with('documents')->first();
         return response()->json([
             'data' => $data
         ],200);
     }
 
     //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
-    public function create(Request $request){
+    public function create(Request $request){ 
+        // Check apakah user sudah login atau belum
+        if(!auth('api')->check()){
+            return response()->json([
+                'message' => 'Anda Belum Login',
+            ],401);
+        }
+
+        // Data dari Token , Disimpan di variable ini
+        $user = auth()->guard('api')->user();  
+
+        // Olahan file disini
+        $file = $request->file('thumbnail_img');
+        $filename = date('yymmdd')."$user->id-"."." . $file->getClientOriginalExtension();
+        $path = $file->storeAs('public/thesis/background',$filename);        
 
         try {
-            $validate = Validator($request->all(),[
-                'users_id' => 'required',
-                'thesis_type' => 'required',
-                'thumbnail_url' => 'required',
-                'title' => 'required',
-                'abstract' => 'required',
-                'tags' => 'required',
-            ]);
+            
+            // $validate = Validator($request->all(),[
+            //     'users_id' => 'required',
+            //     'thesis_type' => 'required',
+            //     'thumbnail_url' => 'required',
+            //     'title' => 'required',
+            //     'abstract' => 'required',
+            //     'tags' => 'required',
+            // ]);
 
-            if($validate->fails()){
-                return response()->json([
-                    'validate' => $validate->errors()
-                ]);
-            }
+            // if($validate->fails()){
+            //     return response()->json([
+            //         'validate' => $validate->errors()
+            //     ]);
+            // }
 
             $data = new Thesis();
-            $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->users_id = $user->id;
+            $data->thesis_type = 'Tugas Akhir';
             $data->title = $request->title;
+            $data->created_year = 2021;
             $data->abstract = $request->abstract;
-            $data->thumbnail_url = $request->thumbnail_url;
+            $data->thumbnail_url = "storage/thesis/background/" . $filename;
             $data->tags = $request->tags;
 
             $data->save();
@@ -65,10 +81,9 @@ class ThesisServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
-        }
-
-    }
+            throw $th;
+        }}
+    
 
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){

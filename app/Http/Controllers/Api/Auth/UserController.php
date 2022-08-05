@@ -21,6 +21,7 @@ class UserController extends Controller
         }
         // Data dari Token , Disimpan di variable ini
         $data = auth()->guard('api')->user();
+
         return response()->json([
             // 'data' => auth()->guard('api')->user()->roles->pluck('name')
             'name' => $data->name,

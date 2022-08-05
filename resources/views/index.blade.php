@@ -13,13 +13,13 @@
         <h1 class="font-black text-[30px]">Selamat Datang !</h1>
         <p class="opacity-60 -mt-1">Masuk untuk mengakses konten</p>
 
-        <form class="flex flex-col" action="post    ">
+        <form class="flex flex-col" action="post">
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="email" placeholder="Email" name="email" id="email">
             <input class="h-12 mb-3 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200 " type="password" placeholder="Password" name="password" id="email">
             <button class="bg-[#0984E3] h-12 rounded-xl my-3 font-bold text-white" type="submit">Masuk</button>
         </form> 
         <div class="mx-auto flex justify-center">
-            <a href="{{ route('register.index') }}" class="text-[#0984E3] font-bold py-1 px-2 hover:bg-blue-50 mt-2">
+            <a href="#" class="text-[#0984E3] font-bold py-1 px-2 hover:bg-blue-50 mt-2">
                 Buat Akun
             </a>
         </div>
