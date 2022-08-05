@@ -30,6 +30,21 @@ class UserSeeder extends Seeder
         $userDetails->study_id = 1;
 
         $userDetails->save();
+        
+        $user = new User();
+        $userDetails = new UserDetail();
+        $user->name = 'Arya Candrayana';
+        $user->email = 'aryacandrayana@pnb.ac.id';
+        $user->password = bcrypt('12345678');
+        $user->assignRole('lecture');
+        $user->save();
+
+        $userDetails->users_id = 2;
+        $userDetails->unique_id = "1915323005";
+        $userDetails->departement_id = 1;
+        $userDetails->study_id = 1;
+
+        $userDetails->save();
 
        
     }

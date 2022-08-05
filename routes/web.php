@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RepositoryController;
 use App\Http\Controllers\Web\InternalResearch\InternalResearchController;
 use App\Http\Controllers\Web\Journal\JournalDocumentController;
 use App\Http\Controllers\Web\Journal\JournalTopicController;
@@ -11,6 +13,7 @@ use App\Http\Controllers\Web\StudentCreativityProgram\StudentCreativityProgramTy
 use App\Http\Controllers\Web\Thesis\ThesisController;
 use App\Http\Controllers\Web\Thesis\ThesisDocumentController;
 use App\Http\Controllers\Web\User\RegisterController;
+use App\Models\JournalDocument;
 use App\Models\Thesis;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -27,12 +30,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('index');
 });
 
-Route::get('/journal', function () {
-    return view('journal.index');
-});
+// 
+
 Route::get('/home', function(){
     return view('user.index');
 });
@@ -40,16 +42,30 @@ Route::get('/home', function(){
 
 Route::resource('departements',DepartementController::class);
 Route::resource('studies',StudyController::class);
-Route::resource('register',RegisterController::class);
+// Route::resource('register',RegisterController::class);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('home', HomeController::class);
+Route::resource('repository', RepositoryController::class);
+
+//Thesis Route
+Route::get('thesis/create/{type}', [ThesisController::class, 'create']);
+Route::get('thesis/{id}' , [ThesisController::class, 'index']);
+Route::resource('thesis',ThesisController::class);
+Route::post('thesisDocument/create', [ThesisDocumentController::class, 'create']);
+Route::resource('thesisDocument',ThesisDocumentController::class);
+
+//Journal Route 
+Route::get('journalTopic/index/{id}', [JournalTopicController::class, 'index']);
+Route::get('journalDocument/create/{id}', [JournalDocumentController::class , 'create']);
+Route::get('journalDocument/index/{id}', [JournalDocumentController::class , 'index']);
 Route::resource('journalDocument',JournalDocumentController::class);
 Route::resource('journalTopic',JournalTopicController::class);
-Route::resource('journalType',JournalTypeController::class);
-Route::resource('thesis',ThesisController::class);
-Route::resource('thesisDocument',ThesisDocumentController::class);
+
+
 Route::resource('creativity',StudentCreativityProgramController::class);
 Route::resource('creativityType',StudentCreativityProgramTypeController::class);
 Route::resource('internalResearch',InternalResearchController::class);

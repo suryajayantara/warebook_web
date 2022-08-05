@@ -13,13 +13,29 @@
         <h1 class="font-black text-[30px]">Selamat Datang !</h1>
         <p class="opacity-60 -mt-1">Masuk untuk mengakses konten</p>
 
+<<<<<<< HEAD
         <form class="flex flex-col" action="post">
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="email" placeholder="Email" name="email" id="email">
+=======
+        @error('email')
+
+        <div class="px-4 py-2 mt-2  text-red-700 border rounded border-red-900/10 bg-red-50" role="alert">
+            <strong class="text-sm font-medium">{{ $message }}</strong>
+        </div>
+        @enderror
+        <form class="flex flex-col" method="POST" action="{{ route('login') }}">
+                @csrf
+            <input class="bg-transparent h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="email" placeholder="Email" name="email" id="email">
+>>>>>>> 61ff9a35af343b3b81da6dee523d6f89c11eca1f
             <input class="h-12 mb-3 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200 " type="password" placeholder="Password" name="password" id="email">
             <button class="bg-[#0984E3] h-12 rounded-xl my-3 font-bold text-white" type="submit">Masuk</button>
         </form> 
         <div class="mx-auto flex justify-center">
+<<<<<<< HEAD
             <a href="#" class="text-[#0984E3] font-bold py-1 px-2 hover:bg-blue-50 mt-2">
+=======
+            <a href="{{ route('register') }}" class="text-[#0984E3] font-bold py-1 px-2 hover:bg-blue-50 mt-2">
+>>>>>>> 61ff9a35af343b3b81da6dee523d6f89c11eca1f
                 Buat Akun
             </a>
         </div>

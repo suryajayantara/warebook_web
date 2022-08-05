@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Thesis;
 use App\Models\ThesisDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThesisDocumentController extends Controller
 {
@@ -16,8 +17,7 @@ class ThesisDocumentController extends Controller
      */
     public function index()
     {
-        $data = ThesisDocument::all();
-        return view('admin.study.index',compact('data'));
+        
     }
 
     /**
@@ -25,10 +25,10 @@ class ThesisDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $thesis = Thesis::all();
-        return view('admin.departement.add')->with(compact('thesis'));
+        $thesis_id = $request->thesis_id;
+        return view('thesis.document.add', compact('thesis_id'));
     }
 
     /**
@@ -42,16 +42,32 @@ class ThesisDocumentController extends Controller
         $request->validate([
             'thesis_id' => 'required',
             'document_name' => 'required',
-            'url' => 'required',
+            'document' => 'required',
         ]);
+
+        $file_name = rand().date('YmdHis');
+        $url = $file_name.'.'.$request->file('document')->extension();
+        $request->file('document')->storeAs('document/thesis', $url, 'public');
+        
+        //fungsi upload file by ade
+        //$pdf = $request->file('url');
+        //$pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+
 
         try {
             ThesisDocument::create([
                 'thesis_id' => $request->thesis_id,
                 'document_name' => $request->document_name,
-                'url' => $request->url,
+                'url' => $url,
             ]);
-            return redirect()->route('departements.index');
+            return redirect('thesis/'.$request->thesis_id);
+            
+            //fungsi upload file by ade
+                //'document_name' => $pdf_name,
+                //'url' => $pdf_name,
+            //]);
+
+            //$pdf->move('files/thesis/',$pdf_name);
 
         } catch (\Throwable $th) {
             return $th;
@@ -92,11 +108,26 @@ class ThesisDocumentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            ThesisDocument::find($id)->update([
+            $data = ThesisDocument::find($id);
+            $update = [
                 'thesis_id' => $request->thesis_id,
                 'document_name' => $request->document_name,
                 'url' => $request->url,
-            ]);
+            ];
+
+            if($request->file('url') !== NULL){
+                $pdf = $request->file('url');
+                $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
+                $update = [
+                    'url' => $pdf_name,
+                ];
+                unlink('files/thesis/'.$data['url']);
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
+                $pdf->move('files/thesis/',$pdf_name);
+            }
+
+            ThesisDocument::find($id)->update($update);
+
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
@@ -113,7 +144,9 @@ class ThesisDocumentController extends Controller
     public function destroy($id)
     {
         try {
-            ThesisDocument::find($id)->delete();
+            $data = Thesis::find($id);
+            unlink('files/thesis/'.$data['url']);
+            $data = Thesis::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {
             echo 'gagal';

@@ -57,15 +57,29 @@ class StudentCreativityProgramServiceController extends Controller
                 ]);
             }
 
+            //request untuk menguload dalam bentuk file
+            $thumbnail = $request->file('thumbnail_url');
+            $document = $request->file('document_url');
+
+            //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
+            //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
+            //getClientOriginalExtension digunakan untuk mencari format asli pada file
+            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+            $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+
+
             $data = new StudentCreativityProgram();
             $data->users_id = $request->users_id;
             $data->creativity_type = $request->creativity_type;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
             $data->year = $request->year;
-            $data->thumbnail_url = $request->thumbnail_url;
+            $data->thumbnail_url = $thumbnail_name;
             $data->supervisor = $request->supervisor;
-            $data->document_url = $request->document_url;
+            $data->document_url = $document_name;
+
+            $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
+            $document->move('files/creativity/',$document_name);
 
             $data->save();
 
@@ -89,14 +103,37 @@ class StudentCreativityProgramServiceController extends Controller
                 ],500);
             }
 
+            if($request->file('thumbnail_url') !== NULL){
+
+                unlink('img/creativity/thumbnail/'.$data['thumbnail_url']);
+
+                $thumbnail = $request->file('thumbnail_url');
+                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+
+                $data->thumbnail_url = $thumbnail_name;
+
+                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/creativity/thumbnail
+                $thumbnail->move('img/creativity/thumbnail/',$thumbnail_name);
+            }
+
+            if($request->file('document_url') !== NULL){
+
+                unlink('files/creativity/'.$data['document_url']);
+
+                $document = $request->file('document_url');
+                $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+
+                $data->document_url = $document_name;
+
+                $document->move('files/creativity/',$document_name);
+            }
+
             $data->users_id = $request->users_id;
             $data->creativity_type = $request->creativity_type;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
             $data->year = $request->year;
-            $data->thumbnail_url = $request->thumbnail_url;
             $data->supervisor = $request->supervisor;
-            $data->document_url = $request->document_url;
 
             $data->save();
 
@@ -113,6 +150,8 @@ class StudentCreativityProgramServiceController extends Controller
     public function destroy($id){
         try {
             $query = StudentCreativityProgram::find($id);
+            unlink('img/creativity/thumbnail/'.$query['thumbnail_url']);
+            unlink('files/creativity/'.$query['document_url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
@@ -130,7 +169,7 @@ class StudentCreativityProgramServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
 
     }

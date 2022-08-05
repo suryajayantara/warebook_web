@@ -11,7 +11,7 @@ class JournalTopic extends Model
     use HasFactory;
     protected $fillable = [
         'users_id',
-        'journal_types_id',
+        'subject',
         'title',
         'description',
         'thumbnail_url'
@@ -19,10 +19,6 @@ class JournalTopic extends Model
 
     public function user(){
         return $this->belongsTo(User::class,'users_id');
-    }
-
-    public function journalType(){
-        return $this->belongsTo(JournalType::class,'journal_types_id');
     }
 
     public function journalDocument(){

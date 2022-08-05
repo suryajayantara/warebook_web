@@ -15,11 +15,16 @@ class CreateJournalDocumentsTable extends Migration
     {
         Schema::create('journal_documents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('journal_topics_id')->constrained('journal_topics')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
-            $table->text('author');
+            $table->string('author');
             $table->text('abstract');
-            $table->year('year');
+            $table->string('year');
+            $table->string('tags');
+            $table->string('doi')->nullable();
+            $table->string('original_url')->nullable();
+            $table->string('document_url');
             $table->timestamps();
         });
     }
