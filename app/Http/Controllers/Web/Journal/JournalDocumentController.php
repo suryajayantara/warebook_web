@@ -53,7 +53,7 @@ class JournalDocumentController extends Controller
 
         $file_name = rand().date('YmdHis');
         $document_url = $file_name.'.'.$request->file('document')->extension();
-        $request->file('document')->storeAs('document/journal', $document_url, 'public');
+        $request->file('document_url')->storeAs('document/journal', $document_url, 'public');
         //$pdf = $request->file('url');
         //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
@@ -64,7 +64,6 @@ class JournalDocumentController extends Controller
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
-                'url' => $pdf_name,
                 'year' => $request->year,
                 'tags' => $request->tags,
                 'doi' => $request->doi,
@@ -119,6 +118,9 @@ class JournalDocumentController extends Controller
                 'journal_topics_id' => $request->journal_topics_id,
                 'title' => $request->title,
                 'author' => $request->author,
+                'tags' => $request->tags,
+                'doi' => $request->doi,
+                'original_url' => $request->original_url,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
             ];
@@ -127,7 +129,7 @@ class JournalDocumentController extends Controller
                 $pdf = $request->file('url');
                 $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
                 $update = [
-                    'url' => $pdf_name,
+                    'document_url' => $pdf_name,
                 ];
                 //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
                 $pdf->move('files/journal/',$pdf_name);
@@ -151,7 +153,7 @@ class JournalDocumentController extends Controller
     {
         try {
             $data = JournalDocument::find($id);
-            unlink('files/journal/'.$data['url']);
+            unlink('files/journal/'.$data['document_url']);
             $data = JournalDocument::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {

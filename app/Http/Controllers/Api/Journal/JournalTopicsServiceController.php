@@ -24,7 +24,7 @@ class JournalTopicsServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori Topic dengan mengambil salah satu idnya
     public function getOneJournalTopic(Request $request, $id)
     {
-        $data = JournalTopic::where('id',$id)->with('journalType')->first();
+        $data = JournalTopic::where('id',$id)->with('user')->first();
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -42,7 +42,7 @@ class JournalTopicsServiceController extends Controller
         try {
             $validate = Validator($request->all(),[
                 'users_id' => 'required',
-                'journal_types_id' => 'required',
+                'subject' => 'required',
                 'title' => 'required',
                 'description' => 'required',
             ]);
@@ -55,7 +55,7 @@ class JournalTopicsServiceController extends Controller
 
             $data = new JournalTopic();
             $data->users_id = $request->users_id;
-            $data->journal_types_id = $request->journal_types_id;
+            $data->subject = $request->subject;
             $data->title = $request->title;
             $data->description = $request->description;
 
@@ -66,7 +66,7 @@ class JournalTopicsServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
 
     }
@@ -82,7 +82,7 @@ class JournalTopicsServiceController extends Controller
             }
 
             $data->users_id = $request->users_id;
-            $data->journal_types_id = $request->journal_types_id;
+            $data->subject = $request->subject;
             $data->title = $request->title;
             $data->description = $request->description;
 

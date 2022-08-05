@@ -16,7 +16,7 @@ class CreateJournalTopicsTable extends Migration
         Schema::create('journal_topics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('journal_types_id')->constrained('journal_types')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('subject');
             $table->string('title');
             $table->text('description');
             $table->timestamps();

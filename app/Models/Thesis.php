@@ -21,8 +21,8 @@ class Thesis extends Model
     protected $fillable = [
         'users_id',
         'thesis_type',
-        'created_year',
         'title',
+        'created_year',
         'abstract',
         'tags'
     ];

@@ -67,4 +67,9 @@ class User extends Authenticatable
     public function journalTopic(){
         return $this->hasOne(JournalTopic::class);
     }
+
+    // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic
+    public function journalDocument(){
+        return $this->hasOne(JournalDocument::class);
+    }
 }

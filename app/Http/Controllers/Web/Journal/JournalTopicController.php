@@ -44,17 +44,11 @@ class JournalTopicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'users_id' => 'required',
             'subject' => 'required',
             'title' => 'required',
             'description' => 'required',
         ]);
-
-        $thumbnail_url = 'background.png'; 
-        if($request->hasFile('thumbnail_url')) {
-            $file_name = rand().date('YmdHis');
-            $thumbnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
-            $request->file('thumbnail_url')->storeAs('img/thumbnail', $thumbnail_url, 'public');
-        }
 
         try {
 
@@ -63,15 +57,9 @@ class JournalTopicController extends Controller
                 'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-<<<<<<< HEAD
             ]);
 
             return redirect()->route('departements.index');
-=======
-                'thumbnail_url' => $thumbnail_url,
-            ]);
-            return redirect()->route('repository.index');
->>>>>>> 61ff9a35af343b3b81da6dee523d6f89c11eca1f
 
         } catch (\Throwable $th) {
             return $th;

@@ -19,10 +19,9 @@ class ThesisController extends Controller
      */
     public function index($id)
     {
-        $data = Thesis::find($id)->with('User')->first();
+        $thesis = Thesis::where('id', $id)->with('User')->first();
         $document = ThesisDocument::where('thesis_id', $id)->get();
-        // var_dump($data);
-        return view('thesis.index',compact('data', 'document'));
+        return view('thesis.index',compact('thesis', 'document'));
     }
 
     /**
@@ -34,7 +33,6 @@ class ThesisController extends Controller
     {
         $thesis_type = $type;
         // $users = User::all();
-        // var_dump($thesis_type);
         return view('thesis.add')->with(compact('thesis_type'));
     }
     /**
@@ -54,7 +52,6 @@ class ThesisController extends Controller
             'created_year' => 'required',
         ]);
 
-
         try {
             Thesis::create([
                 'users_id' => Auth::user()->id,
@@ -68,7 +65,7 @@ class ThesisController extends Controller
             return redirect()->route('repository.index');
 
         } catch (\Throwable $th) {
-            var_dump($th);
+            // var_dump($th);
         }
     }
 
@@ -111,7 +108,7 @@ class ThesisController extends Controller
                 'thesis_type' => $request->thesis_type,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'created_year' => $request->created_year,
+                'created_year' => $request->created_year
             ];
 
             Thesis::find($id)->update($update);
