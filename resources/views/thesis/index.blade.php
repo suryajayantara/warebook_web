@@ -54,7 +54,7 @@
                         <div class="grid grid-cols-2 gap-3 h-[9rem] overflow-auto duration-300" id="document">
                             {{-- @for ($i = 0; $i < 3 $i++); --}}
                             @foreach ($document as $item)
-                                <a href="{{asset('public/storage/'.$item->url)}}" class="flex h-16 items-center w-full bg-slate-50 shadow-sm rounded-md">
+                                <a href="{{asset('/storage/document/thesis/'.$item->url)}}" class="flex h-16 items-center w-full bg-slate-50 shadow-sm rounded-md">
                                     <img class="bg-[#FF7675] p-3 m-2 mr-1 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
                                         <h1 class="text-[18px] mx-2 font-black">{{$item->document_name}}</h1>
                                 </a>    

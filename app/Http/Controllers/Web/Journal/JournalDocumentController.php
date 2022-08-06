@@ -7,6 +7,7 @@ use App\Models\JournalDocument;
 use App\Models\JournalTopic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class JournalDocumentController extends Controller
 {
@@ -46,7 +47,6 @@ class JournalDocumentController extends Controller
             'author' => 'required',
             'abstract' => 'required',
             'tags' => 'required',
-            'url' => 'required',
             'year' => 'required',
             'document' => 'required',
         ]);
@@ -54,6 +54,7 @@ class JournalDocumentController extends Controller
         $file_name = rand().date('YmdHis');
         $document_url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/journal', $document_url, 'public');
+        
         //$pdf = $request->file('url');
         //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
@@ -64,14 +65,13 @@ class JournalDocumentController extends Controller
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
-                'url' => $pdf_name,
                 'year' => $request->year,
                 'tags' => $request->tags,
                 'doi' => $request->doi,
                 'original_url' => $request->original_url,
                 'document_url' => $document_url,
             ]);
-            return redirect('journalTopics/index/'.$request->journal_topics_id);
+            return redirect('journalTopic/index/'.$request->journal_topics_id);
 
             //$pdf->move('files/journal/',$pdf_name);
 
@@ -101,8 +101,8 @@ class JournalDocumentController extends Controller
      */
     public function edit($id)
     {
-        $journalTopic = JournalTopic::all();
-        return view('admin.departement.edit')->with(compact('journalTopic'));
+        $journal_document = JournalDocument::find($id);
+        return view('journal/document/edit')->with(compact('journal_document'));
     }
 
     /**
@@ -112,29 +112,39 @@ class JournalDocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'abstract' => 'required',
+            'tags' => 'required',
+            'year' => 'required',
+        ]);
+
+        $old_journal = JournalDocument::find($request->journal_document_id);
+        // var_dump($old_journal);
+        $document_url = $old_journal->document_url;
+        if(!empty($request->file('document'))) {
+            Storage::delete('document/journal'.$old_journal->document_url);
+            
+            $file_name = rand().date('YmdHis');
+            $document_url = $file_name.'.'.$request->file('document')->extension();
+            $request->file('document')->storeAs('document/journal', $document_url, 'public');
+        }
+
         try {
-            $update=[
-                'journal_topics_id' => $request->journal_topics_id,
+            JournalDocument::find($old_journal->id)->update([
                 'title' => $request->title,
                 'author' => $request->author,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-            ];
-
-            if($request->file('url') !== NULL){
-                $pdf = $request->file('url');
-                $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
-                $update = [
-                    'url' => $pdf_name,
-                ];
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $pdf->move('files/journal/',$pdf_name);
-            }
-
-            JournalDocument::find($id)->update($update);
-            return redirect()->route('departements.index');
+                'tags' => $request->tags,
+                'doi' => $request->doi,
+                'original_url' => $request->original_url,
+                'document_url' => $document_url
+            ]);
+            return redirect('journalDocument/index/'.$old_journal->id);
 
         } catch (\Throwable $th) {
             return $th;

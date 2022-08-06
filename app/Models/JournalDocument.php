@@ -18,8 +18,7 @@ class JournalDocument extends Model
         'tags',
         'doi',
         'original_url',
-        'document_url'
-        'url',
+        'document_url',
     ];
 
     public function user(){

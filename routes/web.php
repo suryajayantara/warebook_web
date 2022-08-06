@@ -60,8 +60,13 @@ Route::resource('thesisDocument',ThesisDocumentController::class);
 
 //Journal Route 
 Route::get('journalTopic/index/{id}', [JournalTopicController::class, 'index']);
+Route::get('journalTopic/edit/{id}', [JournalTopicController::class , 'edit']);
+Route::post('journalTopic/update', [JournalTopicController::class, 'update']);
+
 Route::get('journalDocument/create/{id}', [JournalDocumentController::class , 'create']);
 Route::get('journalDocument/index/{id}', [JournalDocumentController::class , 'index']);
+Route::post('journalDocument/update', [JournalDocumentController::class , 'update']);
+
 Route::resource('journalDocument',JournalDocumentController::class);
 Route::resource('journalTopic',JournalTopicController::class);
 

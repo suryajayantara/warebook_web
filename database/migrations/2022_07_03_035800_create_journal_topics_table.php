@@ -19,7 +19,6 @@ class CreateJournalTopicsTable extends Migration
             $table->string('subject');
             $table->string('title');
             $table->text('description');
-            $table->string('thumbnail_url');
             $table->timestamps();
         });
     }

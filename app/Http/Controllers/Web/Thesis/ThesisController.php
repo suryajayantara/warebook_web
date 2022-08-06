@@ -62,21 +62,16 @@ class ThesisController extends Controller
         }
         
         try {
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
             Thesis::create([
                 'users_id' => Auth::user()->id,
                 'thesis_type' => $request->thesis_type,
-                'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
+                'thumbnail_url' => $thumnail_url,
                 'title' => $request->title,
                 'created_year' => $request->created_year,
                 'tags' => $request->tags,
                 'abstract' => $request->abstract,
                 'created_year' => $request->created_year,
             ]);
-            
-            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
-            $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
             
             return redirect()->route('repository.index');
 
@@ -120,7 +115,7 @@ class ThesisController extends Controller
     {
         try {
             $data=Thesis::find($id);
-            $update = [
+            $update = ([
                 'users_id' => $request->users_id,
                 'thesis_type' => $request->thesis_type,
                 'thumbnail_url' => $request->thumbnail_url,

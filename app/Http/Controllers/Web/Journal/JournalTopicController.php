@@ -49,23 +49,12 @@ class JournalTopicController extends Controller
             'description' => 'required',
         ]);
 
-        $thumbnail_url = 'background.png'; 
-        if($request->hasFile('thumbnail_url')) {
-            $file_name = rand().date('YmdHis');
-            $thumbnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
-            $request->file('thumbnail_url')->storeAs('img/thumbnail', $thumbnail_url, 'public');
-        }
-
         try {
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
             JournalTopic::create([
                 'users_id' => Auth::user()->id,
                 'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-                'thumbnail_url' => $thumbnail_url,
             ]);
             return redirect()->route('repository.index');
 
@@ -93,9 +82,8 @@ class JournalTopicController extends Controller
      */
     public function edit($id)
     {
-        $journalTopic = JournalTopic::find($id);
-        $users = User::all();
-        return view('admin.departement.add')->with(compact('journalType','users','journalTopic'));
+        $journal = JournalTopic::find($id);
+        return view('journal.edit')->with(compact('journal'));
     }
 
     /**
@@ -105,34 +93,25 @@ class JournalTopicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $request->validate([
+            'subject' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
         try {
-            $data = JournalTopic::find($id);
-            $update = [
-                'users_id' => $request->users_id,
-                'journal_types_id' => $request->journal_types_id,
+            JournalTopic::where('id', $request->id)->update([
+                'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-            ];
+            ]); 
+            return redirect('/journalTopic/index/'. $request->id);
 
-            if($request->file('thumbnail_url') !== NULL){
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-                $update = [
-                    'thumbnail_url' => 'img/journal/thumbnail/'.$thumbnail_name,
-                ];
-
-                unlink($data['thumbnail_url']);
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $thumbnail->move('img/journal/thumbnail/',$thumbnail_name);
-            }
-
-            JournalTopic::find($id)->update($update);
-            return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            return $th;
+            var_dump($th);
         }
     }
 
@@ -145,10 +124,8 @@ class JournalTopicController extends Controller
     public function destroy($id)
     {
         try {
-            $data = JournalTopic::find($id);
-            unlink($data['thumbnail_url']);
             $data = JournalTopic::destroy($id);
-            return redirect()->route('admin.departements.index');
+            return redirect()->route('repository.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }
