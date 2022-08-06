@@ -43,30 +43,21 @@ class ThesisServiceController extends Controller
         // Data dari Token , Disimpan di variable ini
         $user = auth()->guard('api')->user();  
 
-        // Olahan file disini
-        $file = $request->file('thumbnail_img');
-        $filename = date('yymmdd')."$user->id-"."." . $file->getClientOriginalExtension();
-        $path = $file->storeAs('public/thesis/background',$filename);        
-
         try {
             
-            // $validate = Validator($request->all(),[
-            //     'users_id' => 'required',
-            //     'thesis_type' => 'required',
-            //     'thumbnail_url' => 'required',
-            //     'title' => 'required',
-            //     'abstract' => 'required',
-            //     'tags' => 'required',
-            // ]);
+            $validate = Validator($request->all(),[
+                'thesis_type' => 'required',
+                'title' => 'required',
+                'abstract' => 'required',
+                'tags' => 'required',
+            ]);
 
-            // if($validate->fails()){
-            //     return response()->json([
-            //         'validate' => $validate->errors()
-            //     ]);
-            // }
+            if($validate->fails()){
+                return response()->json([
+                    'validate' => $validate->errors()
+                ]);
+            }
 
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
 
             $data = new Thesis();
             $data->users_id = $user->id;
@@ -74,10 +65,9 @@ class ThesisServiceController extends Controller
             $data->title = $request->title;
             $data->created_year = 2021;
             $data->abstract = $request->abstract;
-            $data->thumbnail_url = "storage/thesis/background/" . $filename;
+            $data->thumbnail_url = '';
             $data->tags = $request->tags;
 
-            $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
             $data->save();
 
             return response()->json([
