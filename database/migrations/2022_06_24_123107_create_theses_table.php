@@ -20,7 +20,6 @@ class CreateThesesTable extends Migration
             $table->string('title');
             $table->text('abstract');
             $table->integer('created_year');
-            $table->string('thumbnail_url');
             $table->text('tags');
             $table->timestamps();
         });
