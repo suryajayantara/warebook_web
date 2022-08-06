@@ -24,7 +24,7 @@ class StudyServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari study atau program studi dengan mengambil salah satu idnya
     public function getOneStudy(Request $request, $id)
     {
-        $data = Study::find($id)->with('departements')->first();
+        $data = Study::where('id',$id)->with('departements')->first();
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'

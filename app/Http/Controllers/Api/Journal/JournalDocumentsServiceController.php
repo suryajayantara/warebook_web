@@ -24,7 +24,7 @@ class JournalDocumentsServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori Document dengan mengambil salah satu idnya
     public function getOneJournalDocument(Request $request, $id)
     {
-        $data = JournalDocument::find($id)->with('journalTopic')->first();
+        $data = JournalDocument::where('id',$id)->with('journalTopic')->first();
         if($data == null){
             return response()->json([
                 'message' => 'Data Not Found !'
@@ -41,12 +41,16 @@ class JournalDocumentsServiceController extends Controller
 
         try {
             $validate = Validator($request->all(),[
+                'users_id' => 'required',
                 'journal_topics_id' => 'required',
                 'title' => 'required',
                 'author' => 'required',
                 'abstract' => 'required',
-                'url' => 'required',
-                'year' => 'required'
+                'year' => 'required',
+                'tags' => 'required',
+                'doi' => 'required',
+                'original_url' => 'required',
+                'document_url' => 'required',
             ]);
 
             if($validate->fails()){
@@ -56,17 +60,21 @@ class JournalDocumentsServiceController extends Controller
             }
 
             //create request and name for file pdf
-            $pdf = $request->file('url');
+            $pdf = $request->file('document_url');
             $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
 
 
             $data = new JournalDocument();
+            $data->users_id = $request->users_id;
             $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
-            $data->url = $pdf_name;
+            $data->document_url = $pdf_name;
+            $data->original_url = $request->original_url;
             $data->year = $request->year;
+            $data->tags = $request->tags;
+            $data->doi = $request->doi;
 
             //move file pdf to file public/files/thesis
             $pdf->move('files/journal/',$pdf_name);
@@ -94,21 +102,25 @@ class JournalDocumentsServiceController extends Controller
                 ],500);
             }
 
-            if ($request->file('url')!=NULL) {
-                unlink('files/journal/'.$data['url']);
-                $pdf = $request->file('url');
+            if ($request->file('document_url')!=NULL) {
+                unlink('files/journal/'.$data['document_url']);
+                $pdf = $request->file('document_url');
                 $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
 
-                $data->url = $pdf_name;
+                $data->document_url = $pdf_name;
 
                 $pdf->move('files/journal/',$pdf_name);
             }
 
+            $data->users_id = $request->users_id;
             $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
+            $data->original_url = $request->original_url;
             $data->year = $request->year;
+            $data->tags = $request->tags;
+            $data->doi = $request->doi;
 
             $data->save();
 
@@ -125,7 +137,7 @@ class JournalDocumentsServiceController extends Controller
     public function destroy($id){
         try {
             $query = JournalDocument::find($id);
-            unlink('files/journal/'.$query['url']);
+            unlink('files/journal/'.$query['document_url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'

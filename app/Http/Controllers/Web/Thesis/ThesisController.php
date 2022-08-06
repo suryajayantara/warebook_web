@@ -21,7 +21,6 @@ class ThesisController extends Controller
     {
         $thesis = Thesis::where('id', $id)->with('User')->first();
         $document = ThesisDocument::where('thesis_id', $id)->get();
-        // var_dump($data); 
         return view('thesis.index',compact('thesis', 'document'));
     }
 
@@ -34,11 +33,10 @@ class ThesisController extends Controller
     {
         $thesis_type = $type;
         // $users = User::all();
-        // var_dump($thesis_type);
         return view('thesis.add')->with(compact('thesis_type'));
     }
     /**
-     * 
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -51,7 +49,7 @@ class ThesisController extends Controller
             'title' => 'required',
             'abstract' => 'required',
             'tags' => 'required',
-            'created_year' => 'required'
+            'created_year' => 'required',
         ]);
         
         try {
@@ -67,7 +65,7 @@ class ThesisController extends Controller
             return redirect()->route('repository.index');
 
         } catch (\Throwable $th) {
-            var_dump($th);
+            // var_dump($th);
         }
     }
 
@@ -104,7 +102,6 @@ class ThesisController extends Controller
     public function update(Request $request)
     {
         try {
-            
             Thesis::where('id', $request->thesis_id)->update([
                 'title' => $request->title,
                 'abstract' => $request->abstract,
@@ -130,6 +127,7 @@ class ThesisController extends Controller
         try {
             Thesis::destroy($id);
             return redirect()->route('repository.index');
+
         } catch (\Throwable $th) {
             echo 'gagal';
         }

@@ -54,7 +54,6 @@ class JournalDocumentController extends Controller
         $file_name = rand().date('YmdHis');
         $document_url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/journal', $document_url, 'public');
-        
         //$pdf = $request->file('url');
         //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
@@ -137,6 +136,9 @@ class JournalDocumentController extends Controller
             JournalDocument::find($old_journal->id)->update([
                 'title' => $request->title,
                 'author' => $request->author,
+                'tags' => $request->tags,
+                'doi' => $request->doi,
+                'original_url' => $request->original_url,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
                 'tags' => $request->tags,
@@ -165,6 +167,7 @@ class JournalDocumentController extends Controller
             JournalDocument::destroy($id);
 
             return redirect('journalTopic/index/'.$data->journal_topics_id);
+
         } catch (\Throwable $th) {
             echo 'gagal';
         }

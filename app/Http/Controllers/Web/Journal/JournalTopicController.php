@@ -44,6 +44,7 @@ class JournalTopicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'users_id' => 'required',
             'subject' => 'required',
             'title' => 'required',
             'description' => 'required',
@@ -56,7 +57,8 @@ class JournalTopicController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
             ]);
-            return redirect()->route('repository.index');
+
+            return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
             return $th;
@@ -108,7 +110,6 @@ class JournalTopicController extends Controller
                 'description' => $request->description,
             ]); 
             return redirect('/journalTopic/index/'. $request->id);
-
 
         } catch (\Throwable $th) {
             var_dump($th);

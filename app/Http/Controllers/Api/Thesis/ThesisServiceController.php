@@ -25,45 +25,49 @@ class ThesisServiceController extends Controller
     // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
     // Kalo ini work , biarin , gausah dikutak kutik lagi
     public function getOneThesis($id){
-        $data = Thesis::find($id)->with('documents')->first();
+        $data = Thesis::where('id',$id)->with('user')->first();
         return response()->json([
             'data' => $data
         ],200);
     }
 
     //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
-    public function create(Request $request){
+    public function create(Request $request){ 
+        // Check apakah user sudah login atau belum
+        if(!auth('api')->check()){
+            return response()->json([
+                'message' => 'Anda Belum Login',
+            ],401);
+        }
+
+        // Data dari Token , Disimpan di variable ini
+        $user = auth()->guard('api')->user();  
 
         try {
-            $validate = Validator($request->all(),[
-                'users_id' => 'required',
-                'thesis_type' => 'required',
-                'thumbnail_url' => 'required',
-                'title' => 'required',
-                'abstract' => 'required',
-                'created_year' => 'required',
-                'tags' => 'required',
-            ]);
+            
+            // $validate = Validator($request->all(),[
+            //     'users_id' => 'required',
+            //     'thesis_type' => 'required',
+            //     'thumbnail_url' => 'required',
+            //     'title' => 'required',
+            //     'abstract' => 'required',
+            //     'tags' => 'required',
+            // ]);
 
-            if($validate->fails()){
-                return response()->json([
-                    'validate' => $validate->errors()
-                ]);
-            }
-
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
+            // if($validate->fails()){
+            //     return response()->json([
+            //         'validate' => $validate->errors()
+            //     ]);
+            // }
 
             $data = new Thesis();
-            $data->users_id = $request->users_id;
-            $data->thesis_type = $request->thesis_type;
+            $data->users_id = $user->id;
+            $data->thesis_type = 'Tugas Akhir';
             $data->title = $request->title;
+            $data->created_year = 2021;
             $data->abstract = $request->abstract;
-            $data->created_year = $request->created_year;
-            $data->thumbnail_url = $thumbnail_name;
             $data->tags = $request->tags;
 
-            $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
             $data->save();
 
             return response()->json([
@@ -71,10 +75,9 @@ class ThesisServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
-        }
-
-    }
+            throw $th;
+        }}
+    
 
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){
@@ -86,16 +89,6 @@ class ThesisServiceController extends Controller
                 ],500);
             }
 
-            if($request->file('thumbnail_url') !== NULL){
-                unlink('img/thesis/thumbnail/'.$data['thumbnail_url']);
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
-                $data->thumbnail_url = $thumbnail_name;
-
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
-            }
 
             $data->users_id = $request->users_id;
             $data->thesis_type = $request->thesis_type;
@@ -119,7 +112,6 @@ class ThesisServiceController extends Controller
     public function destroy($id){
         try {
             $query = Thesis::find($id);
-            unlink('img/thesis/thumbnail/'.$query['thumbnail_url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'

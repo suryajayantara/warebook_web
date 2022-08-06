@@ -18,7 +18,9 @@ class ThesisDocumentController extends Controller
      */
     public function index()
     {
-        
+
+        $data = ThesisDocument::all();
+        return view('admin.study.index',compact('data'));
     }
 
     /**
@@ -53,8 +55,6 @@ class ThesisDocumentController extends Controller
         $file_name = rand().date('YmdHis');
         $url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/thesis', $url, 'public');
-       
-
 
         //Insert data 
         try {
@@ -66,8 +66,6 @@ class ThesisDocumentController extends Controller
 
             //redirect to thesis
             return redirect('thesis/'.$request->thesis_id);
-            
-
             //$pdf->move('files/thesis/',$pdf_name);
 
         } catch (\Throwable $th) {
