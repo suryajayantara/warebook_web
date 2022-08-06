@@ -53,21 +53,12 @@ class ThesisController extends Controller
             'tags' => 'required',
             'created_year' => 'required'
         ]);
-
-        $thumnail_url = 'background.png';
-        if ($request->hasFile('thumbnail_url')){
-            $file_name = rand().date('YmdHis');
-            $thumnail_url = $file_name.'.'.$request->file('thumbnail_url')->extension();
-            $request->file('thumbnail_url')->storeAs('img/thumbnail', $thumnail_url, 'public');
-        }
         
         try {
             Thesis::create([
                 'users_id' => Auth::user()->id,
                 'thesis_type' => $request->thesis_type,
-                'thumbnail_url' => $thumnail_url,
                 'title' => $request->title,
-                'created_year' => $request->created_year,
                 'tags' => $request->tags,
                 'abstract' => $request->abstract,
                 'created_year' => $request->created_year,
@@ -100,8 +91,7 @@ class ThesisController extends Controller
     public function edit($id)
     {
         $thesis = Thesis::find($id);
-        $users = User::all();
-        return view('admin.departement.edit')->with(compact('thesis','users'));
+        return view('thesis.edit')->with(compact('thesis'));
     }
 
     /**
@@ -111,36 +101,21 @@ class ThesisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try {
-            $data=Thesis::find($id);
-            $update = ([
-                'users_id' => $request->users_id,
-                'thesis_type' => $request->thesis_type,
-                'thumbnail_url' => $request->thumbnail_url,
+            
+            Thesis::where('id', $request->thesis_id)->update([
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'created_year' => $request->created_year
+                'created_year' => $request->created_year,
+                'tags' => $request->tags,
             ]);
 
-            if($request->file('thumbnail_url') !== NULL){
-                $thumbnail = $request->file('thumbnail_url');
-                $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-                $update = [
-                    'thumbnail_url' => 'img/thesis/thumbnail/'.$thumbnail_name,
-                ];
-
-                unlink($data['thumbnail_url']);
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $thumbnail->move('img/thesis/thumbnail/',$thumbnail_name);
-            }
-
-            Thesis::find($id)->update($update);
-            return redirect()->route('departements.index');
+            return redirect('thesis/'.$request->thesis_id);
 
         } catch (\Throwable $th) {
-            // return $th;
+            var_dump($th);
         }
     }
 
@@ -153,10 +128,8 @@ class ThesisController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Thesis::find($id);
-            unlink($data['thumbnail_url']);
-            $data = Thesis::destroy($id);
-            return redirect()->route('admin.departements.index');
+            Thesis::destroy($id);
+            return redirect()->route('repository.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

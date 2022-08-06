@@ -98,7 +98,11 @@
                         <a href="{{route('journalDocument.edit', ['journalDocument' => $item->id])}}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                     </li>
                     <li>
-                        <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Hapus</a>
+                        <form action="{{ url('/journalDocument', ['id' => $item->id]) }}" method="post">
+                            <input class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="submit" value="Delete" />
+                            @method('delete')
+                            @csrf
+                        </form>
                     </li>
                     </ul>
                 </div>

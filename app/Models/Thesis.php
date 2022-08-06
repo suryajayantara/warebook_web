@@ -12,7 +12,6 @@ class Thesis extends Model
     protected $fillable = [
         'users_id',
         'thesis_type',
-        'thumbnail_url',
         'created_year',
         'title',
         'created_year',

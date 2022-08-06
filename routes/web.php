@@ -55,8 +55,11 @@ Route::resource('repository', RepositoryController::class);
 Route::get('thesis/create/{type}', [ThesisController::class, 'create']);
 Route::get('thesis/{id}' , [ThesisController::class, 'index']);
 Route::resource('thesis',ThesisController::class);
+Route::post('thesis/update', [ThesisController::class, 'update']);
 Route::post('thesisDocument/create', [ThesisDocumentController::class, 'create']);
+Route::post('thesisDocument/update', [ThesisDocumentController::class, 'update']);
 Route::resource('thesisDocument',ThesisDocumentController::class);
+
 
 //Journal Route 
 Route::get('journalTopic/index/{id}', [JournalTopicController::class, 'index']);
