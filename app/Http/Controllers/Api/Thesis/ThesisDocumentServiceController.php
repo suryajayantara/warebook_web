@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ThesisDocumentServiceController extends Controller
 {
-    //function ini digunakan untuk mengambil dan mencari data dari repositori thesis document
+    //function ini digunakan untuk mengambil dan mencari data dari repositori thesis documents
     public function getThesisDocument(Request $request)
     {
         $search = request('search','');
