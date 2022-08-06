@@ -51,7 +51,7 @@ class ThesisController extends Controller
             'tags' => 'required',
             'created_year' => 'required',
         ]);
-
+        
         try {
             Thesis::create([
                 'users_id' => Auth::user()->id,
@@ -61,7 +61,7 @@ class ThesisController extends Controller
                 'abstract' => $request->abstract,
                 'created_year' => $request->created_year,
             ]);
-
+            
             return redirect()->route('repository.index');
 
         } catch (\Throwable $th) {
@@ -89,8 +89,7 @@ class ThesisController extends Controller
     public function edit($id)
     {
         $thesis = Thesis::find($id);
-        $users = User::all();
-        return view('admin.departement.edit')->with(compact('thesis','users'));
+        return view('thesis.edit')->with(compact('thesis'));
     }
 
     /**
@@ -100,22 +99,20 @@ class ThesisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try {
-            $update = [
-                'users_id' => $request->users_id,
-                'thesis_type' => $request->thesis_type,
+            Thesis::where('id', $request->thesis_id)->update([
                 'title' => $request->title,
                 'abstract' => $request->abstract,
-                'created_year' => $request->created_year
-            ];
+                'created_year' => $request->created_year,
+                'tags' => $request->tags,
+            ]);
 
-            Thesis::find($id)->update($update);
-            return redirect()->route('departements.index');
+            return redirect('thesis/'.$request->thesis_id);
 
         } catch (\Throwable $th) {
-            // return $th;
+            var_dump($th);
         }
     }
 
@@ -128,8 +125,9 @@ class ThesisController extends Controller
     public function destroy($id)
     {
         try {
-            Thesis::find($id)->delete();
-            return redirect()->route('admin.departements.index');
+            Thesis::destroy($id);
+            return redirect()->route('repository.index');
+
         } catch (\Throwable $th) {
             echo 'gagal';
         }

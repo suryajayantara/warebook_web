@@ -17,6 +17,14 @@
                     </div>
                 </div>
                 <div class="text-lg font-bold opacity-90">
+                    Penulis
+                </div>
+                <div class="py-2">
+                    <div class="duration-300 opacity-80 " id="abstract">
+                        {{$data->author}}
+                    </div>
+                </div>
+                <div class="text-lg font-bold opacity-90">
                       Abstrak
                 </div>
                 <div class="py-2">
@@ -24,6 +32,7 @@
                         {{$data->abstract}}
                     </div>
                 </div>
+
                 <div class="text-lg font-bold opacity-90">
                       Kata Kunci
                 </div>
@@ -48,7 +57,7 @@
             </div>
             
             <div class="grid grid-cols-1 gap-3 overflow-auto duration-300 mb-20" id="document">
-                <a href="{{asset('storage/public/document/journal/'.$data->document_url)}}" class="flex h-[5rem] w-full bg-slate-50 shadow-sm rounded-md items-center">
+                <a href="{{asset('storage/document/journal/'.$data->document_url)}}" class="flex h-[5rem] w-full bg-slate-50 shadow-sm rounded-md items-center">
                 <img class="bg-[#FF7675] p-2 h-[3.5rem] w-[3.5rem] m-2 mx-2 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
                     <div class="overflow-hidden mt-1">
                         <h1 class="text-lg font-semibold opacity-90 ml-2">Dokumen Journal</h1>

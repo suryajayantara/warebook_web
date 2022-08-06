@@ -29,7 +29,7 @@ class JournalDocument extends Model
         'tags',
         'doi',
         'original_url',
-        'document_url'
+        'document_url',
     ];
 
     //fungsi ini digunakan untuk melakukanan relasi dengan model User

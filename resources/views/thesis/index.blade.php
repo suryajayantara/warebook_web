@@ -25,24 +25,36 @@
                         </div>
                     </div>
                     <nav class="flex text-lg font-bold border-b border-gray-100">
-                        <button id="abstractButton" onclick="tabsView('abstract')" class="px-4 pb-2 border-b border-current  hover:opacity-100 duration-100">
-                          Abstrak
-                        </button>
-                        <button id="documentButton" onclick="tabsView('document')" class="px-4 pb-2 border-b  hover:opacity-100 duration-100">
-                          Dokumen
-                        </button>
+                        <div class="div flex-grow">
+                            <button id="abstractButton" onclick="tabsView('abstract')" class="px-4 pb-2 border-b border-current  hover:opacity-100 duration-100">
+                                Abstrak
+                              </button>
+                              <button id="documentButton" onclick="tabsView('document')" class="px-4 pb-2 border-b  hover:opacity-100 duration-100">
+                                Dokumen
+                              </button>
+                        </div>
                         @php
                             if ($thesis->user->id == Auth::user()->id) :
                         @endphp
-                                <div id="add" class="w-full">
-                                    <form action="/thesisDocument/create" method="post">
-                                        @csrf
-                                        <input type="hidden" name="thesis_id" value="{{$thesis->id}}">
-                                        <button type="submit"  class="float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                                            Tambah Dokumen
-                                        </button>
-                                    </form>
-                                </div>
+                                <form id='button' action="/thesisDocument/create" class="mx-1 float-right" method="post">
+                                    @csrf
+                                    <input type="hidden" name="thesis_id" value="{{$thesis->id}}">
+                                    <button type="submit"  class=" inline-block px-4 py-2 text-xs bg-blue-600 text-white font-bold leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        Tambah Dokumen
+                                    </button>
+                                </form>
+                                <form action="{{ url('/thesis', ['id' => $thesis->id]) }}" method="post">
+                                    <input class="mx-1 float-right  px-4 py-2 text-xs bg-[#FF7675] text-white font-bold  leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
+                                    @method('delete')
+                                    @csrf
+                                </form>
+
+                                <a href="{{route('thesis.edit', ['thesi' => $thesis->id])}}">
+                                    <button type="button" class="mx-1 float-right px-4 py-2 text-xs bg-[#FDCB6E] text-white font-bold  leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        Edit Repo
+                                    </button>
+                                </a>
+                                
                         @php
                             endif
                         @endphp
@@ -54,10 +66,36 @@
                         <div class="grid grid-cols-2 gap-3 h-[9rem] overflow-auto duration-300" id="document">
                             {{-- @for ($i = 0; $i < 3 $i++); --}}
                             @foreach ($document as $item)
-                                <a href="{{asset('public/storage/'.$item->url)}}" class="flex h-16 items-center w-full bg-slate-50 shadow-sm rounded-md">
-                                    <img class="bg-[#FF7675] p-3 m-2 mr-1 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
+                                <div  class="flex h-16 w-full bg-slate-50 shadow-sm rounded-md">
+                                    <a href="{{asset('/storage/document/thesis/'.$item->url)}}" class="flex flex-grow  items-center">
+                                        <img class="bg-[#FF7675] p-3 m-2 mr-1 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
                                         <h1 class="text-[18px] mx-2 font-black">{{$item->document_name}}</h1>
-                                </a>    
+                                    </a>
+                                    <button id="dropdownDefault" data-dropdown-toggle="dropdown{{$item->id}}" class="mx-8" type="button">
+                                        <svg width="5" height="22" viewBox="0 0 5 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="5" height="5" rx="2" fill="#D9D9D9"/>
+                                        <rect y="9" width="5" height="5" rx="2" fill="#D9D9D9"/>
+                                        <rect y="17" width="5" height="5" rx="2" fill="#D9D9D9"/>
+                                        </svg>
+                                    </button>
+                    
+                                    <!-- Dropdown menu -->
+                                    <div id="dropdown{{$item->id}}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+                                        <li>
+                                            <a href="{{route('thesisDocument.edit', ['thesisDocument' => $item->id])}}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                        </li>
+                                        <li>
+                                            <form action="{{ url('/thesisDocument', ['id' => $item->id]) }}" method="post">
+                                                <input class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="submit" value="Delete" />
+                                                @method('delete')
+                                                @csrf
+                                            </form>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                             @endforeach
                         </div>
                     </div>                    

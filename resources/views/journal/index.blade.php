@@ -45,8 +45,22 @@
             </div>
             <div>
                 @if (Auth::user()->hasRole('lecture'))
+                    @if (Auth::user()->id == $data->users_id)
+                
+                        <form action="{{ url('/journalTopic', ['id' => $data->id]) }}" method="post">
+                            <input class="mx-1 float-right inline-block px-6 py-2.5 bg-[#FF7675] text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
+                            @method('delete')
+                            @csrf
+                        </form>
+
+                        <a href="/journalTopic/edit/{{$data->id}}">
+                            <button type="button" class="mx-1 float-right inline-block px-6 py-2.5 bg-[#FDCB6E] text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                Edit Repo
+                            </button>
+                        </a>
+                    @endif
                 <a href="/journalDocument/create/{{$data->id}}">
-                    <button type="button" class="float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                    <button type="button" class="mx-1 float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                         Tambah Jurnal
                     </button>
                 </a>
@@ -56,17 +70,44 @@
 
         <div class="grid gap-3 overflow-auto duration-300 mb-20" id="document">
            @foreach ($document as $item)
-           <a href="/journalDocument/index/{{$item->id}}" class="flex min-h-[5rem] w-full bg-slate-50 shadow-sm rounded-md">
-            <div class="flex items-start py-4 mr-4">
-                <img class="bg-[#FF7675]  min-h-[3rem] min-w-[3rem] p-2 ml-2 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
-            </div>
-            <div class="py-2 flex flex-col justify-center w-90% ">
-                <div class="mt-1">
-                    <h1 class="text-sm font-black">{{$item->title}}</h1>
+            <div class="flex min-h-[4.5rem] w-full bg-slate-50 shadow-sm rounded-md">
+                <a href="/journalDocument/index/{{$item->id}}" class="flex-grow flex">
+                    <div class="flex items-start py-2 mr-4">
+                        <img class="bg-[#FF7675]  min-h-[3rem] min-w-[3rem] p-2 ml-2 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
+                    </div>
+                    <div class="py-2 flex flex-col justify-center w-90% ">
+                        <div class="mt-1">
+                            <h1 class="text-sm font-black">{{$item->title}}</h1>
+                        </div>
+                        <p class="text-xs">{{$item->author}}</p>
+                    </div>
+                </a>    
+            
+                <button id="dropdownDefault" data-dropdown-toggle="dropdown{{$item->id}}" class="mx-8" type="button">
+                    <svg width="5" height="22" viewBox="0 0 5 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="5" height="5" rx="2" fill="#D9D9D9"/>
+                    <rect y="9" width="5" height="5" rx="2" fill="#D9D9D9"/>
+                    <rect y="17" width="5" height="5" rx="2" fill="#D9D9D9"/>
+                    </svg>
+                </button>
+
+                <!-- Dropdown menu -->
+                <div id="dropdown{{$item->id}}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+                    <li>
+                        <a href="{{route('journalDocument.edit', ['journalDocument' => $item->id])}}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                    </li>
+                    <li>
+                        <form action="{{ url('/journalDocument', ['id' => $item->id]) }}" method="post">
+                            <input class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="submit" value="Delete" />
+                            @method('delete')
+                            @csrf
+                        </form>
+                    </li>
+                    </ul>
                 </div>
-                <p class="text-xs">{{$item->author}}</p>
+                
             </div>
-            </a>
            @endforeach
         </div>
     </div>

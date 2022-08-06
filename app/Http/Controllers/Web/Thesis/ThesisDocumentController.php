@@ -7,6 +7,7 @@ use App\Models\Thesis;
 use App\Models\ThesisDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ThesisDocumentController extends Controller
 {
@@ -41,34 +42,30 @@ class ThesisDocumentController extends Controller
      */
     public function store(Request $request)
     {
+        
+        //Validation
         $request->validate([
             'thesis_id' => 'required',
             'document_name' => 'required',
             'document' => 'required',
         ]);
 
+        //Upload Document
+
         $file_name = rand().date('YmdHis');
         $url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/thesis', $url, 'public');
 
-        //fungsi upload file by ade
-        //$pdf = $request->file('url');
-        //$pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
-
-
+        //Insert data 
         try {
             ThesisDocument::create([
                 'thesis_id' => $request->thesis_id,
                 'document_name' => $request->document_name,
                 'url' => $url,
             ]);
+
+            //redirect to thesis
             return redirect('thesis/'.$request->thesis_id);
-
-            //fungsi upload file by ade
-                //'document_name' => $pdf_name,
-                //'url' => $pdf_name,
-            //]);
-
             //$pdf->move('files/thesis/',$pdf_name);
 
         } catch (\Throwable $th) {
@@ -96,8 +93,7 @@ class ThesisDocumentController extends Controller
     public function edit($id)
     {
         $thesisDocument = ThesisDocument::find($id);
-        $thesis = Thesis::all();
-        return view('admin.departement.edit')->with(compact('thesisDocument','thesis'));
+        return view('thesis.document.edit')->with(compact('thesisDocument'));
     }
 
     /**
@@ -107,30 +103,26 @@ class ThesisDocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        // var_dump($request->thesisDocument_id);
+        $data = ThesisDocument::find($request->thesisDocument_id);
+        $url = $data->url;
+        if($request->hasFile('document')){
+            Storage::disk('public')->delete('document/thesis/'.$data->url);
+
+            $file_name = rand().date('YmdHis');
+            $url = $file_name.'.'.$request->file('document')->extension();
+            $request->file('document')->storeAs('document/thesis', $url, 'public');
+        }
+
+
         try {
-            $data = ThesisDocument::find($id);
-            $update = [
-                'thesis_id' => $request->thesis_id,
+            ThesisDocument::where('id', $request->thesisDocument_id)->update([
                 'document_name' => $request->document_name,
-                'url' => $request->url,
-            ];
-
-            if($request->file('url') !== NULL){
-                $pdf = $request->file('url');
-                $pdf_name = strtolower($request->title)."-files-thesis.".$pdf->getClientOriginalExtension();
-                $update = [
-                    'url' => $pdf_name,
-                ];
-                unlink('files/thesis/'.$data['url']);
-                //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder img/internalResearch/thumbnail
-                $pdf->move('files/thesis/',$pdf_name);
-            }
-
-            ThesisDocument::find($id)->update($update);
-
-            return redirect()->route('departements.index');
+                'url' => $url,
+            ]);
+            return redirect('thesis/'.$data->thesis_id);
 
         } catch (\Throwable $th) {
             return $th;
@@ -146,10 +138,10 @@ class ThesisDocumentController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Thesis::find($id);
-            unlink('files/thesis/'.$data['url']);
-            $data = Thesis::destroy($id);
-            return redirect()->route('admin.departements.index');
+            $data = ThesisDocument::find($id);
+            Storage::disk('public')->delete('document/thesis/'.$data->url);
+            ThesisDocument::destroy($id);
+            return redirect('thesis/'.$data->thesis_id);
         } catch (\Throwable $th) {
             echo 'gagal';
         }

@@ -51,7 +51,6 @@ class JournalTopicController extends Controller
         ]);
 
         try {
-
             JournalTopic::create([
                 'users_id' => Auth::user()->id,
                 'subject' => $request->subject,
@@ -85,9 +84,8 @@ class JournalTopicController extends Controller
      */
     public function edit($id)
     {
-        $journalTopic = JournalTopic::find($id);
-        $users = User::all();
-        return view('admin.departement.add')->with(compact('journalType','users','journalTopic'));
+        $journal = JournalTopic::find($id);
+        return view('journal.edit')->with(compact('journal'));
     }
 
     /**
@@ -97,21 +95,24 @@ class JournalTopicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $request->validate([
+            'subject' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
         try {
-            $update = [
-                'users_id' => $request->users_id,
-                'journal_types_id' => $request->journal_types_id,
+            JournalTopic::where('id', $request->id)->update([
+                'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-            ];
-
-            JournalTopic::find($id)->update($update);
-            return redirect()->route('departements.index');
+            ]); 
+            return redirect('/journalTopic/index/'. $request->id);
 
         } catch (\Throwable $th) {
-            return $th;
+            var_dump($th);
         }
     }
 
@@ -124,8 +125,8 @@ class JournalTopicController extends Controller
     public function destroy($id)
     {
         try {
-            JournalTopic::find($id)->delete();
-            return redirect()->route('admin.departements.index');
+            $data = JournalTopic::destroy($id);
+            return redirect()->route('repository.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

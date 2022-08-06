@@ -20,7 +20,7 @@
         <h1 class="mt-16 font-bold text-[#828284] text-4xl">Jurnal Jurusanmu</h1>
         <div class="mt-14 grid grid-cols-5 gap-4">
             @foreach ($thesis as $item)
-            <a href="{{'thesis/index/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
+            <a href="{{'thesis/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('img/design/background.png')}}" alt="" />
               
                 <div class="p-4 bg-white h-40">
