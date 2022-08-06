@@ -60,16 +60,12 @@ class ThesisServiceController extends Controller
             //     ]);
             // }
 
-            $thumbnail = $request->file('thumbnail_url');
-            $thumbnail_name = strtolower($request->title)."-img-thumbnail.".$thumbnail->getClientOriginalExtension();
-
             $data = new Thesis();
             $data->users_id = $user->id;
             $data->thesis_type = 'Tugas Akhir';
             $data->title = $request->title;
             $data->created_year = 2021;
             $data->abstract = $request->abstract;
-            $data->thumbnail_url = "storage/thesis/background/" . $filename;
             $data->tags = $request->tags;
 
             $data->save();
