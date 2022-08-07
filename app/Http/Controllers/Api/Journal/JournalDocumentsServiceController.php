@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Journal;
 use App\Http\Controllers\Controller;
 use App\Models\JournalDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class JournalDocumentsServiceController extends Controller
 {
@@ -59,9 +60,13 @@ class JournalDocumentsServiceController extends Controller
                 ]);
             }
 
-            //create request and name for file pdf
-            $pdf = $request->file('document_url');
-            $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+            //Upload Document
+            $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+            $pathName = 'storage/journalDocument/';
+            $document_url = $file_name.'.'.$request->file('document_url')->extension();
+            $request->file('document_url')->storeAs('journalDocument', $document_url, 'public');
+
+            $finalPath = $pathName . $document_url;
 
 
             $data = new JournalDocument();
@@ -70,15 +75,12 @@ class JournalDocumentsServiceController extends Controller
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
-            $data->document_url = $pdf_name;
+            $data->file_name = $document_url;
+            $data->document_url = $finalPath;
             $data->original_url = $request->original_url;
             $data->year = $request->year;
             $data->tags = $request->tags;
             $data->doi = $request->doi;
-
-            //move file pdf to file public/files/thesis
-            $pdf->move('files/journal/',$pdf_name);
-
 
             $data->save();
 
@@ -87,7 +89,7 @@ class JournalDocumentsServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
 
     }
@@ -102,14 +104,19 @@ class JournalDocumentsServiceController extends Controller
                 ],500);
             }
 
-            if ($request->file('document_url')!=NULL) {
-                unlink('files/journal/'.$data['document_url']);
-                $pdf = $request->file('document_url');
-                $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+            //update data apabila menginputkan file di document_url
+            if($request->hasFile('document_url')) {
+                //digunakan untuk menghapus file beradasarkan id yang diinputkan
+                Storage::disk('public')->delete('journalDocument/'.$data->file_name);
 
-                $data->document_url = $pdf_name;
+                $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+                $pathName = 'storage/journalDocument/';
+                $document_url = $file_name.'.'.$request->file('document_url')->extension();
+                $request->file('document_url')->storeAs('journalDocument', $document_url, 'public');
 
-                $pdf->move('files/journal/',$pdf_name);
+                $finalPath = $pathName . $document_url;
+
+                $data->document_url = $finalPath;
             }
 
             $data->users_id = $request->users_id;
@@ -117,6 +124,7 @@ class JournalDocumentsServiceController extends Controller
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
+            $data->file_name = $document_url;
             $data->original_url = $request->original_url;
             $data->year = $request->year;
             $data->tags = $request->tags;
@@ -137,12 +145,14 @@ class JournalDocumentsServiceController extends Controller
     public function destroy($id){
         try {
             $query = JournalDocument::find($id);
-            unlink('files/journal/'.$query['document_url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
+
+            //digunakan untuk menghapus file beradasarkan id yang diinputkan
+            Storage::disk('public')->delete('journalDocument/'.$query->file_name);
 
             $query->delete();
             if($query){

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StudentCreativityProgram;
 use App\Models\StudentCreativityProgramType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StudentCreativityProgramController extends Controller
 {
@@ -17,7 +18,7 @@ class StudentCreativityProgramController extends Controller
     public function index()
     {
         $data = StudentCreativityProgram::all();
-        return view('admin.study.index',compact('data'));
+        return view('admin.study.index', compact('data'));
     }
 
     /**
@@ -50,13 +51,13 @@ class StudentCreativityProgramController extends Controller
             'document_url' => 'required'
         ]);
 
-        //request untuk menguload dalam bentuk file
-        $document = $request->file('document_url');
+        //Upload Document
+        $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
+        $pathName = 'storage/studentCreativityProgram/';
+        $document_url = $file_name . '.' . $request->file('document_url')->extension();
+        $request->file('document_url')->storeAs('studentCreativityProgram', $document_url, 'public');
 
-        //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
-        //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
-        //getClientOriginalExtension digunakan untuk mencari format asli pada file
-        $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+        $finalPath = $pathName . $document_url;
 
         try {
             StudentCreativityProgram::create([
@@ -66,14 +67,11 @@ class StudentCreativityProgramController extends Controller
                 'abstract' => $request->abstract,
                 'year' => $request->year,
                 'supervisor' => $request->supervisor,
-                'document_url' => $request->document_url
+                'file_name' => $document_url,
+                'document_url' => $finalPath,
             ]);
 
-            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
-            $document->move('files/creativity/',$document_name);
-
             return redirect()->route('departements.index');
-
         } catch (\Throwable $th) {
             // return $th;
         }
@@ -113,7 +111,7 @@ class StudentCreativityProgramController extends Controller
     {
         try {
             $data = StudentCreativityProgram::find($id);
-            $update=[
+            $update = [
                 'creativity_type' => $request->creativity_type,
                 'aliases' => $request->aliases,
                 'title' => $request->title,
@@ -122,21 +120,27 @@ class StudentCreativityProgramController extends Controller
                 'supervisor' => $request->supervisor,
             ];
 
-            if($request->file('document_url') !== NULL){
-                $document = $request->file('document_url');
-                $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
-                $update = [
-                    'document_url' => $document_name,
-                ];
+            //update data apabila menginputkan file di document_url
+            if ($request->hasFile('document_url')) {
+                //digunakan untuk menghapus file beradasarkan id yang diinputkan
+                Storage::disk('public')->delete('studentCreativityProgram/' . $data->file_name);
 
-                unlink('files/creativity/'.$data['document_url']);
-                $document->move('files/creativity/',$document_name);
+                $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
+                $pathName = 'storage/studentCreativityProgram/';
+                $document_url = $file_name . '.' . $request->file('document_url')->extension();
+                $request->file('document_url')->storeAs('studentCreativityProgram', $document_url, 'public');
+
+                $finalPath = $pathName . $document_url;
+
+                $update = [
+                    'file_name' => $document_url,
+                    'document_url' => $finalPath,
+                ];
             }
 
             StudentCreativityProgram::find($id)->update($update);
 
             return redirect()->route('departements.index');
-
         } catch (\Throwable $th) {
             // return $th;
         }
@@ -151,8 +155,9 @@ class StudentCreativityProgramController extends Controller
     public function destroy($id)
     {
         try {
-            $data=StudentCreativityProgram::find($id);
-            unlink('files/creativity/'.$data['document_url']);
+            $data = StudentCreativityProgram::find($id);
+            //digunakan untuk menghapus file beradasarkan id yang diinputkan
+            Storage::disk('public')->delete('studentCreativityProgram/' . $data->file_name);
             $data = StudentCreativityProgram::destroy($id);
             return redirect()->route('admin.departements.index');
         } catch (\Throwable $th) {

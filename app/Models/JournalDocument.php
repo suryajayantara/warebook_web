@@ -13,9 +13,10 @@ class JournalDocument extends Model
      * author : digunakan untuk menyimpan author dari journal dengan tipe data text
      * abstract : digunakan untuk menyimpan abstract dari jounal dengan tipe data text
      * year : digunakan untuk menyimpan tahun pembuatan journal dengan tipe data string
-     * doi : digunakan untuk menyimpan tahun pembuatan Digital object identifier dengan tipe data string
+     * doi : digunakan untuk menyimpan Digital object identifier dengan tipe data string
      * tags : digunakan untuk menyimpan kata kunci journal dengan tipe data string
      * original_url : digunakan untuk menyimpan original dokument dari publisher dengan tipe data string
+     * file_name : digunakan untuk menyimpan nama data dokumen dengan tipe data string
      * document_url : digunakan untuk menyimpan dokument jurnal dengan tipe data string
      */
     use HasFactory;
@@ -29,6 +30,7 @@ class JournalDocument extends Model
         'tags',
         'doi',
         'original_url',
+        'file_name',
         'document_url',
     ];
 

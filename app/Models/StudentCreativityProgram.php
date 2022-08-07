@@ -14,6 +14,7 @@ class StudentCreativityProgram extends Model
      * title : diguankan untuk menyimpan judul dari PKM denga tipe data string
      * aliases : digunakan untuk menyimpan nama singkat dari bidang PKM dengan tipe data string
      * supervisor : digunakan untuk menyimpan nama dosen pembimbing PKM dengan tipe data string
+     * file_name : digunakan untuk menyimpan nama data dokumen dengan tipe data string
      * document_url : digunakan untuk menyimpan data dokument PKM dengan tipe data string
      */
     use HasFactory;
@@ -24,6 +25,7 @@ class StudentCreativityProgram extends Model
         'title',
         'abstract',
         'supervisor',
+        'file_name',
         'document_url'
     ];
 

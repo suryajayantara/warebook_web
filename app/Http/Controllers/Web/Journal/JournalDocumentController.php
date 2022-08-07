@@ -54,8 +54,6 @@ class JournalDocumentController extends Controller
         $file_name = rand().date('YmdHis');
         $document_url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/journal', $document_url, 'public');
-        //$pdf = $request->file('url');
-        //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
 
         try {
             JournalDocument::create([
@@ -71,10 +69,6 @@ class JournalDocumentController extends Controller
                 'document_url' => $document_url,
             ]);
             return redirect('journalTopic/index/'.$request->journal_topics_id);
-
-            //$pdf->move('files/journal/',$pdf_name);
-
-            //return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
             var_dump($th) ;
@@ -122,11 +116,10 @@ class JournalDocumentController extends Controller
         ]);
 
         $old_journal = JournalDocument::find($request->journal_document_id);
-        // var_dump($old_journal);
         $document_url = $old_journal->document_url;
         if($request->hasFile('document')) {
             Storage::disk('public')->delete('document/journal/'.$old_journal->document_url);
-            
+
             $file_name = rand().date('YmdHis');
             $document_url = $file_name.'.'.$request->file('document')->extension();
             $request->file('document')->storeAs('document/journal', $document_url, 'public');

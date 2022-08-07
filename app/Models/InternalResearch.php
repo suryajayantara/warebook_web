@@ -18,6 +18,8 @@ class InternalResearch extends Model
      * project_finish_at : digunakan untuk meyimpan waktu dan tanggal project tersebut selesai dengan tipe data datetime
      * contract_number : digunakan untuk meyimpan nomor kontrak dengan tipe data contract_number dengan tipe data string
      * team_member : digunakan untuk meyimpan team member pada internal research dengan tipe data text
+     * file_name_doc : digunakan untuk menyimpan nama data dokumen dengan tipe data string
+     * file_name_prop : digunakan untuk menyimpan nama data proposal dengan tipe data string
      * proposal_url : digunakan untuk meyimpan dokument proposal internal research dengan tipe data text
      * document_url : digunakan untuk meyimpan dokument internal research dengan tipe data text
      */
@@ -32,6 +34,8 @@ class InternalResearch extends Model
         'project_finish_at',
         'contract_number',
         'team_member',
+        'file_name_doc',
+        'file_name_prop',
         'proposal_url',
         'document_url'
     ];

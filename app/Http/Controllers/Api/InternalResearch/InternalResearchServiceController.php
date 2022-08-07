@@ -63,12 +63,17 @@ class InternalResearchServiceController extends Controller
                 ]);
             }
 
-            //upload file
-            $file_name = rand().date('YmdHis');
+            //Upload Document
+            $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+            $pathNameDoc = 'storage/internalResearch/document/';
+            $pathNameProp = 'storage/internalResearch/proposal/';
             $document_url = $file_name.'.'.$request->file('document_url')->extension();
             $proposal_url = $file_name.'.'.$request->file('proposal_url')->extension();
-            $request->file('document_url')->storeAs('document/research/document', $document_url,'public');
-            $request->file('proposal_url')->storeAs('document/research/proposal', $proposal_url,'public');
+            $request->file('document_url')->storeAs('internalResearch/document', $document_url, 'public');
+            $request->file('proposal_url')->storeAs('internalResearch/proposal', $proposal_url, 'public');
+
+            $finalPathDoc = $pathNameDoc . $document_url;
+            $finalPathProp = $pathNameProp . $proposal_url;
 
             $data = new InternalResearch();
             $data->users_id = $request->users_id;
@@ -80,8 +85,10 @@ class InternalResearchServiceController extends Controller
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
-            $data->proposal_url = $proposal_url;
-            $data->document_url = $document_url;
+            $data->file_name_doc = $document_url;
+            $data->file_name_prop = $proposal_url;
+            $data->proposal_url = $finalPathDoc;
+            $data->document_url = $finalPathProp;
 
             $data->save();
 
@@ -99,9 +106,6 @@ class InternalResearchServiceController extends Controller
         } catch (\Throwable $th) {
             // throw $th;
         }
-
-
-
     }
 
     //Fungsi ini gunanya untuk mengupdate data InternalResearch pada Repositori InternalResearch
@@ -117,26 +121,35 @@ class InternalResearchServiceController extends Controller
             //update data apabila menginputkan file di document_url
             if($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('document/research/document/'.$data->document_url);
+                Storage::disk('public')->delete('internalResearch/document/'.$data->file_name_doc);
 
-                $file_name = rand().date('YmdHis');
+                //Upload Document
+                $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+                $pathNameDoc = 'storage/internalResearch/document/';
                 $document_url = $file_name.'.'.$request->file('document_url')->extension();
-                $request->file('document_url')->storeAs('document/research/document', $document_url,'public');
+                $request->file('document_url')->storeAs('internalResearch/document', $document_url, 'public');
 
-                $data->document_url = $document_url;
+                $finalPathDoc = $pathNameDoc . $document_url;
+
+                $data->document_url = $finalPathDoc;
             }
 
-            //update data apabila menginputkan file di proposal_url
-            if($request->hasFile('proposal_url')) {
+            //update data apabila menginputkan file di document_url
+            if($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('document/research/proposal/'.$data->proposal_url);
+                Storage::disk('public')->delete('internalResearch/proposal/'.$data->file_name_prop);
 
-                $file_name = rand().date('YmdHis');
+                //Upload Document
+                $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+                $pathNameProp = 'storage/thesisDocument/proposal/';
                 $proposal_url = $file_name.'.'.$request->file('proposal_url')->extension();
-                $request->file('proposal_url')->storeAs('document/research/proposal', $proposal_url,'public');
+                $request->file('proposal_url')->storeAs('internalResearch/proposal', $proposal_url, 'public');
 
-                $data->proposal_url = $proposal_url;
+                $finalPathProp = $pathNameProp . $proposal_url;
+
+                $data->proposal_url = $finalPathProp;
             }
+
 
             $data->users_id = $request->users_id;
             $data->title = $request->title;
@@ -147,6 +160,8 @@ class InternalResearchServiceController extends Controller
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
+            $data->file_name_doc = $document_url;
+            $data->file_name_prop = $proposal_url;
 
             $data->save();
 
@@ -177,8 +192,8 @@ class InternalResearchServiceController extends Controller
             }
 
             //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('document/research/document/'.$query->document_url);
-            Storage::disk('public')->delete('document/research/proposal/'.$query->proposal_url);
+            Storage::disk('public')->delete('internalResearch/document/'.$query->file_name_doc);
+            Storage::disk('public')->delete('internalResearch/proposal/'.$query->file_name_prop);
 
             $query->delete();
             if($query){

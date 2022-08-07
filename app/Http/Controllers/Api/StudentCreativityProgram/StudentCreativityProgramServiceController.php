@@ -12,36 +12,37 @@ class StudentCreativityProgramServiceController extends Controller
     //function ini digunakan untuk mengambil dan mencari data dari repositori PKM
     public function getCreativity(Request $request)
     {
-        $search = request('search','');
-        $data = StudentCreativityProgram::query()->with('users')->when($search , function($query) use ($search){
-            $query->where('title','like','%' . $search . '%');
+        $search = request('search', '');
+        $data = StudentCreativityProgram::query()->with('users')->when($search, function ($query) use ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
         })->get();
 
         return response()->json([
             'search_keyword' => $search,
             'data' => $data
-        ],200);
+        ], 200);
     }
     //function ini digunakan untuk mengambil satu data dari repositori PKM dengan mengambil salah satu idnya
     public function getOneCreativity(Request $request, $id)
     {
-        $data = StudentCreativityProgram::where('id',$id)->with('creativityType')->first();
-        if($data == null){
+        $data = StudentCreativityProgram::where('id', $id)->with('creativityType')->first();
+        if ($data == null) {
             return response()->json([
                 'message' => 'Data Not Found !'
-            ],500);
-        }else{
+            ], 500);
+        } else {
             return response()->json([
                 'data' => $data
-            ],200);
+            ], 200);
         }
     }
 
     //Fungsi ini gunanya untuk menambah data PKM pada Repositori PKM
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         try {
-            $validate = Validator($request->all(),[
+            $validate = Validator($request->all(), [
                 'users_id' => 'required',
                 'creativity_type' => 'required',
                 'aliases' => 'required',
@@ -52,17 +53,19 @@ class StudentCreativityProgramServiceController extends Controller
                 'document_url' => 'required',
             ]);
 
-            if($validate->fails()){
+            if ($validate->fails()) {
                 return response()->json([
                     'validate' => $validate->errors()
                 ]);
             }
 
             //Upload Document
-            $file_name = rand().date('YmdHis');
-            $document_url = $file_name.'.'.$request->file('document_url')->extension();
-            $request->file('document_url')->storeAs('document/creativity', $document_url, 'public');
+            $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
+            $pathName = 'storage/studentCreativityProgram/';
+            $document_url = $file_name . '.' . $request->file('document_url')->extension();
+            $request->file('document_url')->storeAs('studentCreativityProgram', $document_url, 'public');
 
+            $finalPath = $pathName . $document_url;
 
             $data = new StudentCreativityProgram();
             $data->users_id = $request->users_id;
@@ -72,39 +75,43 @@ class StudentCreativityProgramServiceController extends Controller
             $data->abstract = $request->abstract;
             $data->year = $request->year;
             $data->supervisor = $request->supervisor;
-            $data->document_url = $document_url;
+            $data->file_name = $document_url;
+            $data->document_url = $finalPath;
             $data->save();
 
             return response()->json([
                 'data' => $data,
                 'message' => 'Succesful Adding Data'
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             // throw $th;
         }
-
     }
 
     //Fungsi ini gunanya untuk mengupdate data PKM pada Repositori PKM
-    public function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
         try {
             $data = StudentCreativityProgram::find($id);
-            if($data == null){
+            if ($data == null) {
                 return response()->json([
                     'message' => 'Data Not Found !'
-                ],500);
+                ], 500);
             }
 
             //update data apabila menginputkan file di document_url
-            if($request->hasFile('document_url')) {
+            if ($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('document/creativity/'.$data->document_url);
+                Storage::disk('public')->delete('studentCreativityProgram/' . $data->file_name);
 
-                $file_name = rand().date('YmdHis');
-                $document_url = $file_name.'.'.$request->file('document_url')->extension();
-                $request->file('document_url')->storeAs('document/creativity', $document_url, 'public');
+                $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
+                $pathName = 'storage/studentCreativityProgram/';
+                $document_url = $file_name . '.' . $request->file('document_url')->extension();
+                $request->file('document_url')->storeAs('studentCreativityProgram', $document_url, 'public');
 
-                $data->document_url = $document_url;
+                $finalPath = $pathName . $document_url;
+
+                $data->document_url = $finalPath;
             }
 
             $data->users_id = $request->users_id;
@@ -114,36 +121,39 @@ class StudentCreativityProgramServiceController extends Controller
             $data->abstract = $request->abstract;
             $data->year = $request->year;
             $data->supervisor = $request->supervisor;
+            $data->file_name = $document_url;
 
             $data->save();
 
             return response()->json([
                 'data' => $data,
                 'message' => 'Succesful Update Data'
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             // throw $th;
         }
     }
 
     //Fungsi ini gunanya untuk menghapus salah satu data pada repositori PKM
-    public function destroy($id){
+    public function destroy($id)
+    {
         try {
             $query = StudentCreativityProgram::find($id);
-            //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('document/creativity/'.$query->document_url);
-            if($query == null){
+            if ($query == null) {
                 return response()->json([
                     'message' => 'Data Not Found !'
-                ],500);
+                ], 500);
             }
 
+            //digunakan untuk menghapus file beradasarkan id yang diinputkan
+            Storage::disk('public')->delete('studentCreativityProgram/' . $query->file_name);
+
             $query->delete();
-            if($query){
+            if ($query) {
                 return response()->json([
                     'message' => 'Successful Deleting Data !'
-                ],200);
-            }else{
+                ], 200);
+            } else {
                 return response()->json([
                     'message' => 'Data Not Deleted'
                 ]);
@@ -151,7 +161,6 @@ class StudentCreativityProgramServiceController extends Controller
         } catch (\Throwable $th) {
             // throw $th;
         }
-
     }
 
     // Start new Function HERE

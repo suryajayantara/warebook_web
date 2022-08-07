@@ -17,7 +17,8 @@ class CreateThesisDocumentsTable extends Migration
             $table->id();
             $table->foreignId('thesis_id')->constrained('theses')->onUpdate('cascade')->onDelete('cascade');
             $table->string('document_name');
-            $table->string('url');
+            $table->string('file_name');
+            $table->string('document_url');
             $table->timestamps();
         });
     }

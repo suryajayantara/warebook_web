@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Thesis;
 use App\Http\Controllers\Controller;
 use App\Models\ThesisDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ThesisDocumentServiceController extends Controller
 {
@@ -43,7 +44,7 @@ class ThesisDocumentServiceController extends Controller
             $validate = Validator($request->all(),[
                 'thesis_id' => 'required',
                 'document_name' => 'required',
-                'url' => 'required'
+                'document_url' => 'required'
             ]);
 
             if($validate->fails()){
@@ -52,18 +53,19 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
 
-            //create request and name for file pdf
-            $pdf = $request->file('url');
-            $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+            //Upload Document
+            $file_name = date('Ymd').preg_replace('/\s+/','_',$request->document_name);
+            $pathName = 'storage/thesisDocument/';
+            $document_url = $file_name.'.'.$request->file('document_url')->extension();
+            $request->file('document_url')->storeAs('thesisDocument', $document_url, 'public');
+
+            $finalPath = $pathName . $document_url;
 
             $data = new ThesisDocument();
             $data->thesis_id = $request->thesis_id;
             $data->document_name = $request->document_name;
-            $data->url = $pdf_name;
-
-            //move file pdf to file public/files/thesis
-            $pdf->move('files/thesis/',$pdf_name);
-
+            $data->file_name = $document_url;
+            $data->document_url = $finalPath;
             $data->save();
 
             return response()->json([
@@ -71,7 +73,7 @@ class ThesisDocumentServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
         }
 
     }
@@ -86,18 +88,24 @@ class ThesisDocumentServiceController extends Controller
                 ],500);
             }
 
-            if ($request->file('url')!=NULL) {
-                unlink('files/thesis/'.$data['url']);
-                $pdf = $request->file('url');
-                $pdf_name = strtolower($request->document_name)."-file-thesis.".$pdf->getClientOriginalExtension();
+            //update data apabila menginputkan file di document_url
+            if($request->hasFile('document_url')) {
+                //digunakan untuk menghapus file beradasarkan id yang diinputkan
+                Storage::disk('public')->delete('thesisDocument/'.$data->file_name);
 
-                $data->url = $pdf_name;
+                $file_name = date('Ymd').preg_replace('/\s+/','_',$request->document_name);
+                $pathName = 'storage/thesisDocument/';
+                $document_url = $file_name.'.'.$request->file('document_url')->extension();
+                $request->file('document_url')->storeAs('thesisDocument', $document_url, 'public');
 
-                $pdf->move('files/thesis/',$pdf_name);
+                $finalPath = $pathName . $document_url;
+
+                $data->document_url = $finalPath;
             }
 
             $data->thesis_id = $request->thesis_id;
             $data->document_name = $request->document_name;
+            $data->file_name = $document_url;
 
             $data->save();
 
@@ -106,7 +114,7 @@ class ThesisDocumentServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -114,13 +122,15 @@ class ThesisDocumentServiceController extends Controller
     public function destroy($id){
         try {
             $query = ThesisDocument::find($id);
-            unlink('files/thesis/'.$query['url']);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
-            unlink('files/thesis/'.$query['url']);
+
+            //digunakan untuk menghapus file beradasarkan id yang diinputkan
+            Storage::disk('public')->delete('thesisDocument/'.$query->file_name);
+
             $query->delete();
             if($query){
                 return response()->json([
