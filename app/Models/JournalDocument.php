@@ -30,7 +30,6 @@ class JournalDocument extends Model
         'tags',
         'doi',
         'original_url',
-        'file_name',
         'document_url',
     ];
 

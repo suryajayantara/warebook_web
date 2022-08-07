@@ -5,12 +5,7 @@
 
     <div class="container mx-auto w-[80%] ">
         <div class="flex mt-20 items-center">
-            <div class="rounded-md w-[25%] h-[22rem]">
-                <div class=" w-full h-[22rem] bg-blue-300 overflow-hidden rounded-md">
-                    <img class="-z-20" src="{{asset('img/design/panji.svg')}}" alt="1">
-                </div>
-            </div>
-            <div class="flex w-[75%] pl-14">
+            <div class="flex w-[75%]">
                 <div class="flex flex-col">
                     <div class="">
                         <h1 class="text-4xl font-extrabold" >{{$data->title}}</h1>
@@ -30,7 +25,7 @@
                         </div>
                     </nav>
                     <div class="py-2">
-                        <div class="h-36 overflow-hidden duration-300 opacity-80" id="abstract">
+                        <div class="duration-300 opacity-80" id="abstract">
                             {{$data->description}}
                         </div>
                         

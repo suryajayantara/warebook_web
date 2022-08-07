@@ -17,7 +17,6 @@ class ThesisDocument extends Model
     protected $fillable = [
         'thesis_id',
         'document_name',
-        'file_name',
         'document_url'
     ];
 

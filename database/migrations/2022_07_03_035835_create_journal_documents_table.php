@@ -24,7 +24,6 @@ class CreateJournalDocumentsTable extends Migration
             $table->string('tags');
             $table->string('doi')->nullable();
             $table->string('original_url')->nullable();
-            $table->string('file_name');
             $table->string('document_url');
             $table->timestamps();
         });

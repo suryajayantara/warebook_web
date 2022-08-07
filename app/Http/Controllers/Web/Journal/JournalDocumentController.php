@@ -51,9 +51,11 @@ class JournalDocumentController extends Controller
             'document' => 'required',
         ]);
 
-        $file_name = rand().date('YmdHis');
-        $document_url = $file_name.'.'.$request->file('document')->extension();
-        $request->file('document')->storeAs('document/journal', $document_url, 'public');
+        
+        $title = str_replace(' ', '_', $request->title);
+        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+        $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
+        $document_url = 'storage/journalDocument/'. $document_url;
 
         try {
             JournalDocument::create([
@@ -118,11 +120,13 @@ class JournalDocumentController extends Controller
         $old_journal = JournalDocument::find($request->journal_document_id);
         $document_url = $old_journal->document_url;
         if($request->hasFile('document')) {
-            Storage::disk('public')->delete('document/journal/'.$old_journal->document_url);
+            Storage::disk('public')->delete(str_replace('storage/', '', $old_journal->document_url));            
 
-            $file_name = rand().date('YmdHis');
-            $document_url = $file_name.'.'.$request->file('document')->extension();
-            $request->file('document')->storeAs('document/journal', $document_url, 'public');
+
+            $title = str_replace(' ', '_', $request->title);
+        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+        $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
+        $document_url = 'storage/journalDocument/'. $document_url;
         }
 
         try {
@@ -156,7 +160,7 @@ class JournalDocumentController extends Controller
     {
         try {
             $data = JournalDocument::find($id);
-            Storage::disk('public')->delete('document/journal/'.$data->document_url);
+            Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));            
             JournalDocument::destroy($id);
 
             return redirect('journalTopic/index/'.$data->journal_topics_id);

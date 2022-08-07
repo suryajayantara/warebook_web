@@ -9,6 +9,7 @@ use App\Models\JournalType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class JournalTopicController extends Controller
 {
@@ -44,7 +45,6 @@ class JournalTopicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'users_id' => 'required',
             'subject' => 'required',
             'title' => 'required',
             'description' => 'required',
@@ -58,7 +58,7 @@ class JournalTopicController extends Controller
                 'description' => $request->description,
             ]);
 
-            return redirect()->route('departements.index');
+            return redirect('repository');
 
         } catch (\Throwable $th) {
             return $th;
@@ -125,7 +125,12 @@ class JournalTopicController extends Controller
     public function destroy($id)
     {
         try {
-            $data = JournalTopic::destroy($id);
+            $data = JournalDocument::where('journal_topics_id', $id)->get();
+            foreach ($data as $item){
+                Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));            
+            }
+
+            JournalTopic::destroy($id);
             return redirect()->route('repository.index');
         } catch (\Throwable $th) {
             echo 'gagal';
