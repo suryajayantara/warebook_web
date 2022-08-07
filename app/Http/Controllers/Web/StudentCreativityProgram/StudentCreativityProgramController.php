@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Web\StudentCreativityProgram;
 use App\Http\Controllers\Controller;
 use App\Models\StudentCreativityProgram;
 use App\Models\StudentCreativityProgramType;
+use CreateStudentCreativityProgramsTable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class StudentCreativityProgramController extends Controller
@@ -18,7 +20,7 @@ class StudentCreativityProgramController extends Controller
     public function index()
     {
         $data = StudentCreativityProgram::all();
-        return view('admin.study.index', compact('data'));
+        return view('admin.study.index',compact('data'));
     }
 
     /**
@@ -28,7 +30,7 @@ class StudentCreativityProgramController extends Controller
      */
     public function create()
     {
-        return view('admin.departement.add');
+        return view('creativity.add');
     }
 
     /**
@@ -40,40 +42,39 @@ class StudentCreativityProgramController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'users_id' => 'required',
             'creativity_type' => 'required',
             'aliases' => 'required',
             'title' => 'required',
             'abstract' => 'required',
-            'year' => 'required',
-            'thumbnail_url' => 'required',
+            'year' => 'required',   
             'supervisor' => 'required',
             'document_url' => 'required'
         ]);
 
-        //Upload Document
-        $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
-        $pathName = 'storage/studentCreativityProgram/';
-        $document_url = $file_name . '.' . $request->file('document_url')->extension();
-        $request->file('document_url')->storeAs('studentCreativityProgram', $document_url, 'public');
 
-        $finalPath = $pathName . $document_url;
+        //Upload file document
+        $title = str_replace(' ', '_', $request->title);
+        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
+        $request->file('document_url')->storeAs('creativityDocument/', $document_url, 'public');
+        $document_url = 'storage/creativityDocument/'. $document_url;
 
+        var_dump($request->year);
         try {
             StudentCreativityProgram::create([
+                'users_id' => Auth::user()->id,
                 'creativity_type' => $request->creativity_type,
                 'aliases' => $request->aliases,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
                 'supervisor' => $request->supervisor,
-                'file_name' => $document_url,
-                'document_url' => $finalPath,
+                'document_url' => $document_url
             ]);
 
-            return redirect()->route('departements.index');
+            return redirect('repository');
+
         } catch (\Throwable $th) {
-            // return $th;
+            var_dump($th);
         }
     }
 
@@ -85,7 +86,8 @@ class StudentCreativityProgramController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = StudentCreativityProgram::where('id', $id)->with('users')->first();
+        return view('creativity.index', compact('data'));
     }
 
     /**
@@ -97,7 +99,7 @@ class StudentCreativityProgramController extends Controller
     public function edit($id)
     {
         $creativity = StudentCreativityProgram::find($id);
-        return view('admin.departement.edit')->with(compact('creativity'));
+        return view('creativity.edit')->with(compact('creativity'));
     }
 
     /**
@@ -109,40 +111,43 @@ class StudentCreativityProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'creativity_type' => 'required',
+            'aliases' => 'required',
+            'title' => 'required',
+            'abstract' => 'required',
+            'year' => 'required',   
+            'supervisor' => 'required',
+        ]);
+
+        $data=StudentCreativityProgram::find($id);
+
+        $document_url = $data->document_url;
+
+        if($request->hasFile('document_url')){
+            Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
+            
+            $title = str_replace(' ', '_', $request->title);
+            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
+            $request->file('document_url')->storeAs('creativityDocument/', $document_url, 'public');
+            $document_url = 'storage/creativityDocument/'. $document_url;
+        }
+
         try {
-            $data = StudentCreativityProgram::find($id);
-            $update = [
+            StudentCreativityProgram::where('id', $id)->update([
                 'creativity_type' => $request->creativity_type,
                 'aliases' => $request->aliases,
                 'title' => $request->title,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
                 'supervisor' => $request->supervisor,
-            ];
+                'document_url' => $document_url
+            ]);
 
-            //update data apabila menginputkan file di document_url
-            if ($request->hasFile('document_url')) {
-                //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('studentCreativityProgram/' . $data->file_name);
+            return redirect('creativity/'.$id);
 
-                $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
-                $pathName = 'storage/studentCreativityProgram/';
-                $document_url = $file_name . '.' . $request->file('document_url')->extension();
-                $request->file('document_url')->storeAs('studentCreativityProgram', $document_url, 'public');
-
-                $finalPath = $pathName . $document_url;
-
-                $update = [
-                    'file_name' => $document_url,
-                    'document_url' => $finalPath,
-                ];
-            }
-
-            StudentCreativityProgram::find($id)->update($update);
-
-            return redirect()->route('departements.index');
         } catch (\Throwable $th) {
-            // return $th;
+            var_dump( $th);
         }
     }
 
@@ -155,11 +160,10 @@ class StudentCreativityProgramController extends Controller
     public function destroy($id)
     {
         try {
-            $data = StudentCreativityProgram::find($id);
-            //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('studentCreativityProgram/' . $data->file_name);
-            $data = StudentCreativityProgram::destroy($id);
-            return redirect()->route('admin.departements.index');
+            $data=StudentCreativityProgram::find($id);
+            Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
+            StudentCreativityProgram::destroy($id);
+            return redirect('repository');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

@@ -22,7 +22,6 @@ class CreateStudentCreativityProgramsTable extends Migration
             $table->text('abstract');
             $table->string('year');
             $table->string('supervisor');
-            $table->string('file_name');
             $table->text('document_url');
             $table->timestamps();
         });

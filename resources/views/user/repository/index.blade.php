@@ -25,7 +25,16 @@
                 </div>
               </a>
             @endforeach
-            
+            @foreach ($creativity as $item)
+            <a href="{{'creativity/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
+                <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
+                <div class="p-4 bg-white h-40">
+                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{'Program Kreativitas Mahasiswa'}}</p>
+                  <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
+
+                </div>
+              </a>
+            @endforeach
         @php
             else :
         @endphp
