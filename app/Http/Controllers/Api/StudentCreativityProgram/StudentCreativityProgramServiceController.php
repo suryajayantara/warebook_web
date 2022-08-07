@@ -84,7 +84,7 @@ class StudentCreativityProgramServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ], 200);
         } catch (\Throwable $th) {
-            // throw $th;
+            //throw $th;
         }
     }
 
