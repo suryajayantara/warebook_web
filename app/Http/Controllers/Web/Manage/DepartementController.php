@@ -15,8 +15,7 @@ class DepartementController extends Controller
      */
     public function index()
     {
-        $data = Departement::all();
-        var_dump($data);
+        $data = Departement::paginate(6);
         return view('admin.departement.index', compact('data'));
     }
 
@@ -61,11 +60,13 @@ class DepartementController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
+     * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $data = Departement::where('departement_name', 'LIKE', '%'.$request->search.'%')->orWhere('desc', 'LIKE', '%'.$request->search.'%')->paginate(6);
+        return view('admin.departement.index', compact('data'));
     }
 
     /**
@@ -115,8 +116,8 @@ class DepartementController extends Controller
     public function destroy($id)
     {
         try {
-            Departement::find($id)->delete();
-            return redirect()->route('admin.departements.index');
+            Departement::destroy($id);
+            return redirect('departements');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

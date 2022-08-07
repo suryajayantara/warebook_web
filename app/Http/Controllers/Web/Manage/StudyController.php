@@ -16,7 +16,7 @@ class StudyController extends Controller
      */
     public function index()
     {
-        $data = Study::all();
+        $data = Study::with('departements')->paginate(5);
         return view('admin.study.index',compact('data'));
     }
 
@@ -66,9 +66,10 @@ class StudyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $data = Study::where('studies_name', 'LIKE', '%'.$request->search.'%')->orWhere('desc', 'LIKE', '%'.$request->search.'%')->paginate(5);
+        return view('admin.study.index', compact('data'));
     }
 
     /**
@@ -123,10 +124,10 @@ class StudyController extends Controller
     public function destroy($id)
     {
         try {
-            Study::find($id)->delete();
-            return redirect()->route('studies');
+            Study::destroy($id);
+            return redirect('studies');
         } catch (\Throwable $th) {
-            echo 'gagal';
+            var_dump($th);
         }
     }
 }

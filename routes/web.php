@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RepositoryController;
+use App\Http\Controllers\Web\Admin\DashboardController;
 use App\Http\Controllers\Web\InternalResearch\InternalResearchController;
 use App\Http\Controllers\Web\Journal\JournalDocumentController;
 use App\Http\Controllers\Web\Journal\JournalTopicController;
@@ -71,3 +72,5 @@ Route::resource('journalTopic', JournalTopicController::class);
 
 Route::resource('creativity', StudentCreativityProgramController::class);
 Route::resource('internalResearch', InternalResearchController::class);
+
+Route::resource('dashboard', DashboardController::class);
