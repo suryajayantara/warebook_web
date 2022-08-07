@@ -12,7 +12,7 @@ class JournalDocumentsServiceController extends Controller
     public function getJournalDocument(Request $request)
     {
         $search = request('search','');
-        $data = JournalDocument::query()->when($search , function($query) use ($search){
+        $data = JournalDocument::query()->with('user')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 

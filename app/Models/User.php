@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     // fungsi ini digunakan untuk melakukan relasi dengan model UserDetail
     public function details(){
-        return $this->hasOne(UserDetail::class,'users_id','id');
+        return $this->hasOne(UserDetail::class);
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic

@@ -11,7 +11,7 @@ class ThesisServiceController extends Controller
     /* Function ini digunakan untuk mengambil data dari database */
     public function getThesis(Request $request){
         $search = request('search','');
-        $data = Thesis::query()->when($search , function($query) use ($search){
+        $data = Thesis::query()->with('user')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -32,7 +32,7 @@ class ThesisServiceController extends Controller
     }
 
     //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir
-    public function create(Request $request){ 
+    public function create(Request $request){
         // Check apakah user sudah login atau belum
         if(!auth('api')->check()){
             return response()->json([
@@ -41,10 +41,10 @@ class ThesisServiceController extends Controller
         }
 
         // Data dari Token , Disimpan di variable ini
-        $user = auth()->guard('api')->user();  
+        $user = auth()->guard('api')->user();
 
         try {
-            
+
             // $validate = Validator($request->all(),[
             //     'users_id' => 'required',
             //     'thesis_type' => 'required',
@@ -77,7 +77,7 @@ class ThesisServiceController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }}
-    
+
 
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){

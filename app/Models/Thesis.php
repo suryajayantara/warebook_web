@@ -23,7 +23,6 @@ class Thesis extends Model
         'thesis_type',
         'created_year',
         'title',
-        'created_year',
         'abstract',
         'tags'
     ];

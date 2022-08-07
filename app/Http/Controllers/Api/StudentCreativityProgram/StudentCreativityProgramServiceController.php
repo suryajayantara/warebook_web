@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\StudentCreativityProgram;
 use App\Http\Controllers\Controller;
 use App\Models\StudentCreativityProgram;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StudentCreativityProgramServiceController extends Controller
 {
@@ -12,7 +13,7 @@ class StudentCreativityProgramServiceController extends Controller
     public function getCreativity(Request $request)
     {
         $search = request('search','');
-        $data = StudentCreativityProgram::query()->when($search , function($query) use ($search){
+        $data = StudentCreativityProgram::query()->with('users')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -57,13 +58,10 @@ class StudentCreativityProgramServiceController extends Controller
                 ]);
             }
 
-            //request untuk menguload dalam bentuk file
-            $document = $request->file('document_url');
-
-            //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
-            //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
-            //getClientOriginalExtension digunakan untuk mencari format asli pada file
-            $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
+            //Upload Document
+            $file_name = rand().date('YmdHis');
+            $document_url = $file_name.'.'.$request->file('document_url')->extension();
+            $request->file('document_url')->storeAs('document/creativity', $document_url, 'public');
 
 
             $data = new StudentCreativityProgram();
@@ -74,10 +72,7 @@ class StudentCreativityProgramServiceController extends Controller
             $data->abstract = $request->abstract;
             $data->year = $request->year;
             $data->supervisor = $request->supervisor;
-            $data->document_url = $document_name;
-
-            $document->move('files/creativity/',$document_name);
-
+            $data->document_url = $document_url;
             $data->save();
 
             return response()->json([
@@ -85,7 +80,7 @@ class StudentCreativityProgramServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            throw $th;
+            //throw $th;
         }
 
     }
@@ -127,7 +122,7 @@ class StudentCreativityProgramServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
         }
     }
 
@@ -135,7 +130,8 @@ class StudentCreativityProgramServiceController extends Controller
     public function destroy($id){
         try {
             $query = StudentCreativityProgram::find($id);
-            unlink('files/creativity/'.$query['document_url']);
+            //digunakan untuk menghapus file beradasarkan id yang diinputkan
+            Storage::disk('public')->delete('document/creativity/'.$query->document_url);
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
