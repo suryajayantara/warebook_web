@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\InternalResearch;
 use App\Http\Controllers\Controller;
 use App\Models\InternalResearch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InternalResearchServiceController extends Controller
 {
@@ -12,7 +13,7 @@ class InternalResearchServiceController extends Controller
     public function getResearch(Request $request)
     {
         $search = request('search','');
-        $data = InternalResearch::query()->when($search , function($query) use ($search){
+        $data = InternalResearch::query()->with('users')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -62,16 +63,12 @@ class InternalResearchServiceController extends Controller
                 ]);
             }
 
-            //request untuk menguload dalam bentuk file
-            $proposal = $request->file('proposal_url');
-            $document = $request->file('document_url');
-
-            //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
-            //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
-            //getClientOriginalExtension digunakan untuk mencari format asli pada file
-            $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
-            $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
-
+            //upload file
+            $file_name = rand().date('YmdHis');
+            $document_url = $file_name.'.'.$request->file('document_url')->extension();
+            $proposal_url = $file_name.'.'.$request->file('proposal_url')->extension();
+            $request->file('document_url')->storeAs('document/research/document', $document_url,'public');
+            $request->file('proposal_url')->storeAs('document/research/proposal', $proposal_url,'public');
 
             $data = new InternalResearch();
             $data->users_id = $request->users_id;
@@ -83,12 +80,8 @@ class InternalResearchServiceController extends Controller
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
-            $data->proposal_url = $proposal_name;
-            $data->document_url = $document_name;
-
-            //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
-            $proposal->move('files/internalResearch/',$proposal_name);
-            $document->move('files/internalResearch/',$document_name);
+            $data->proposal_url = $proposal_url;
+            $data->document_url = $document_url;
 
             $data->save();
 
@@ -121,30 +114,28 @@ class InternalResearchServiceController extends Controller
                 ],500);
             }
 
-            if($request->file('proposal_url') !== NULL){
+            //update data apabila menginputkan file di document_url
+            if($request->hasFile('document_url')) {
+                //digunakan untuk menghapus file beradasarkan id yang diinputkan
+                Storage::disk('public')->delete('document/research/document/'.$data->document_url);
 
-                //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
-                unlink('files/internalResearch/'.$data['proposal_url']);
+                $file_name = rand().date('YmdHis');
+                $document_url = $file_name.'.'.$request->file('document_url')->extension();
+                $request->file('document_url')->storeAs('document/research/document', $document_url,'public');
 
-                $proposal = $request->file('proposal_url');
-                $proposal_name = strtolower($request->title)."-file-proposal.".$proposal->getClientOriginalExtension();
-
-                $data->proposal_url = $proposal_name;
-
-                $proposal->move('files/internalResearch/',$proposal_name);
+                $data->document_url = $document_url;
             }
 
-            if($request->file('document_url') !== NULL){
+            //update data apabila menginputkan file di proposal_url
+            if($request->hasFile('proposal_url')) {
+                //digunakan untuk menghapus file beradasarkan id yang diinputkan
+                Storage::disk('public')->delete('document/research/proposal/'.$data->proposal_url);
 
-                //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
-                unlink('files/internalResearch/'.$data['document_url']);
+                $file_name = rand().date('YmdHis');
+                $proposal_url = $file_name.'.'.$request->file('proposal_url')->extension();
+                $request->file('proposal_url')->storeAs('document/research/proposal', $proposal_url,'public');
 
-                $document = $request->file('document_url');
-                $document_name = strtolower($request->title)."-file-document.".$document->getClientOriginalExtension();
-
-                $data->document_url = $document_name;
-
-                $document->move('files/internalResearch/',$document_name);
+                $data->proposal_url = $proposal_url;
             }
 
             $data->users_id = $request->users_id;
@@ -179,15 +170,15 @@ class InternalResearchServiceController extends Controller
         try {
             $query = InternalResearch::find($id);
 
-            //unlink digunakan untuk mengahpus file local pada folder yang sudah ditentukan
-            unlink('files/internalResearch/'.$query['proposal_url']);
-            unlink('files/internalResearch/'.$query['document_url']);
-
             if($query == null){
                 return response()->json([
                     'message' => 'Data Not Found !'
                 ],500);
             }
+
+            //digunakan untuk menghapus file beradasarkan id yang diinputkan
+            Storage::disk('public')->delete('document/research/document/'.$query->document_url);
+            Storage::disk('public')->delete('document/research/proposal/'.$query->proposal_url);
 
             $query->delete();
             if($query){
