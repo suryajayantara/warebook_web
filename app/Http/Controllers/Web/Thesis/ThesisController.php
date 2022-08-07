@@ -8,6 +8,7 @@ use App\Models\ThesisDocument;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Console\Input\Input;
 
 class ThesisController extends Controller
@@ -125,6 +126,10 @@ class ThesisController extends Controller
     public function destroy($id)
     {
         try {
+            $data = ThesisDocument::where('thesis_id', $id)->get();
+            foreach ($data as $item){
+                Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));            
+            }
             Thesis::destroy($id);
             return redirect()->route('repository.index');
 
