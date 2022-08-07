@@ -23,6 +23,7 @@ class StudentCreativityProgram extends Model
         'aliases',
         'title',
         'abstract',
+        'year',
         'supervisor',
         'document_url'
     ];

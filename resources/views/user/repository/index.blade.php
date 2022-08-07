@@ -19,11 +19,22 @@
             <a href="{{'thesis/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
                 <div class="p-4 bg-white h-40">
-                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ $item->thesis_type }}</p>
-                  <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
+                    <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ $item->thesis_type }}</p>
+                    <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
 
                 </div>
-              </a>
+            </a>
+            @endforeach
+
+            @foreach ($creativity as $item)
+            <a href="{{'creativity/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
+                <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
+                <div class="p-4 bg-white h-40">
+                    <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Proposal Kretivitas Mahasiswa'}}</p>
+                    <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
+
+                </div>
+            </a>
             @endforeach
             
         @php
@@ -37,14 +48,14 @@
                   <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
 
                 </div>
-              </a>
+            </a>
             @endforeach
 
             @foreach ($internalresearch as $item)
-            <a href="{{'internalResearch/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
+            <a href="internalResearch/{{$item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
                 <div class="p-4 bg-white h-40">
-                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'journal' }}</p>
+                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'penelitian' }}</p>
                   <h5 class="text-xs mt-2 font-bold">{{$item->title}}</h5>
 
                 </div>

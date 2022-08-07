@@ -5,18 +5,13 @@
 
     <div class="container mx-auto w-[80%] ">
         <div class="flex mt-20 items-center">
-            <div class="rounded-md w-[25%] h-[22rem]">
-                <div class=" w-full h-[22rem] bg-blue-300 overflow-hidden rounded-md">
-                    <img class="-z-20" src="{{asset('img/design/panji.svg')}}" alt="1">
-                </div>
-            </div>
-            <div class="flex w-[75%] pl-14">
+            <div class="flex w-full">
                 <div class="flex flex-col">
                     <div class="">
                         <h1 class="text-4xl font-extrabold" >{{$data->title}}</h1>
                     </div>
                     <nav class="flex text-lg font-bold border-b border-gray-100">
-                        <div  class="mt-2 border-b  duration-100">
+                        <div  class="mt-2 duration-100">
                           Bidang
                         </div>
                     </nav>
@@ -24,13 +19,13 @@
                         {{$data->subject}}
                     </div>
                     
-                    <nav class="flex text-lg font-bold border-b border-gray-100">
+                    <nav class="flex text-lg font-bold border-gray-100">
                         <div  class="mt-2 border-b  duration-100">
                           Deskripsi
                         </div>
                     </nav>
                     <div class="py-2">
-                        <div class="h-36 overflow-hidden duration-300 opacity-80" id="abstract">
+                        <div class="overflow-hidden duration-300 opacity-80" id="abstract">
                             {{$data->description}}
                         </div>
                         

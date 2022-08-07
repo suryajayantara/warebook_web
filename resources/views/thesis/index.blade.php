@@ -4,20 +4,12 @@
 
     <div class="container mx-auto w-[80%]">
         <div class="flex mt-24">
-            <div class="rounded-md w-[25%] h-[26rem]">
-                <div class=" w-full h-[25rem] bg-blue-300 overflow-hidden rounded-md">
-                    <img class="-z-20" src="{{asset('img/design/panji.svg')}}" alt="1">
-                </div>
-                <a href="http://">
-                    <img  class="scale-50 rounded-full p-6 float-right  -mt-12 bg-[#FDCB6E] hover:scale-[60%] hover:p-4 hover:-mt-10 hover:mr-2 duration-200 hover:bg-[#eab758]" src="{{asset('img/icon/favorite.svg')}}" alt="2">
-                </a>
-            </div>
-            <div class="flex w-[75%] pl-14">
+            <div class="flex w-full">
                 <div class="flex flex-col w-full">
                     <div class="max-h-[7.5rem] overflow-hidden">
                         <h1 class="text-4xl font-extrabold" >{{$thesis->title}}</h1>
                     </div>
-                    <div class="flex mx-1 my-2 items-center">
+                    <div class="flex my-2 items-center">
                         <img class="rounded-full h-8 w-8" src="{{asset('img/design/panji.svg')}}" alt="">
                         <div class="text-sm mx-2">
                             <h1 class="font-bold opacity-90">{{ $thesis->user->name}}</h1>
@@ -103,18 +95,20 @@
             </div>
         </div>
 
-        <div class="mt-14 grid grid-cols-5 gap-4">
-            <a href="" class="block overflow-hidden rounded-md shadow-sm">
-                <img class="object-cover w-full h-36" src="{{asset('img/design/background.png')}}" alt="" />
-              
-                <div class="p-4 bg-white h-40">
-                  <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">Penelitian</p>
-              
-                  <h5 class="text-xs mt-2 font-bold">How to position your furniture for positivity</h5>
-              
-                </div>
-              </a>
-        </div>
+        <h1 class="font-bold text-xl    ">Repository lainnya</h1>
+        <div class="mx-auto w-[*80%]">
+            <div class="mt-14 grid grid-cols-5 gap-4">
+                <a href="" class="block overflow-hidden rounded-md shadow-sm">
+                    <img class="object-cover w-full h-36" src="{{asset('img/design/background.png')}}" alt="" />
+                  
+                    <div class="p-4 bg-white h-40">
+                      <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">Penelitian</p>
+                  
+                      <h5 class="text-xs mt-2 font-bold">How to position your furniture for positivity</h5>
+                  
+                    </div>
+                  </a>
+            </div>
     </div>
 
 <script src="{{asset('js/tabs.js')}}"></script>

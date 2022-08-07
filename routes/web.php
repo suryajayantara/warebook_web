@@ -5,16 +5,11 @@ use App\Http\Controllers\RepositoryController;
 use App\Http\Controllers\Web\InternalResearch\InternalResearchController;
 use App\Http\Controllers\Web\Journal\JournalDocumentController;
 use App\Http\Controllers\Web\Journal\JournalTopicController;
-use App\Http\Controllers\Web\Journal\JournalTypeController;
 use App\Http\Controllers\Web\Manage\DepartementController;
 use App\Http\Controllers\Web\Manage\StudyController;
 use App\Http\Controllers\Web\StudentCreativityProgram\StudentCreativityProgramController;
-use App\Http\Controllers\Web\StudentCreativityProgram\StudentCreativityProgramTypeController;
 use App\Http\Controllers\Web\Thesis\ThesisController;
 use App\Http\Controllers\Web\Thesis\ThesisDocumentController;
-use App\Http\Controllers\Web\User\RegisterController;
-use App\Models\JournalDocument;
-use App\Models\Thesis;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -75,5 +70,6 @@ Route::resource('journalTopic',JournalTopicController::class);
 
 
 Route::resource('creativity',StudentCreativityProgramController::class);
-Route::resource('creativityType',StudentCreativityProgramTypeController::class);
+
+Route::get('internalResearch/index/{id}', [InternalResearchController::class, 'index']);
 Route::resource('internalResearch',InternalResearchController::class);

@@ -5,17 +5,11 @@ use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\InternalResearch\InternalResearchServiceController;
 use App\Http\Controllers\Api\Journal\JournalDocumentsServiceController;
 use App\Http\Controllers\Api\Journal\JournalTopicsServiceController;
-use App\Http\Controllers\Api\Journal\JournalTypesServiceController;
 use App\Http\Controllers\Api\Manage\DepartementServiceController;
 use App\Http\Controllers\Api\Manage\StudyServiceController;
 use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramServiceController;
-use App\Http\Controllers\Api\StudentCreativityProgram\StudentCreativityProgramTypeServiceController;
-use App\Http\Controllers\Api\Thesis\ThesisController;
 use App\Http\Controllers\Api\Thesis\ThesisDocumentServiceController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Api\Thesis\ThesisServiceController;
-use App\Models\Thesis;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,16 +43,6 @@ Route::prefix('v1')->group(function(){
         Route::post('/',[StudentCreativityProgramServiceController::class,'create']);
         Route::post('/{id}',[StudentCreativityProgramServiceController::class,'update']);
         Route::delete('/{id}',[StudentCreativityProgramServiceController::class,'destroy']);
-    });
-
-    //CreativityType => Ade part
-    //route untuk get all data, get one data by id, post data, put data and delete data Type PKM
-    Route::prefix('creativityType')->group(function(){
-        Route::get('/',[StudentCreativityProgramTypeServiceController::class,'getCreativityType']);
-        Route::get('/{id}', [StudentCreativityProgramTypeServiceController::class,'getOneCreativityType']);
-        Route::post('/',[StudentCreativityProgramTypeServiceController::class,'create']);
-        Route::post('/{id}',[StudentCreativityProgramTypeServiceController::class,'update']);
-        Route::delete('/{id}',[StudentCreativityProgramTypeServiceController::class,'destroy']);
     });
 
     // Thesis atau tugas akhir => Surje Part => Jangan diutak atik !
@@ -134,15 +118,6 @@ Route::prefix('v1')->group(function(){
         Route::delete('/{id}',[JournalTopicsServiceController::class,'destroy']);
     });
 
-    //Journal Type => Ade part
-    //route untuk get all data, get one data by id, post data, put data and delete data JournalType
-    Route::prefix('journalType')->group(function(){
-        Route::get('/',[JournalTypesServiceController::class,'getJournalType']);
-        Route::get('/{id}', [JournalTypesServiceController::class,'getOneJournalType']);
-        Route::post('/',[JournalTypesServiceController::class,'create']);
-        Route::post('/{id}',[JournalTypesServiceController::class,'update']);
-        Route::delete('/{id}',[JournalTypesServiceController::class,'destroy']);
-    });
 
 });
 
