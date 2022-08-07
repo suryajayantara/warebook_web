@@ -23,9 +23,9 @@ class StudentCreativityProgram extends Model
         'creativity_type',
         'aliases',
         'title',
+        'year',
         'abstract',
         'supervisor',
-        'file_name',
         'document_url'
     ];
 
