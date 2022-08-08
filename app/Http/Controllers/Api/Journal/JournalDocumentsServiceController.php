@@ -41,8 +41,17 @@ class JournalDocumentsServiceController extends Controller
     public function create(Request $request){
 
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
             $validate = Validator($request->all(),[
-                'users_id' => 'required',
                 'journal_topics_id' => 'required',
                 'title' => 'required',
                 'author' => 'required',
@@ -70,7 +79,7 @@ class JournalDocumentsServiceController extends Controller
 
 
             $data = new JournalDocument();
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
             $data->author = $request->author;
@@ -96,6 +105,17 @@ class JournalDocumentsServiceController extends Controller
     //Fungsi ini gunanya untuk mengupdate data Document pada Repositori Journal Document
     public function update(Request $request,$id){
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
+            // Check apakah data dari id diinputkan ada atau tidak datanya
             $data = JournalDocument::find($id);
             if($data == null){
                 return response()->json([
@@ -118,7 +138,7 @@ class JournalDocumentsServiceController extends Controller
                 $data->document_url = $finalPath;
             }
 
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
             $data->author = $request->author;

@@ -40,8 +40,17 @@ class JournalTopicsServiceController extends Controller
     public function create(Request $request){
 
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
             $validate = Validator($request->all(),[
-                'users_id' => 'required',
                 'subject' => 'required',
                 'title' => 'required',
                 'description' => 'required',
@@ -54,7 +63,7 @@ class JournalTopicsServiceController extends Controller
             }
 
             $data = new JournalTopic();
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->subject = $request->subject;
             $data->title = $request->title;
             $data->description = $request->description;
@@ -74,6 +83,17 @@ class JournalTopicsServiceController extends Controller
     //Fungsi ini gunanya untuk mengupdate data Topic pada Repositori Journal Topic
     public function update(Request $request,$id){
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
+            // Check apakah data dari id diinputkan ada atau tidak datanya
             $data = JournalTopic::find($id);
             if($data == null){
                 return response()->json([
@@ -81,7 +101,7 @@ class JournalTopicsServiceController extends Controller
                 ],500);
             }
 
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->subject = $request->subject;
             $data->title = $request->title;
             $data->description = $request->description;

@@ -46,7 +46,6 @@ class ThesisServiceController extends Controller
         try {
 
             // $validate = Validator($request->all(),[
-            //     'users_id' => 'required',
             //     'thesis_type' => 'required',
             //     'thumbnail_url' => 'required',
             //     'title' => 'required',
@@ -83,6 +82,17 @@ class ThesisServiceController extends Controller
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
     public function update(Request $request,$id){
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
+            // Check apakah data dari id diinputkan ada atau tidak datanya
             $data = Thesis::find($id);
             if($data == null){
                 return response()->json([
@@ -91,7 +101,7 @@ class ThesisServiceController extends Controller
             }
 
 
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->thesis_type = $request->thesis_type;
             $data->title = $request->title;
             $data->abstract = $request->abstract;

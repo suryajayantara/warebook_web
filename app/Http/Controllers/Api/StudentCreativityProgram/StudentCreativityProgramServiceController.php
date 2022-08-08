@@ -42,8 +42,17 @@ class StudentCreativityProgramServiceController extends Controller
     {
 
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
             $validate = Validator($request->all(), [
-                'users_id' => 'required',
                 'creativity_type' => 'required',
                 'aliases' => 'required',
                 'title' => 'required',
@@ -68,7 +77,7 @@ class StudentCreativityProgramServiceController extends Controller
             $finalPath = $pathName . $document_url;
 
             $data = new StudentCreativityProgram();
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->creativity_type = $request->creativity_type;
             $data->aliases = $request->aliases;
             $data->title = $request->title;
@@ -91,6 +100,17 @@ class StudentCreativityProgramServiceController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
+            // Check apakah data dari id diinputkan ada atau tidak datanya
             $data = StudentCreativityProgram::find($id);
             if ($data == null) {
                 return response()->json([
@@ -113,7 +133,7 @@ class StudentCreativityProgramServiceController extends Controller
                 $data->document_url = $finalPath;
             }
 
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->creativity_type = $request->creativity_type;
             $data->aliases = $request->aliases;
             $data->title = $request->title;

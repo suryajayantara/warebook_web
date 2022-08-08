@@ -43,8 +43,17 @@ class InternalResearchServiceController extends Controller
     public function create(Request $request){
 
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
             $validate = Validator($request->all(),[
-                'users_id' => 'required',
                 'title' => 'required',
                 'abstract' => 'required',
                 'budget_type' => 'required',
@@ -76,7 +85,7 @@ class InternalResearchServiceController extends Controller
             $finalPathProp = $pathNameProp . $proposal_url;
 
             $data = new InternalResearch();
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
             $data->budget_type = $request->budget_type;
@@ -109,6 +118,17 @@ class InternalResearchServiceController extends Controller
     //Fungsi ini gunanya untuk mengupdate data InternalResearch pada Repositori InternalResearch
     public function update(Request $request,$id){
         try {
+            // Check apakah user sudah login atau belum
+            if(!auth('api')->check()){
+                return response()->json([
+                    'message' => 'Anda Belum Login',
+                ],401);
+            }
+
+            // Data dari Token , Disimpan di variable ini
+            $user = auth()->guard('api')->user();
+
+            // Check apakah data dari id diinputkan ada atau tidak datanya
             $data = InternalResearch::find($id);
             if($data == null){
                 return response()->json([
@@ -149,7 +169,7 @@ class InternalResearchServiceController extends Controller
             }
 
 
-            $data->users_id = $request->users_id;
+            $data->users_id = $user->id;
             $data->title = $request->title;
             $data->abstract = $request->abstract;
             $data->budget_type = $request->budget_type;
