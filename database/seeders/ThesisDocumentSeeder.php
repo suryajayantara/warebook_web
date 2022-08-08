@@ -21,7 +21,6 @@ class ThesisDocumentSeeder extends Seeder
 
         $thesisDocument->thesis_id = 1;
         $thesisDocument->document_name = 'Bab 1';
-        $thesisDocument->file_name = 'Bab 1';
         $thesisDocument->document_url = 'google.com';
 
         $thesisDocument->save();

@@ -71,7 +71,7 @@ class JournalDocumentController extends Controller
             return redirect('journalTopic/index/'.$request->journal_topics_id);
 
         } catch (\Throwable $th) {
-            var_dump($th) ;
+            throw $th;
         }
     }
 
@@ -142,7 +142,7 @@ class JournalDocumentController extends Controller
             return redirect('journalDocument/index/'.$old_journal->id);
 
         } catch (\Throwable $th) {
-            return $th;
+            throw $th;
         }
     }
 

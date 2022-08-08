@@ -64,7 +64,6 @@ class ThesisDocumentServiceController extends Controller
             $data = new ThesisDocument();
             $data->thesis_id = $request->thesis_id;
             $data->document_name = $request->document_name;
-            $data->file_name = $document_url;
             $data->document_url = $finalPath;
             $data->save();
 
@@ -73,7 +72,7 @@ class ThesisDocumentServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }
@@ -91,7 +90,7 @@ class ThesisDocumentServiceController extends Controller
             //update data apabila menginputkan file di document_url
             if($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('thesisDocument/'.$data->file_name);
+                Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
                 $file_name = date('Ymd').preg_replace('/\s+/','_',$request->document_name);
                 $pathName = 'storage/thesisDocument/';
@@ -105,7 +104,6 @@ class ThesisDocumentServiceController extends Controller
 
             $data->thesis_id = $request->thesis_id;
             $data->document_name = $request->document_name;
-            $data->file_name = $document_url;
 
             $data->save();
 
@@ -129,7 +127,7 @@ class ThesisDocumentServiceController extends Controller
             }
 
             //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('thesisDocument/'.$query->file_name);
+            Storage::disk('public')->delete(str_replace('storage/', '', $query->document_url));
 
             $query->delete();
             if($query){
@@ -142,7 +140,7 @@ class ThesisDocumentServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }

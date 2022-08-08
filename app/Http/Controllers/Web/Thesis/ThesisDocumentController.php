@@ -42,7 +42,7 @@ class ThesisDocumentController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         //Validation
         $request->validate([
             'thesis_id' => 'required',
@@ -56,7 +56,7 @@ class ThesisDocumentController extends Controller
         $url = $file_name.'.'.$request->file('document')->extension();
         $request->file('document')->storeAs('document/thesis', $url, 'public');
 
-        //Insert data 
+        //Insert data
         try {
             ThesisDocument::create([
                 'thesis_id' => $request->thesis_id,
@@ -69,7 +69,7 @@ class ThesisDocumentController extends Controller
             //$pdf->move('files/thesis/',$pdf_name);
 
         } catch (\Throwable $th) {
-            return $th;
+            throw $th;
         }
     }
 
@@ -125,7 +125,7 @@ class ThesisDocumentController extends Controller
             return redirect('thesis/'.$data->thesis_id);
 
         } catch (\Throwable $th) {
-            return $th;
+            throw $th;
         }
     }
 

@@ -81,7 +81,7 @@ class StudyServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
 
     }
@@ -107,7 +107,7 @@ class StudyServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 

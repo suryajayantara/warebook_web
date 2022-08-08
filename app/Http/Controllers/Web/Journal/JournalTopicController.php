@@ -61,7 +61,7 @@ class JournalTopicController extends Controller
             return redirect()->route('departements.index');
 
         } catch (\Throwable $th) {
-            return $th;
+            throw $th;
         }
     }
 
@@ -108,11 +108,11 @@ class JournalTopicController extends Controller
                 'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-            ]); 
+            ]);
             return redirect('/journalTopic/index/'. $request->id);
 
         } catch (\Throwable $th) {
-            var_dump($th);
+            throw $th;
         }
     }
 

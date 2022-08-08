@@ -75,7 +75,6 @@ class JournalDocumentsServiceController extends Controller
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
-            $data->file_name = $document_url;
             $data->document_url = $finalPath;
             $data->original_url = $request->original_url;
             $data->year = $request->year;
@@ -89,7 +88,7 @@ class JournalDocumentsServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }
@@ -107,7 +106,7 @@ class JournalDocumentsServiceController extends Controller
             //update data apabila menginputkan file di document_url
             if($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('journalDocument/'.$data->file_name);
+                Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
                 $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
                 $pathName = 'storage/journalDocument/';
@@ -124,7 +123,6 @@ class JournalDocumentsServiceController extends Controller
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
-            $data->file_name = $document_url;
             $data->original_url = $request->original_url;
             $data->year = $request->year;
             $data->tags = $request->tags;
@@ -137,7 +135,7 @@ class JournalDocumentsServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -152,7 +150,7 @@ class JournalDocumentsServiceController extends Controller
             }
 
             //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('journalDocument/'.$query->file_name);
+            Storage::disk('public')->delete(str_replace('storage/', '', $query->document_url));
 
             $query->delete();
             if($query){
@@ -165,7 +163,7 @@ class JournalDocumentsServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }

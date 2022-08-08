@@ -56,7 +56,7 @@ class StudyController extends Controller
             return redirect()->route('studies.index');
 
         } catch (\Throwable $th) {
-            // return $th;
+            // throw $th;
         }
     }
 
@@ -110,7 +110,7 @@ class StudyController extends Controller
             return redirect()->route('studies.index');
 
         } catch (\Throwable $th) {
-            // return $th;
+            // throw $th;
         }
     }
 

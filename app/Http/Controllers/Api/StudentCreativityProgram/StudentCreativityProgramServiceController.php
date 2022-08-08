@@ -75,7 +75,6 @@ class StudentCreativityProgramServiceController extends Controller
             $data->abstract = $request->abstract;
             $data->year = $request->year;
             $data->supervisor = $request->supervisor;
-            $data->file_name = $document_url;
             $data->document_url = $finalPath;
             $data->save();
 
@@ -84,7 +83,7 @@ class StudentCreativityProgramServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ], 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -102,7 +101,7 @@ class StudentCreativityProgramServiceController extends Controller
             //update data apabila menginputkan file di document_url
             if ($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('studentCreativityProgram/' . $data->file_name);
+                Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
                 $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
                 $pathName = 'storage/studentCreativityProgram/';
@@ -121,7 +120,6 @@ class StudentCreativityProgramServiceController extends Controller
             $data->abstract = $request->abstract;
             $data->year = $request->year;
             $data->supervisor = $request->supervisor;
-            $data->file_name = $document_url;
 
             $data->save();
 
@@ -130,7 +128,7 @@ class StudentCreativityProgramServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ], 200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 
@@ -146,7 +144,7 @@ class StudentCreativityProgramServiceController extends Controller
             }
 
             //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('studentCreativityProgram/' . $query->file_name);
+            Storage::disk('public')->delete(str_replace('storage/', '', $query->document_url));
 
             $query->delete();
             if ($query) {
@@ -159,7 +157,7 @@ class StudentCreativityProgramServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 

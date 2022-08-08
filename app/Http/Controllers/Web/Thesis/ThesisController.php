@@ -51,7 +51,7 @@ class ThesisController extends Controller
             'tags' => 'required',
             'created_year' => 'required',
         ]);
-        
+
         try {
             Thesis::create([
                 'users_id' => Auth::user()->id,
@@ -61,11 +61,11 @@ class ThesisController extends Controller
                 'abstract' => $request->abstract,
                 'created_year' => $request->created_year,
             ]);
-            
+
             return redirect()->route('repository.index');
 
         } catch (\Throwable $th) {
-            // var_dump($th);
+            // throw $th;
         }
     }
 
@@ -112,7 +112,7 @@ class ThesisController extends Controller
             return redirect('thesis/'.$request->thesis_id);
 
         } catch (\Throwable $th) {
-            var_dump($th);
+            throw $th;
         }
     }
 

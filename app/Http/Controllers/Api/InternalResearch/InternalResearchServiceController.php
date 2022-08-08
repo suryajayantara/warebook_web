@@ -85,8 +85,6 @@ class InternalResearchServiceController extends Controller
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
-            $data->file_name_doc = $document_url;
-            $data->file_name_prop = $proposal_url;
             $data->proposal_url = $finalPathDoc;
             $data->document_url = $finalPathProp;
 
@@ -104,7 +102,7 @@ class InternalResearchServiceController extends Controller
             ],200);
 
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 
@@ -121,7 +119,7 @@ class InternalResearchServiceController extends Controller
             //update data apabila menginputkan file di document_url
             if($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('internalResearch/document/'.$data->file_name_doc);
+                Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
                 //Upload Document
                 $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
@@ -137,11 +135,11 @@ class InternalResearchServiceController extends Controller
             //update data apabila menginputkan file di document_url
             if($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
-                Storage::disk('public')->delete('internalResearch/proposal/'.$data->file_name_prop);
+                Storage::disk('public')->delete(str_replace('storage/', '', $data->proposal_url));
 
                 //Upload Document
                 $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
-                $pathNameProp = 'storage/thesisDocument/proposal/';
+                $pathNameProp = 'storage/internalResearch/proposal/';
                 $proposal_url = $file_name.'.'.$request->file('proposal_url')->extension();
                 $request->file('proposal_url')->storeAs('internalResearch/proposal', $proposal_url, 'public');
 
@@ -160,8 +158,6 @@ class InternalResearchServiceController extends Controller
             $data->project_finish_at = $request->project_finish_at;
             $data->contract_number = $request->contract_number;
             $data->team_member = $request->team_member;
-            $data->file_name_doc = $document_url;
-            $data->file_name_prop = $proposal_url;
 
             $data->save();
 
@@ -176,7 +172,7 @@ class InternalResearchServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 
@@ -192,8 +188,8 @@ class InternalResearchServiceController extends Controller
             }
 
             //digunakan untuk menghapus file beradasarkan id yang diinputkan
-            Storage::disk('public')->delete('internalResearch/document/'.$query->file_name_doc);
-            Storage::disk('public')->delete('internalResearch/proposal/'.$query->file_name_prop);
+            Storage::disk('public')->delete(str_replace('storage/', '', $query->document_url));
+            Storage::disk('public')->delete(str_replace('storage/', '', $query->proposal_url));
 
             $query->delete();
             if($query){
@@ -206,7 +202,7 @@ class InternalResearchServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }

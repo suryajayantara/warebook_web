@@ -66,7 +66,7 @@ class JournalTopicsServiceController extends Controller
                 'message' => 'Succesful Adding Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }
@@ -93,7 +93,7 @@ class JournalTopicsServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -118,7 +118,7 @@ class JournalTopicsServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }

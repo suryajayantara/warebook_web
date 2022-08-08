@@ -46,7 +46,7 @@ class StudentCreativityProgramController extends Controller
             'aliases' => 'required',
             'title' => 'required',
             'abstract' => 'required',
-            'year' => 'required',   
+            'year' => 'required',
             'supervisor' => 'required',
             'document_url' => 'required'
         ]);
@@ -74,7 +74,7 @@ class StudentCreativityProgramController extends Controller
             return redirect('repository');
 
         } catch (\Throwable $th) {
-            var_dump($th);
+            throw $th;
         }
     }
 
@@ -116,7 +116,7 @@ class StudentCreativityProgramController extends Controller
             'aliases' => 'required',
             'title' => 'required',
             'abstract' => 'required',
-            'year' => 'required',   
+            'year' => 'required',
             'supervisor' => 'required',
         ]);
 
@@ -126,7 +126,7 @@ class StudentCreativityProgramController extends Controller
 
         if($request->hasFile('document_url')){
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
-            
+
             $title = str_replace(' ', '_', $request->title);
             $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
             $request->file('document_url')->storeAs('creativityDocument/', $document_url, 'public');
@@ -147,7 +147,7 @@ class StudentCreativityProgramController extends Controller
             return redirect('creativity/'.$id);
 
         } catch (\Throwable $th) {
-            var_dump( $th);
+            throw $th;
         }
     }
 

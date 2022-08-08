@@ -76,7 +76,8 @@ class ThesisServiceController extends Controller
             ],200);
         } catch (\Throwable $th) {
             throw $th;
-        }}
+        }
+    }
 
 
     //Fungsi ini gunanya untuk mengupdate data thesis pada Repositori Tugas Akhir
@@ -104,7 +105,7 @@ class ThesisServiceController extends Controller
                 'message' => 'Succesful Update Data'
             ],200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 
@@ -128,7 +129,7 @@ class ThesisServiceController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
 
     }
