@@ -30,7 +30,7 @@ class InternalResearchServiceController extends Controller
         //digunakan saat
         if($data == null){
             return response()->json([
-                'message' => 'Data Not Found !'
+                'message' => 'Data tidak ditemukan !'
             ],500);
         }else{
             return response()->json([
@@ -68,7 +68,7 @@ class InternalResearchServiceController extends Controller
 
             if($validate->fails()){
                 return response()->json([
-                    'validate' => $validate->errors()
+                    'message' => 'Salah satu data tidak boleh kosong'
                 ]);
             }
 
@@ -101,13 +101,13 @@ class InternalResearchServiceController extends Controller
 
             if($data == null){
                 return response()->json([
-                    'message' => 'somethings wrong'
+                    'message' => 'Data tidak ditemukan !'
                 ],401);
             }
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Adding Data'
+                'message' => 'Data berhasil ditambahkan'
             ],200);
 
         } catch (\Throwable $th) {
@@ -132,7 +132,7 @@ class InternalResearchServiceController extends Controller
             $data = InternalResearch::find($id);
             if($data == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
@@ -183,13 +183,13 @@ class InternalResearchServiceController extends Controller
 
             if($data == null){
                 return response()->json([
-                    'message' => 'somethings wrong'
+                    'message' => 'Data tidak ditemukan'
                 ],401);
             }
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Update Data'
+                'message' => 'Data berhasil diubah'
             ],200);
         } catch (\Throwable $th) {
             throw $th;
@@ -203,7 +203,7 @@ class InternalResearchServiceController extends Controller
 
             if($query == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
@@ -214,11 +214,11 @@ class InternalResearchServiceController extends Controller
             $query->delete();
             if($query){
                 return response()->json([
-                    'message' => 'Successful Deleting Data !'
+                    'message' => 'Data berhasil dihapus !'
                 ],200);
             }else{
                 return response()->json([
-                    'message' => 'Data Not Deleted'
+                    'message' => 'Data tidak terhapus'
                 ]);
             }
         } catch (\Throwable $th) {

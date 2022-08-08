@@ -28,7 +28,7 @@ class ThesisDocumentServiceController extends Controller
         $data = ThesisDocument::where('id',$id)->with('thesis')->first();
         if($data == null){
             return response()->json([
-                'message' => 'Data Not Found !'
+                'message' => 'Data tidak ditemukan !'
             ],500);
         }else{
             return response()->json([
@@ -69,7 +69,7 @@ class ThesisDocumentServiceController extends Controller
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Adding Data'
+                'message' => 'Data berhasil ditambahkan'
             ],200);
         } catch (\Throwable $th) {
             throw $th;
@@ -83,7 +83,7 @@ class ThesisDocumentServiceController extends Controller
             $data = ThesisDocument::find($id);
             if($data == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
@@ -109,7 +109,7 @@ class ThesisDocumentServiceController extends Controller
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Update Data'
+                'message' => 'Data berhasil diubah'
             ],200);
         } catch (\Throwable $th) {
             throw $th;
@@ -122,7 +122,7 @@ class ThesisDocumentServiceController extends Controller
             $query = ThesisDocument::find($id);
             if($query == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
@@ -132,11 +132,11 @@ class ThesisDocumentServiceController extends Controller
             $query->delete();
             if($query){
                 return response()->json([
-                    'message' => 'Successful Deleting Data !'
+                    'message' => 'Data berhasil dihapus !'
                 ],200);
             }else{
                 return response()->json([
-                    'message' => 'Data Not Deleted'
+                    'message' => 'Data tidak terhapus'
                 ]);
             }
         } catch (\Throwable $th) {

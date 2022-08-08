@@ -96,7 +96,7 @@ class ThesisServiceController extends Controller
             $data = Thesis::find($id);
             if($data == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
@@ -112,7 +112,7 @@ class ThesisServiceController extends Controller
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Update Data'
+                'message' => 'Data berhasil diubah'
             ],200);
         } catch (\Throwable $th) {
             throw $th;
@@ -125,17 +125,17 @@ class ThesisServiceController extends Controller
             $query = Thesis::find($id);
             if($query == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
             $query->delete();
             if($query){
                 return response()->json([
-                    'message' => 'Successful Deleting Data !'
+                    'message' => 'Data berhasil dihapus !'
                 ],200);
             }else{
                 return response()->json([
-                    'message' => 'Data Not Deleted'
+                    'message' => 'Data tidak terhapus'
                 ]);
             }
         } catch (\Throwable $th) {

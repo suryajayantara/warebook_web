@@ -27,7 +27,7 @@ class StudyServiceController extends Controller
         $data = Study::where('id',$id)->with('departements')->first();
         if($data == null){
             return response()->json([
-                'message' => 'Data Not Found !'
+                'message' => 'Data tidak ditemukan !'
             ],500);
         }else{
             return response()->json([
@@ -44,7 +44,7 @@ class StudyServiceController extends Controller
         $data = Study::where('departement_id',$id)->get();
         if($data == null){
             return response()->json([
-                'message' => 'Data Not Found !'
+                'message' => 'Data tidak ditemukan !'
             ],500);
         }else{
             return response()->json([
@@ -78,7 +78,7 @@ class StudyServiceController extends Controller
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Adding Data'
+                'message' => 'Data berhasil ditambahkan'
             ],200);
         } catch (\Throwable $th) {
             throw $th;
@@ -92,7 +92,7 @@ class StudyServiceController extends Controller
             $data = Study::find($id);
             if($data == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
@@ -104,7 +104,7 @@ class StudyServiceController extends Controller
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Succesful Update Data'
+                'message' => 'Data berhasil diubah'
             ],200);
         } catch (\Throwable $th) {
             throw $th;
@@ -117,18 +117,18 @@ class StudyServiceController extends Controller
             $query = Study::find($id);
             if($query == null){
                 return response()->json([
-                    'message' => 'Data Not Found !'
+                    'message' => 'Data tidak ditemukan !'
                 ],500);
             }
 
             $query->delete();
             if($query){
                 return response()->json([
-                    'message' => 'Successful Deleting Data !'
+                    'message' => 'Data berhasil dihapus !'
                 ],200);
             }else{
                 return response()->json([
-                    'message' => 'Data Not Deleted'
+                    'message' => 'Data tidak terhapus'
                 ]);
             }
         } catch (\Throwable $th) {
