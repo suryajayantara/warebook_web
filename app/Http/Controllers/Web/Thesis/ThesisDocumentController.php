@@ -112,7 +112,6 @@ class ThesisDocumentController extends Controller
         $data = ThesisDocument::find($request->thesisDocument_id);
         $thesis = Thesis::find($data->thesis_id);
 
-        $url = $data->url;
         if($request->hasFile('document')){
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
