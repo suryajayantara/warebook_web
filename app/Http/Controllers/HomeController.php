@@ -27,10 +27,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $thesis = Thesis::all();
-        // var_dump($thesis);
-        return view('user.index', compact('thesis'));
+        // $thesis = Thesis::all();
+        // return view('user.index', compact('thesis'));
+        if(Auth::user()->hasRole('administrator')){
 
-        
+            return redirect()->route('dashboard.index');
+            // return view('admin.dashboard.index');
+
+        }elseIf(Auth::user()->hasRole('student')){
+
+            return redirect()->route('dashboard.index');
+
+        }else{
+
+            return redirect()->route('dashboard.index');
+
+        }
+
     }
 }

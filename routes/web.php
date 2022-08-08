@@ -29,19 +29,40 @@ Route::get('/', function () {
     return view('index');
 });
 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Admin
+Route::group(['middleware' => ['role:administrator'],'prefix' => 'admin',],function(){
+    Route::resource('dashboard', DashboardController::class);
+});
+
+// student
+route::group(['middleware' => ['role:student','auth'],'prefix' => 'mahasiswa'],function(){
+
+    //route student taruh disini
+
+});
+
+route::group(['middleware' => ['role:lecture','auth'],'prefix' => 'dosen'],function(){
+
+    //route lecture taruh disini
+
+});
+
+// Route::resource('register',RegisterController::class);
+
+
+
 //
 
 Route::get('/home', function () {
     return view('user.index');
 });
 
-
 Route::resource('departements', DepartementController::class);
 Route::resource('studies', StudyController::class);
-// Route::resource('register',RegisterController::class);
-
-Auth::routes();
-
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('home', HomeController::class);
@@ -73,4 +94,4 @@ Route::resource('journalTopic', JournalTopicController::class);
 Route::resource('creativity', StudentCreativityProgramController::class);
 Route::resource('internalResearch', InternalResearchController::class);
 
-Route::resource('dashboard', DashboardController::class);
+
