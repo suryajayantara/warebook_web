@@ -54,17 +54,17 @@
 
                         <ul class="menu-sub">
                             <li class="menu-item active">
-                                <a href="/departements" class="menu-link">
+                                <a href="{{route('departements.index')}}" class="menu-link">
                                     <div data-i18n="Without menu">Jurusan</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="/studies" class="menu-link">
+                                <a href="{{route('studies.index')}}" class="menu-link">
                                     <div data-i18n="Without navbar">Program Studi</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="layouts-container.html" class="menu-link">
+                                <a href="{{route('users.index')}}" class="menu-link">
                                     <div data-i18n="Container">Pengguna</div>
                                 </a>
                             </li>
@@ -114,7 +114,10 @@
                     <li class="menu-item ">
                         <a href="index.html" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-power-off"></i>
-                        <div data-i18n="Analytics">Logout</div>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" >Logout</button>
+                          </form>
                         </a>
                     </li>
 

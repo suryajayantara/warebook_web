@@ -6,15 +6,22 @@
     <div class="flex justify-between mt-10">
         <h1 class="text-2xl opacity-80  font-extrabold">Repository mu</h1>
             <a href="
-            {{ route('repository.create')}}" class=" bg-blue-200">
+            @if(Auth::user()->hasRole('student'))
+              {{route('studentRepository.create')}}
+            @else
+              {{route('lectureRepository.create')}}
+            @endif
+            " class=" bg-blue-200">
                 <button class="bg-blue-600 px-3 py-1 font-extrabold text-white rounded-md">Tambah Repositori</button>
             </a>
     </div>
 
-    <div class="mt-10 grid grid-cols-5 gap-4">
+    
         @php
             if (Auth::user()->hasRole('student')) :
         @endphp
+        <h1 class="mt-10 text-xl opacity-80  font-extrabold">Tugas Akhir dan Skripsi</h1>
+        <div class="mt-2 grid grid-cols-5 gap-4">
             @foreach ($thesis as $item)
             <a href="{{'thesis/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
@@ -25,6 +32,11 @@
                 </div>
               </a>
             @endforeach
+        </div>
+        <br>
+        {{$thesis->links()}}
+        <h1 class="mt-5 text-xl opacity-80  font-extrabold">Program Kreativitas Mahasiswa</h1>
+        <div class="mt-10 grid grid-cols-5 gap-4">
             @foreach ($creativity as $item)
             <a href="{{'creativity/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
@@ -35,9 +47,16 @@
                 </div>
               </a>
             @endforeach
+            
+          </div>
+          <br>
+          {{$creativity->links()}}
         @php
             else :
         @endphp
+        <h1 class="mt-5 text-xl opacity-80  font-extrabold">Repository Journal Dosen</h1>
+
+        <div class="mt-10 grid grid-cols-5 gap-4">
             @foreach ($topic as $item)
             <a href="{{'journalTopic/index/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
@@ -48,7 +67,13 @@
                 </div>
               </a>
             @endforeach
+        </div>
+        <br>
+        {{$internalresearch->links()}}
 
+        <h1 class="mt-5 text-xl opacity-80  font-extrabold">Penelitian Dosen</h1>
+
+        <div class="mt-10 grid grid-cols-5 gap-4">
             @foreach ($internalresearch as $item)
             <a href="{{'internalResearch/'. $item->id}}" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('/img/design/background.png')}}" alt="" />
@@ -60,11 +85,14 @@
               </a>
             @endforeach
 
+        </div>
+        {{$internalresearch->links()}}
+
 
         @php
             endif
         @endphp
-    </div>
+    
 
     @if (Auth::user()->hasRole('lecture'))
         <h1 class="text-2xl opacity-80  mt-10 font-extrabold">Jurnal mu</h1>
@@ -82,6 +110,8 @@
               </a>
         @endforeach
         </div>
+        <br>
+        {{$journal->links()}}
     @endif
 </div>
 

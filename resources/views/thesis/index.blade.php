@@ -2,17 +2,9 @@
 
 @section('contents')
 
-    <div class="container mx-auto w-[80%]">
+    <div class="container mx-auto w-[70%]">
         <div class="flex mt-24">
-            <div class="rounded-md w-[25%] h-[26rem]">
-                <div class=" w-full h-[25rem] bg-blue-300 overflow-hidden rounded-md">
-                    <img class="-z-20" src="{{asset('img/design/panji.svg')}}" alt="1">
-                </div>
-                <a href="http://">
-                    <img  class="scale-50 rounded-full p-6 float-right  -mt-12 bg-[#FDCB6E] hover:scale-[60%] hover:p-4 hover:-mt-10 hover:mr-2 duration-200 hover:bg-[#eab758]" src="{{asset('img/icon/favorite.svg')}}" alt="2">
-                </a>
-            </div>
-            <div class="flex w-[75%] pl-14">
+            <div class="flex w-[100%]">
                 <div class="flex flex-col w-full">
                     <div class="max-h-[7.5rem] overflow-hidden">
                         <h1 class="text-4xl font-extrabold" >{{$thesis->title}}</h1>
@@ -36,14 +28,14 @@
                         @php
                             if ($thesis->user->id == Auth::user()->id) :
                         @endphp
-                                <form id='button' action="/thesisDocument/create" class="mx-1 float-right" method="post">
+                                <form id='button' action="/mahasiswa/thesisDocument/create" class="mx-1 float-right" method="post">
                                     @csrf
                                     <input type="hidden" name="thesis_id" value="{{$thesis->id}}">
                                     <button type="submit"  class=" inline-block px-4 py-2 text-xs bg-blue-600 text-white font-bold leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                         Tambah Dokumen
                                     </button>
                                 </form>
-                                <form action="{{ url('/thesis', ['id' => $thesis->id]) }}" method="post">
+                                <form action="{{ route('thesis.destroy', ['thesi' => $thesis->id]) }}" method="post">
                                     <input class="mx-1 float-right  px-4 py-2 text-xs bg-[#FF7675] text-white font-bold  leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
                                     @method('delete')
                                     @csrf
@@ -86,7 +78,7 @@
                                             <a href="{{route('thesisDocument.edit', ['thesisDocument' => $item->id])}}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                         </li>
                                         <li>
-                                            <form action="{{ url('/thesisDocument', ['id' => $item->id]) }}" method="post">
+                                            <form action="{{ route('thesisDocument.destroy', ['thesisDocument' => $item->id]) }}" method="post">
                                                 <input class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="submit" value="Delete" />
                                                 @method('delete')
                                                 @csrf

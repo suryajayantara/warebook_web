@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Manage;
+namespace App\Http\Controllers\Web\Admin\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Models\Departement;

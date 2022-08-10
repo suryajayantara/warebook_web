@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Web\Journal;
+namespace App\Http\Controllers\Web\Lecture\Journal;
 
 use App\Http\Controllers\Controller;
 use App\Models\JournalDocument;
-use App\Models\JournalTopic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -70,7 +69,7 @@ class JournalDocumentController extends Controller
                 'original_url' => $request->original_url,
                 'document_url' => $document_url,
             ]);
-            return redirect('journalTopic/index/'.$request->journal_topics_id);
+            return redirect('/dosen/journalTopic/index/'.$request->journal_topics_id);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -143,7 +142,7 @@ class JournalDocumentController extends Controller
                 'original_url' => $request->original_url,
                 'document_url' => $document_url
             ]);
-            return redirect('journalDocument/index/'.$old_journal->id);
+            return redirect('/dosen/journalTopic/index/'.$old_journal->id);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -163,7 +162,7 @@ class JournalDocumentController extends Controller
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));            
             JournalDocument::destroy($id);
 
-            return redirect('journalTopic/index/'.$data->journal_topics_id);
+            return redirect('dosen/journalTopic/index/'.$data->journal_topics_id);
 
         } catch (\Throwable $th) {
             echo 'gagal';
