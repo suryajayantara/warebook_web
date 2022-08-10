@@ -13,7 +13,7 @@ class ThesisDocumentServiceController extends Controller
     public function getThesisDocument(Request $request)
     {
         $search = request('search','');
-        $data = ThesisDocument::query()->with('users')->when($search , function($query) use ($search){
+        $data = ThesisDocument::query()->when($search , function($query) use ($search){
             $query->where('document_name','like','%' . $search . '%');
         })->get();
 
