@@ -10,7 +10,7 @@
                 </div>
                 
                 <div class="flex mx-1 my-4 items-center">
-                    <img class="rounded-full h-8 w-8" src="{{asset('img/design/panji.svg')}}" alt="">
+                    <img class="rounded-full h-8 w-8" src="{{asset('assets/img/avatars/6.png')}}" alt="">
                     <div class="text-sm mx-2">
                         <h1 class="font-bold opacity-90">{{$data->users->name}}</h1>
                         <p class="-mt-1 text-[12px]">Diterbitkan tahun {{date('Y', strtotime($data->project_finish_at));}}</p>
@@ -54,7 +54,7 @@
                 </div>
                 @if (Auth::user()->id == $data->users_id)
                 
-                        <form action="{{ url('/internalResearch', ['id' => $data->id]) }}" method="post">
+                        <form action="{{ route('internalResearch.destroy', ['internalResearch' => $data->id]) }}" method="post">
                             <input class="mx-1 float-right inline-block px-4 py-2 bg-[#FF7675] text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
                             @method('delete')
                             @csrf

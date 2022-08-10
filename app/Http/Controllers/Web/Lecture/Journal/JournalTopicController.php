@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Web\Thesis;
+namespace App\Http\Controllers\Web\Lecture\Journal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Thesis;
-use App\Models\ThesisDocument;
-use App\Models\User;
+use App\Models\JournalDocument;
+use App\Models\JournalTopic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Console\Input\Input;
 
-class ThesisController extends Controller
+class JournalTopicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +18,10 @@ class ThesisController extends Controller
      */
     public function index($id)
     {
-        $thesis = Thesis::where('id', $id)->with('User')->first();
-        $document = ThesisDocument::where('thesis_id', $id)->get();
-        return view('thesis.index',compact('thesis', 'document'));
+        $data = JournalTopic::where('id', $id)  ->first();
+        $document = JournalDocument::where('journal_topics_id', $id)->with('User')->get();
+        // var_dump($data);
+        return view('journal.index',compact('data', 'document'));
     }
 
     /**
@@ -30,14 +29,12 @@ class ThesisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($type)
+    public function create()
     {
-        $thesis_type = $type;
-        // $users = User::all();
-        return view('thesis.add')->with(compact('thesis_type'));
+        return view('journal.add');
     }
+
     /**
-     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -46,27 +43,23 @@ class ThesisController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'thesis_type' => 'required',
+            'subject' => 'required',
             'title' => 'required',
-            'abstract' => 'required',
-            'tags' => 'required',
-            'created_year' => 'required',
+            'description' => 'required',
         ]);
 
         try {
-            Thesis::create([
+            JournalTopic::create([
                 'users_id' => Auth::user()->id,
-                'thesis_type' => $request->thesis_type,
+                'subject' => $request->subject,
                 'title' => $request->title,
-                'tags' => $request->tags,
-                'abstract' => $request->abstract,
-                'created_year' => $request->created_year,
+                'description' => $request->description,
             ]);
 
-            return redirect()->route('repository.index');
+            return redirect()->route('lectureRepository.index');
 
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 
@@ -89,8 +82,8 @@ class ThesisController extends Controller
      */
     public function edit($id)
     {
-        $thesis = Thesis::find($id);
-        return view('thesis.edit')->with(compact('thesis'));
+        $journal = JournalTopic::find($id);
+        return view('journal.edit')->with(compact('journal'));
     }
 
     /**
@@ -102,15 +95,19 @@ class ThesisController extends Controller
      */
     public function update(Request $request)
     {
-        try {
-            Thesis::where('id', $request->thesis_id)->update([
-                'title' => $request->title,
-                'abstract' => $request->abstract,
-                'created_year' => $request->created_year,
-                'tags' => $request->tags,
-            ]);
+        $request->validate([
+            'subject' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+        ]);
 
-            return redirect('thesis/'.$request->thesis_id);
+        try {
+            JournalTopic::where('id', $request->id)->update([
+                'subject' => $request->subject,
+                'title' => $request->title,
+                'description' => $request->description,
+            ]);
+            return redirect('/dosen/journalTopic/index/'. $request->id);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -126,13 +123,13 @@ class ThesisController extends Controller
     public function destroy($id)
     {
         try {
-            $data = ThesisDocument::where('thesis_id', $id)->get();
+            $data = JournalDocument::where('journal_topics_id', $id)->get();
             foreach ($data as $item){
                 Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));            
             }
-            Thesis::destroy($id);
-            return redirect()->route('repository.index');
 
+            JournalTopic::destroy($id);
+            return redirect()->route('lectureRepository.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

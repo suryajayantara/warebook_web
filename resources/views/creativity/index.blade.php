@@ -52,7 +52,7 @@
                 </div>
                 @if (Auth::user()->id == $data->users_id)
                 
-                        <form action="{{ url('/creativity', ['id' => $data->id]) }}" method="post">
+                        <form action="{{ route('creativity.destroy', ['creativity' => $data->id]) }}" method="post">
                             <input class="mx-1 float-right inline-block px-4 py-2 bg-[#FF7675] text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
                             @method('delete')
                             @csrf

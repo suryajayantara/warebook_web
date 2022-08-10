@@ -35,19 +35,19 @@
                 <h5 class="mb-0">Tambah Data Jurusan</h5>
               </div>
               <div class="card-body">
-                <form enctype="multipart/form-data" action="{{ route('studies.store') }}" method="post">
+                <form enctype="multipart/form-data" action="{{ route('users.store') }}" method="post">
                     @csrf
 
                   <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >Nama</label>
+                    <label class="col-sm-2 col-form-label" >Jenis akun</label>
                     <div class="col-sm-10">
-                        <select name="departement_id" id="id_faculty" class="form-control @error('departement_id') is-invalid @enderror" aria-label="Default select example" required>
-                            <option value="" selected>Pilih Jurusan</option>
-                            @foreach ($departement_data as $departement)
-                            <option value="{{ $departement->id }}">{{ $departement->departement_name }}</option>
-                            @endforeach
+                        <select name="role" id="id_faculty" class="form-control @error('departement_id') is-invalid @enderror" aria-label="Default select example" required>
+                            <option value="" selected>Pilih Jenis Akun</option>
+                            <option value="student">Mahasiswa</option>
+                            <option value="lecture">Dosen</option>
+                            <option value="admin">Admin</option>
                         </select>
-                        @error('departement_id')
+                        @error('role')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                             </span>
@@ -57,8 +57,32 @@
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" >Nama</label>
                     <div class="col-sm-10">
-                        <input name="studies_name" type="text" class="form-control" placeholder="Nama Jurusan" />
-                        @error('studies_name')
+                        <input name="name" type="text" class="form-control" placeholder="Nama Jurusan" required />
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror   
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" >email</label>
+                    <div class="col-sm-10">
+                        <input name="email" type="email" class="form-control" placeholder="Email" required />
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror   
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" >No. Identitas</label>
+                    <div class="col-sm-10">
+                        <input name="unique_id" type="text" class="form-control" placeholder="Nomor Idntitas" required/>
+                        @error('unique_id')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                             </span>
@@ -66,15 +90,31 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >Deskripsi</label>
+                    <label class="col-sm-2 col-form-label" >Program Studi</label>
                     <div class="col-sm-10">
-                      <textarea 
-                        rows="5"
-                        name="desc"
-                        class="form-control"
-                        placeholder="Deskpripsi Jurusan"
-                        aria-describedby="basic-icon-default-message2"
-                      ></textarea>
+                        <select name="studies_id" id="id_faculty" class="form-control @error('studies_id') is-invalid @enderror" aria-label="Default select example" required>
+                            <option value="" selected>Program Studi</option>
+                            @foreach ($studies_data as $studies)
+                            <option value="{{ $studies->id }}">{{ $studies->studies_name }} - {{ $studies->departements->departement_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('studies_id')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" >Password</label>
+                    <div class="col-sm-10">
+                        <input name="password" type="password" class="form-control" placeholder="Password" required/>
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror   
                     </div>
                   </div>
                   <div class="row justify-content-end">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JournalTopic;
 use App\Models\Thesis;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -27,20 +28,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $thesis = Thesis::all();
-        // return view('user.index', compact('thesis'));
-        if(Auth::user()->hasRole('administrator')){
+        if(Auth::user()->hasRole('admin')){
 
             return redirect()->route('dashboard.index');
             // return view('admin.dashboard.index');
 
         }elseIf(Auth::user()->hasRole('student')){
 
-            return redirect()->route('dashboard.index');
+            $thesis = Thesis::all();
+            return view('user.index', compact('thesis'));
 
         }else{
 
-            return redirect()->route('dashboard.index');
+            $journal = JournalTopic::all();
+            return view('user.index', compact('journal'));
 
         }
 

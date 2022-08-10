@@ -6,9 +6,9 @@
         <h1 class="font-black text-[30px] leading-7">Update Your Document</h1>
         <p class="opacity-60 mt-1">Perbarui dokumen yng diperlukan pada repositori</p>
 
-        <form class="flex flex-col" enctype="multipart/form-data" action="/thesisDocument/update" method="POST">
+        <form class="flex flex-col" enctype="multipart/form-data" action="{{route('thesisDocument.update', $thesisDocument->id)}}" method="POST">
             @csrf
-            <input type="hidden" value="{{$thesisDocument->id}}" name="thesisDocument_id">
+            @method('PUT')
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="Nama Bagian" name="document_name" id="document_name" value="{{$thesisDocument->document_name}}" required>
             <input class="border rounded-md file:bg-slate-600 my-2 focus:outline-none cursor-pointer file:text-white file:font-bold file:border-none file:h-12 file:w-[25%]" type="file" name="document" id="document">
 

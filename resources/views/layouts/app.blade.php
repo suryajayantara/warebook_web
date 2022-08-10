@@ -38,11 +38,14 @@
               <a href="/home" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Beranda
               </a>
-              <a href="{{ route('repository.index')}}" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
+              <a href="
+              @if(Auth::user()->hasRole('student'))
+                {{route('studentRepository.index')}}
+              @else
+                {{route('lectureRepository.index')}}
+              @endif
+              " class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
                 Repositori
-              </a>
-              <a href="/Favorite" class="block h-16 mx-2 leading-[4rem] border-b-4 border-transparent opacity-50 hover:opacity-100 hover:border-blue-600 duration-300">
-                Favorite
               </a>
               <div class="py-5">
                 <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"  class="bg-blue-600 px-3 py-1 font-extrabold text-white rounded-md">Akunku</button>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Manage;
+namespace App\Http\Controllers\Web\Admin\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Models\Departement;
@@ -125,7 +125,7 @@ class StudyController extends Controller
     {
         try {
             Study::destroy($id);
-            return redirect('studies');
+            return redirect()->route('studies.index');
         } catch (\Throwable $th) {
             var_dump($th);
         }

@@ -42,19 +42,19 @@
                 @if (Auth::user()->hasRole('lecture'))
                     @if (Auth::user()->id == $data->users_id)
                 
-                        <form action="{{ url('/journalTopic', ['id' => $data->id]) }}" method="post">
+                        <form action="{{ route('journalTopic.destroy', ['journalTopic' => $data->id]) }}" method="post">
                             <input class="mx-1 float-right inline-block px-6 py-2.5 bg-[#FF7675] text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
                             @method('delete')
                             @csrf
                         </form>
 
-                        <a href="/journalTopic/edit/{{$data->id}}">
+                        <a href="{{route('journalTopic.edit', $data->id)}}">
                             <button type="button" class="mx-1 float-right inline-block px-6 py-2.5 bg-[#FDCB6E] text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                 Edit Repo
                             </button>
                         </a>
                     @endif
-                <a href="/journalDocument/create/{{$data->id}}">
+                <a href="/dosen/journalDocument/create/{{$data->id}}">
                     <button type="button" class="mx-1 float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                         Tambah Jurnal
                     </button>
@@ -66,7 +66,7 @@
         <div class="grid gap-3 overflow-auto duration-300 mb-20" id="document">
            @foreach ($document as $item)
             <div class="flex min-h-[4.5rem] w-full bg-slate-50 shadow-sm rounded-md">
-                <a href="/journalDocument/index/{{$item->id}}" class="flex-grow flex">
+                <a href="/dosen/journalDocument/index/{{$item->id}}" class="flex-grow flex">
                     <div class="flex items-start py-2 mr-4">
                         <img class="bg-[#FF7675]  min-h-[3rem] min-w-[3rem] p-2 ml-2 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
                     </div>
@@ -93,7 +93,7 @@
                         <a href="{{route('journalDocument.edit', ['journalDocument' => $item->id])}}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                     </li>
                     <li>
-                        <form action="{{ url('/journalDocument', ['id' => $item->id]) }}" method="post">
+                        <form action="{{ route('journalDocument.destroy', ['journalDocument' => $item->id]) }}" method="post">
                             <input class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="submit" value="Delete" />
                             @method('delete')
                             @csrf
