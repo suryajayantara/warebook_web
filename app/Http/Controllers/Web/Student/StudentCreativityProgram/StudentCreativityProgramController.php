@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Web\StudentCreativityProgram;
+namespace App\Http\Controllers\Web\Student\StudentCreativityProgram;
 
 use App\Http\Controllers\Controller;
 use App\Models\StudentCreativityProgram;
-use App\Models\StudentCreativityProgramType;
-use CreateStudentCreativityProgramsTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -17,10 +15,10 @@ class StudentCreativityProgramController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $data = StudentCreativityProgram::all();
-        return view('admin.study.index',compact('data'));
+        $data = StudentCreativityProgram::where('id', $id)->with('users')->first();
+        return view('creativity.index', compact('data'));
     }
 
     /**
@@ -71,7 +69,7 @@ class StudentCreativityProgramController extends Controller
                 'document_url' => $document_url
             ]);
 
-            return redirect('repository');
+            return redirect()->route('studentRepository.index');
 
         } catch (\Throwable $th) {
             throw $th;
@@ -144,7 +142,7 @@ class StudentCreativityProgramController extends Controller
                 'document_url' => $document_url
             ]);
 
-            return redirect('creativity/'.$id);
+            return redirect()->route('creativity.show', $id );
 
         } catch (\Throwable $th) {
             throw $th;
@@ -163,7 +161,7 @@ class StudentCreativityProgramController extends Controller
             $data=StudentCreativityProgram::find($id);
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
             StudentCreativityProgram::destroy($id);
-            return redirect('repository');
+            return redirect()->route('studentRepository.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }

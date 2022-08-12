@@ -26,9 +26,15 @@ class ThesisServiceController extends Controller
     // Kalo ini work , biarin , gausah dikutak kutik lagi
     public function getOneThesis($id){
         $data = Thesis::where('id',$id)->with('user')->first();
-        return response()->json([
-            'data' => $data
-        ],200);
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
     }
 
     //Fungsi ini gunanya untuk menambah data thesis pada Repositori Tugas Akhir

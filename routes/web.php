@@ -70,7 +70,6 @@ Route::group(['middleware' => ['role:admin'],'prefix' => 'admin',],function(){
 
     Route::resource('manageInternalResearch', ManageInternalResearchController::class);
 
-});
 
 // student
 route::group(['middleware' => ['role:student', 'auth'],'prefix' => 'mahasiswa'],function(){

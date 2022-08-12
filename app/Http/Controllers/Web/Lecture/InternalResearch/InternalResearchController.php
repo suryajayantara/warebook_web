@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\InternalResearch;
+namespace App\Http\Controllers\Web\Lecture\InternalResearch;
 
 use App\Http\Controllers\Controller;
 use App\Models\InternalResearch;
@@ -85,7 +85,7 @@ class InternalResearchController extends Controller
 
             //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
 
-            return redirect()->to('repository');
+            return redirect()->route('lectureRepository.index');
 
         } catch (\Throwable $th) {
              var_dump($th);
@@ -174,7 +174,7 @@ class InternalResearchController extends Controller
                 'document_url' => $document_url,
             ]);
 
-            return redirect('internalResearch/'.$data->id);
+            return redirect('dosen/internalResearch/'.$data->id);
 
         } catch (\Throwable $th) {
             var_dump($th);
@@ -196,7 +196,7 @@ class InternalResearchController extends Controller
             Storage::disk('public')->delete(str_replace('storage/', '', $data->proposal_url));
             InternalResearch::destroy($id);
             
-            return redirect('/repository');
+            return redirect()->route('lectureRepository.index');
         } catch (\Throwable $th) {
             var_dump($th);
         }

@@ -13,7 +13,7 @@ class ThesisDocumentServiceController extends Controller
     public function getThesisDocument(Request $request)
     {
         $search = request('search','');
-        $data = ThesisDocument::query()->with('users')->when($search , function($query) use ($search){
+        $data = ThesisDocument::query()->when($search , function($query) use ($search){
             $query->where('document_name','like','%' . $search . '%');
         })->get();
 
@@ -25,7 +25,7 @@ class ThesisDocumentServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori thesis document dengan mengambil salah satu idnya
     public function getOneThesisDocument(Request $request, $id)
     {
-        $data = ThesisDocument::where('id',$id)->with('thesis')->first();
+        $data = ThesisDocument::where('thesis_id',$id)->with('thesis')->get();
         if($data == null){
             return response()->json([
                 'message' => 'Data tidak ditemukan !'

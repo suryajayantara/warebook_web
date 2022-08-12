@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Thesis;
+namespace App\Http\Controllers\Web\Student\Thesis;
 
 use App\Http\Controllers\Controller;
 use App\Models\Thesis;
@@ -68,7 +68,7 @@ class ThesisDocumentController extends Controller
             ]);
 
             //redirect to thesis
-            return redirect('thesis/'.$request->thesis_id);
+            return redirect('mahasiswa/thesis/'.$request->thesis_id);
             //$pdf->move('files/thesis/',$pdf_name);
 
         } catch (\Throwable $th) {
@@ -106,10 +106,10 @@ class ThesisDocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        // var_dump($request->thesisDocument_id);
-        $data = ThesisDocument::find($request->thesisDocument_id);
+        // var_dump($id);
+        $data = ThesisDocument::find($id);
         $thesis = Thesis::find($data->thesis_id);
 
         if($request->hasFile('document')){
@@ -123,11 +123,11 @@ class ThesisDocumentController extends Controller
 
 
         try {
-            ThesisDocument::where('id', $request->thesisDocument_id)->update([
+            ThesisDocument::where('id', $id)->update([
                 'document_name' => $request->document_name,
                 'document_url' => $document_url,
             ]);
-            return redirect('thesis/'.$data->thesis_id);
+            return redirect('/mahasiswa/thesis/'.$data->thesis_id);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -146,7 +146,7 @@ class ThesisDocumentController extends Controller
             $data = ThesisDocument::find($id);
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
             ThesisDocument::destroy($id);
-            return redirect('thesis/'.$data->thesis_id);
+            return redirect('mahasiswa/thesis/'.$data->thesis_id);
         } catch (\Throwable $th) {
             echo 'gagal';
         }
