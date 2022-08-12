@@ -16,80 +16,21 @@ class JournalDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $data = JournalDocument::where('id', $id)->with('User')->first();
-        return view('journal.document.index',compact('data'));
+        $data = JournalDocument::paginate('6');
+        return view('admin.journal.document.index',compact('data'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id)
-    {
-        $journal_id = $id;
-        return view('journal.document.add', compact('journal_id'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'journal_topics_id' => 'required',
-            'title' => 'required',
-            'author' => 'required',
-            'abstract' => 'required',
-            'tags' => 'required',
-            'year' => 'required',
-            'document' => 'required',
-        ]);
-
-        $file_name = rand().date('YmdHis');
-        $document_url = $file_name.'.'.$request->file('document')->extension();
-        $request->file('document')->storeAs('document/journal', $document_url, 'public');
-        //$pdf = $request->file('url');
-        //$pdf_name = strtolower($request->document_name)."-file-journal.".$pdf->getClientOriginalExtension();
-
-        try {
-            JournalDocument::create([
-                'users_id' => Auth::user()->id,
-                'journal_topics_id' => $request->journal_topics_id,
-                'title' => $request->title,
-                'author' => $request->author,
-                'abstract' => $request->abstract,
-                'year' => $request->year,
-                'tags' => $request->tags,
-                'doi' => $request->doi,
-                'original_url' => $request->original_url,
-                'document_url' => $document_url,
-            ]);
-            return redirect('journalTopic/index/'.$request->journal_topics_id);
-
-            //$pdf->move('files/journal/',$pdf_name);
-
-            //return redirect()->route('departements.index');
-
-        } catch (\Throwable $th) {
-            var_dump($th) ;
-        }
-    }
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $data = JournalDocument::where('title', 'LIKE', '%'.$request->search.'%')->orWhere('tags', 'LIKE', '%'.$request->search.'%')->orWhere('author', 'LIKE', '%'.$request->search.'%')->orWhere('year', 'LIKE', '%'.$request->search.'%')->paginate(6);
+        return view('admin.journal.document.index',   compact('data'));
     }
 
     /**
@@ -100,8 +41,8 @@ class JournalDocumentController extends Controller
      */
     public function edit($id)
     {
-        $journal_document = JournalDocument::find($id);
-        return view('journal/document/edit')->with(compact('journal_document'));
+        $data = JournalDocument::find($id);
+        return view('admin.journal.document.edit', compact('data'));
     }
 
     /**
@@ -111,7 +52,7 @@ class JournalDocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'title' => 'required',
@@ -121,15 +62,16 @@ class JournalDocumentController extends Controller
             'year' => 'required',
         ]);
 
-        $old_journal = JournalDocument::find($request->journal_document_id);
+        $old_journal = JournalDocument::find($id);
         // var_dump($old_journal);
         $document_url = $old_journal->document_url;
         if($request->hasFile('document')) {
-            Storage::disk('public')->delete('document/journal/'.$old_journal->document_url);
-            
-            $file_name = rand().date('YmdHis');
-            $document_url = $file_name.'.'.$request->file('document')->extension();
-            $request->file('document')->storeAs('document/journal', $document_url, 'public');
+            Storage::disk('public')->delete(str_replace('storage/', '', $old_journal->document_url));
+
+            $title = str_replace(' ', '_', $request->title);
+            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+            $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
+            $document_url = 'storage/journalDocument/'. $document_url;
         }
 
         try {
@@ -137,16 +79,13 @@ class JournalDocumentController extends Controller
                 'title' => $request->title,
                 'author' => $request->author,
                 'tags' => $request->tags,
-                'doi' => $request->doi,
-                'original_url' => $request->original_url,
                 'abstract' => $request->abstract,
                 'year' => $request->year,
-                'tags' => $request->tags,
                 'doi' => $request->doi,
                 'original_url' => $request->original_url,
                 'document_url' => $document_url
             ]);
-            return redirect('journalDocument/index/'.$old_journal->id);
+            return redirect()->route('manageJournalDoc.index');
 
         } catch (\Throwable $th) {
             return $th;
@@ -166,7 +105,7 @@ class JournalDocumentController extends Controller
             Storage::disk('public')->delete('document/journal/'.$data->document_url);
             JournalDocument::destroy($id);
 
-            return redirect('journalTopic/index/'.$data->journal_topics_id);
+            return redirect()->route('manageJournalDoc.index');
 
         } catch (\Throwable $th) {
             echo 'gagal';

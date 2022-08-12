@@ -12,13 +12,23 @@ use App\Http\Controllers\Web\Lecture\InternalResearch\InternalResearchController
 use App\Http\Controllers\Web\Lecture\Journal\JournalDocumentController;
 use App\Http\Controllers\Web\Lecture\Journal\JournalTopicController;
 
+use App\Http\Controllers\Web\Admin\Journal\JournalDocumentController as ManageJournalDokumenController;
+use App\Http\Controllers\Web\Admin\Journal\JournalTopicController as ManageJournalController;
+
 use App\Http\Controllers\Web\Admin\Manage\DepartementController;
 use App\Http\Controllers\Web\Admin\Manage\StudyController;
+
+use App\Http\Controllers\Web\Admin\Thesis\ThesisController as AdminThesisController;
+use App\Http\Controllers\Web\Admin\Thesis\ThesisDocumentController as AdminThesisDocController;
+use App\Http\Controllers\Web\Admin\StudentCreativityProgram\StudentCreativityProgramController as ManageCreativityController;
+
+use App\Http\Controllers\Web\Admin\InternalResearch\InternalResearchController as ManageInternalResearchController;
 
 use App\Http\Controllers\Web\Student\StudentCreativityProgram\StudentCreativityProgramController;
 
 use App\Http\Controllers\Web\Student\Thesis\ThesisController;
 use App\Http\Controllers\Web\Student\Thesis\ThesisDocumentController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +61,15 @@ Route::group(['middleware' => ['role:admin'],'prefix' => 'admin',],function(){
     Route::resource('departements', DepartementController::class);
     Route::resource('studies', StudyController::class);
     Route::resource('users', UserController::class);
-});
+    Route::resource('manageThesis', AdminThesisController::class);
+    Route::resource('manageThesisDoc', AdminThesisDocController::class);
+    Route::resource('manageCreativity', ManageCreativityController::class);
+
+    Route::resource('manageJournal', ManageJournalController::class);
+    Route::resource('manageJournalDoc', ManageJournalDokumenController::class);
+
+    Route::resource('manageInternalResearch', ManageInternalResearchController::class);
+
 
 // student
 route::group(['middleware' => ['role:student', 'auth'],'prefix' => 'mahasiswa'],function(){
