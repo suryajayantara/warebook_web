@@ -54,17 +54,17 @@
 
                         <ul class="menu-sub">
                             <li class="menu-item active">
-                                <a href="/departements" class="menu-link">
+                                <a href="{{route('departements.index')}}" class="menu-link">
                                     <div data-i18n="Without menu">Jurusan</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="/studies" class="menu-link">
+                                <a href="{{route('studies.index')}}" class="menu-link">
                                     <div data-i18n="Without navbar">Program Studi</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="layouts-container.html" class="menu-link">
+                                <a href="{{route('users.index')}}" class="menu-link">
                                     <div data-i18n="Container">Pengguna</div>
                                 </a>
                             </li>
@@ -75,15 +75,28 @@
                         <span class="menu-header-text">Mahasiswa</span>
                     </li>
 
-                    <li class="menu-item ">
-                        <a href="index.html" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-book"></i>
-                        <div data-i18n="Analytics">Tesis</div>
+                    <li class="menu-item active">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                          <i class="menu-icon tf-icons bx bx-book"></i>
+                          <div data-i18n="Layouts">Tesis</div>
                         </a>
+
+                        <ul class="menu-sub">
+                            <li class="menu-item active">
+                                <a href="{{route('manageThesis.index')}}" class="menu-link">
+                                    <div data-i18n="Without menu">Repositori</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{route('manageThesisDoc.index')}}" class="menu-link">
+                                    <div data-i18n="Without navbar">Dokumen</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="menu-item ">
-                        <a href="index.html" class="menu-link">
+                        <a href="{{route('manageCreativity.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-dock-bottom"></i>
                         <div data-i18n="Analytics">Program Kreativitas Mahasiswa</div>
                         </a>
@@ -93,15 +106,28 @@
                         <span class="menu-header-text">Dosen</span>
                     </li>
 
-                    <li class="menu-item ">
-                        <a href="index.html" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-file"></i>
-                        <div data-i18n="Analytics">Jurnal Dosen</div>
+                    <li class="menu-item active">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                          <i class="menu-icon tf-icons bx bx-file"></i>
+                          <div data-i18n="Layouts">Jurnal Dosen</div>
                         </a>
+
+                        <ul class="menu-sub">
+                            <li class="menu-item active">
+                                <a href="{{route('manageJournal.index')}}" class="menu-link">
+                                    <div data-i18n="Without menu">Repositori</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{route('manageJournalDoc.index')}}" class="menu-link">
+                                    <div data-i18n="Without navbar">Dokumen</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="menu-item ">
-                        <a href="index.html" class="menu-link">
+                        <a href="{{route('manageInternalResearch.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-detail"></i>
                         <div data-i18n="Analytics">Penelitian Dosen</div>
                         </a>
@@ -112,9 +138,14 @@
                     </li>
 
                     <li class="menu-item ">
-                        <a href="index.html" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-power-off"></i>
-                        <div data-i18n="Analytics">Logout</div>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="menu-link">
+                            @csrf 
+                            <i class="menu-icon tf-icons bx bx-power-off"></i>
+                            <button type="submit" >Logout</button>
+                          </form>
+                       
+                        
+                        
                         </a>
                     </li>
 
@@ -136,21 +167,21 @@
     </div>
 
     <script src="{{asset('assets/vendor/libs/jquery/jquery.js')}}"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="{{asset('assets/vendor/libs/popper/popper.js')}}"></script>
+    <script src="{{asset('assets/vendor/js/bootstrap.js')}}"></script>
+    <script src="{{asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
 
-    <script src="../assets/vendor/js/menu.js"></script>
+    <script src="{{asset('assets/vendor/js/menu.js')}}"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 
     <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+    <script src="{{asset('assets/js/main.js')}}"></script>
 
     <!-- Page JS -->
-    <script src="../assets/js/dashboards-analytics.js"></script>
+    <script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

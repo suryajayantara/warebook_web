@@ -32,22 +32,26 @@
         <div class="col-xxl">
             <div class="card mb-4">
               <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Tambah Data Jurusan</h5>
+                <h5 class="mb-0">Edit Data Repositori</h5>
               </div>
               <div class="card-body">
-                <form enctype="multipart/form-data" action="{{ route('users.update', $data->id) }}" method="post">
+                <form enctype="multipart/form-data" action="{{ route('manageThesis.update', $data->id) }}" method="post">
                     @csrf
                     @method('PUT')
+
                   <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >Ubah Jenis akun</label>
+                    <label class="col-sm-2 col-form-label" >Jenis Tesis</label>
                     <div class="col-sm-10">
-                        <select name="role" id="id_faculty" class="form-control @error('departement_id') is-invalid @enderror" aria-label="Default select example">
-                            <option value="" selected>Pilih Jenis Akun</option>
-                            <option value="student">Mahasiswa</option>
-                            <option value="lecture">Dosen</option>
-                            <option value="admin">Admin</option>
+                        <select name="thesis_type" class="form-control @error('departement_id') is-invalid @enderror" aria-label="Default select example" required>
+                            <option value="" disabled>Pilih jenis tesis</option>
+                            <option value="{{$data->thesis_type}}" selected>{{$data->thesis_type}}</option>
+                            @if ($data->thesis_type == 'Tugas Akhir')
+                                <option value="Skripsi">Skripsi</option>
+                            @else
+                                <option value="Tugas Akhir">Tugas Akhir</option>
+                            @endif
                         </select>
-                        @error('role')
+                        @error('departement_id')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                             </span>
@@ -55,10 +59,45 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >Nama</label>
+                    <label class="col-sm-2 col-form-label" >Title</label>
                     <div class="col-sm-10">
-                        <input value="{{$data->user->name}}" name="name" type="text" class="form-control" placeholder="Nama Jurusan" required />
-                        @error('name')
+                        <input value="{{$data->title}}" name="title" type="text" class="form-control" placeholder="Nama Jurusan" />
+                        @error('studies_name')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror   
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" >Kata Kunci</label>
+                    <div class="col-sm-10">
+                        <input value="{{$data->tags}}" name="tags" type="text" class="form-control" placeholder="Nama Jurusan" />
+                        @error('studies_name')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror   
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" >Abstrak</label>
+                    <div class="col-sm-10">
+                      <textarea 
+                        rows="5"
+                        name="abstract"
+                        class="form-control"
+                        placeholder="Deskpripsi Jurusan"
+                        aria-describedby="basic-icon-default-message2"
+                      >{{$data->abstract}}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" >Kata Kunci</label>
+                    <div class="col-sm-10">
+                        <input value="{{$data->created_year}}" name="created_year" type="number" class="form-control" placeholder="Nama Jurusan" />
+                        @error('studies_name')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                             </span>
@@ -66,64 +105,10 @@
                     </div>
                   </div>
 
-                  <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >email</label>
-                    <div class="col-sm-10">
-                        <input value="{{$data->user->email}}" name="email" type="email" class="form-control" placeholder="Email" required />
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror   
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >No. Identitas</label>
-                    <div class="col-sm-10">
-                        <input value="{{$data->unique_id}}"name="unique_id" type="text" class="form-control" placeholder="Nomor Idntitas" required/>
-                        @error('unique_id')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror   
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >Program Studi</label>
-                    <div class="col-sm-10">
-                        <select name="studies_id" id="id_faculty" class="form-control @error('studies_id') is-invalid @enderror" aria-label="Default select example" required>
-                            <option value="" selected>Program Studi</option>
-                            <option value="{{$data->study_id}}" selected>{{$data->studies->studies_name}}</option>
-                            @foreach ($studies_data as $studies)
-                                @if ($studies->id != $data->study_id)
-                                    <option value="{{ $studies->id }}">{{ $studies->studies_name }} - {{ $studies->departements->departement_name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                        @error('studies_id')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" >Password Baru</label>
-                    <div class="col-sm-10">
-                        <input name="password" type="password" class="form-control" placeholder="Password"/>
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror   
-                    </div>
-                  </div>
                   <div class="row justify-content-end">
                     <div class="col-sm-10">
                       <button type="submit" class="btn btn-primary">Send</button>
-                      <a href="{{ route('studies.index') }}">
+                      <a href="{{ route('manageThesis.index') }}">
                         {{-- kembali --}}
                             <button type="button" class="btn btn-warning">Kembali</button>
                     </a>

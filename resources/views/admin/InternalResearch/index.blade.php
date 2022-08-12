@@ -14,8 +14,9 @@
   <div class="navbar-nav align-items-center">
       <div class="nav-item d-flex align-items-center">
       <i class="bx bx-search fs-4 lh-0"></i>
-      <form action="{{route('studies.show', ['study' => '1'])}}" method="GET">
+      <form action="{{route('manageInternalResearch.show', ['manageInternalResearch' => '1'])}}">
         @csrf
+        @method('PUT')
         <input
           name="search"
           type="text"
@@ -36,10 +37,7 @@
   <div class="card">
     <div class="row mt-2">
       <div class="col-md-10">
-        <h5 class="card-header">Data Program Studi</h5>
-      </div>
-      <div class="col-md-2">
-        <a href="{{ route('users.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
+        <h5 class="card-header">Data Penelitian Dosen</h5>
       </div>
     </div>
     
@@ -48,10 +46,13 @@
         <thead>
           <tr>
             <th>No</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>No. Identitas</th>
-            <th>Jurusan</th>
+            <th>Judul</th>
+            <th>Sumber Dana</th>
+            <th>Jumlah Dana</th>
+            <th>Mulai Proyek</th>
+            <th>Akhir Proyek</th>
+            <th>Nomor Kontrak</th>
+            <th>Anggota</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -59,21 +60,29 @@
           @foreach($data as $item)
             <tr>
               <td scope="row">{{$loop->iteration}}</td>
-              <td>{{$item->user->name}}</td>
-              <td>{{$item->user->email}}</td>
-              <td>{{$item->unique_id}}</td>
-              <td>{{$item->departements->departement_name}}</td>
-              <td>{{$item->studies->studies_name}}</td>
+              <td>{{$item->title}}</td>
+              <td> {{$item->budget_type}}</td>
+              <td>{{ 'Rp. '. number_format($item->budget,2,',','.') }}</td>
+              <td>{{date('Y-m-d', strtotime($item->project_started_at))}}</td>
+              <td>{{date('Y-m-d', strtotime($item->project_finish_at))}}</td>
+              <td>{{$item->contract_number}}</td>
+              <td>{{$item->team_member}}</td>
               <td>
                 <div class="dropdown">
                   <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <i class="bx bx-dots-vertical-rounded"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ route('users.edit',$item->id)}}">
+                    <a class="dropdown-item" href="{{ asset($item->proposal_url)}}">
+                      <i class="bx bx-book-open me-1"></i>Lihat Proposal
+                    </a>
+                    <a class="dropdown-item" href="{{ asset($item->document_url)}}">
+                      <i class="bx bx-book-open me-1"></i>Lihat Dokumen
+                    </a>
+                    <a class="dropdown-item" href="{{ route('manageInternalResearch.edit',$item->id)}}">
                       <i class="bx bx-edit-alt me-1"></i>Edit
                     </a>
-                    <form class="dropdown-item" action="{{ route('users.destroy',$item->id) }}" method="POST">
+                    <form class="dropdown-item" action="{{ route('manageInternalResearch.destroy',$item->id) }}" method="POST">
                       @csrf
                       @method('DELETE')
                       <button type="submit"><i class="bx bx-trash me-1"></i> Delete</form></button>

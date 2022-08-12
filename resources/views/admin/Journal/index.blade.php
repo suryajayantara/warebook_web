@@ -14,8 +14,9 @@
   <div class="navbar-nav align-items-center">
       <div class="nav-item d-flex align-items-center">
       <i class="bx bx-search fs-4 lh-0"></i>
-      <form action="{{route('studies.show', ['study' => '1'])}}" method="GET">
+      <form action="{{route('manageJournal.show', '1')}}">
         @csrf
+        @method('PUT')
         <input
           name="search"
           type="text"
@@ -36,10 +37,7 @@
   <div class="card">
     <div class="row mt-2">
       <div class="col-md-10">
-        <h5 class="card-header">Data Program Studi</h5>
-      </div>
-      <div class="col-md-2">
-        <a href="{{ route('users.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
+        <h5 class="card-header">Data Tesis</h5>
       </div>
     </div>
     
@@ -48,10 +46,9 @@
         <thead>
           <tr>
             <th>No</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>No. Identitas</th>
-            <th>Jurusan</th>
+            <th>Judul</th>
+            <th>Subject</th>
+            <th>Pemilik</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -59,21 +56,19 @@
           @foreach($data as $item)
             <tr>
               <td scope="row">{{$loop->iteration}}</td>
+              <td>{{$item->title}}</td>
+              <td > {{$item->subject}}</td>
               <td>{{$item->user->name}}</td>
-              <td>{{$item->user->email}}</td>
-              <td>{{$item->unique_id}}</td>
-              <td>{{$item->departements->departement_name}}</td>
-              <td>{{$item->studies->studies_name}}</td>
               <td>
                 <div class="dropdown">
                   <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <i class="bx bx-dots-vertical-rounded"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ route('users.edit',$item->id)}}">
+                    <a class="dropdown-item" href="{{ route('manageJournal.edit',$item->id)}}">
                       <i class="bx bx-edit-alt me-1"></i>Edit
                     </a>
-                    <form class="dropdown-item" action="{{ route('users.destroy',$item->id) }}" method="POST">
+                    <form class="dropdown-item" action="{{ route('manageJournal.destroy',$item->id) }}" method="POST">
                       @csrf
                       @method('DELETE')
                       <button type="submit"><i class="bx bx-trash me-1"></i> Delete</form></button>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Journal;
+namespace App\Http\Controllers\Web\Admin\Journal;
 
 use App\Http\Controllers\Controller;
 use App\Models\JournalDocument;
@@ -17,62 +17,22 @@ class JournalTopicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $data = JournalTopic::where('id', $id)  ->first();
-        $document = JournalDocument::where('journal_topics_id', $id)->with('User')->get();
-        // var_dump($data);
-        return view('journal.index',compact('data', 'document'));
+        $data = JournalTopic::paginate(6);
+        return view('admin.journal.index',compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('journal.add');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'subject' => 'required',
-            'title' => 'required',
-            'description' => 'required',
-        ]);
-
-        try {
-            JournalTopic::create([
-                'users_id' => Auth::user()->id,
-                'subject' => $request->subject,
-                'title' => $request->title,
-                'description' => $request->description,
-            ]);
-
-            return redirect()->to('repository');
-
-        } catch (\Throwable $th) {
-            return $th;
-        }
-    }
-
-    /**
+     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
-        //
+        $data = JournalTopic::where('title', 'LIKE', '%'.$request->search.'%')->orWhere('subject', 'LIKE', '%'.$request->search.'%')->paginate(6);
+        return view('admin.creativity.index',   compact('data'));
     }
 
     /**
@@ -83,8 +43,8 @@ class JournalTopicController extends Controller
      */
     public function edit($id)
     {
-        $journal = JournalTopic::find($id);
-        return view('journal.edit')->with(compact('journal'));
+        $data = JournalTopic::find($id);
+        return view('admin.journal.edit')->with(compact('data'));
     }
 
     /**
@@ -94,7 +54,7 @@ class JournalTopicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'subject' => 'required',
@@ -102,13 +62,15 @@ class JournalTopicController extends Controller
             'description' => 'required',
         ]);
 
+
         try {
-            JournalTopic::where('id', $request->id)->update([
+            JournalTopic::where('id', $id)->update([
                 'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
             ]); 
-            return redirect('/journalTopic/index/'. $request->id);
+
+            return redirect()->route('manageJournal.index');
 
         } catch (\Throwable $th) {
             var_dump($th);
@@ -125,7 +87,7 @@ class JournalTopicController extends Controller
     {
         try {
             $data = JournalTopic::destroy($id);
-            return redirect()->route('repository.index');
+            return redirect()->route('manageJournal.index');
         } catch (\Throwable $th) {
             echo 'gagal';
         }
