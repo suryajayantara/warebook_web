@@ -22,6 +22,28 @@ class JournalDocumentsServiceController extends Controller
             'data' => $data
         ],200);
     }
+
+    /* Function ini digunakan untuk mengambil data dari database berdasarkan user yang login */
+    public function getJournalDocumentByAuth(){
+
+        // $user = auth()->guard('api')->user()->id;
+
+        // return $user;
+
+        return "Okay";
+
+        // $data = JournalDocument::where('users_id',$user->id)->get();
+        // if($data == null){
+        //     return response()->json([
+        //         'message' => 'Data tidak ditemukan !'. $user->id
+        //     ],500);
+        // }else{
+        //     return response()->json([
+        //         'data' => $data
+        //     ],200);
+        // }
+    }
+
     //function ini digunakan untuk mengambil satu data dari repositori Document dengan mengambil salah satu idnya
     public function getOneJournalDocument(Request $request, $id)
     {

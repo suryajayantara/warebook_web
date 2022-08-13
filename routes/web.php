@@ -69,7 +69,7 @@ Route::group(['middleware' => ['role:admin'],'prefix' => 'admin',],function(){
     Route::resource('manageJournalDoc', ManageJournalDokumenController::class);
 
     Route::resource('manageInternalResearch', ManageInternalResearchController::class);
-
+});
 
 // student
 route::group(['middleware' => ['role:student', 'auth'],'prefix' => 'mahasiswa'],function(){
@@ -119,7 +119,7 @@ route::group(['middleware' => ['role:lecture'],'prefix' => 'dosen'],function(){
     Route::post('journalTopic/update', [JournalTopicController::class, 'update']);
 
     Route::get('journalDocument/create/{id}', [JournalDocumentController::class, 'create']);
-    Route::get('journalDocument/index/{id}', [JournalDocumentController::class, 'index']);
+    Route::get('journalDocument/{id}', [JournalDocumentController::class, 'index']);
     Route::post('journalDocument/update', [JournalDocumentController::class, 'update']);
 
     Route::resource('journalDocument', JournalDocumentController::class);

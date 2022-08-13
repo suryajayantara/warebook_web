@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
     //route untuk get all data, get one data by id, post data, put data and delete data PKM
     Route::prefix('creativity')->group(function () {
         Route::get('/', [StudentCreativityProgramServiceController::class, 'getCreativity']);
+        Route::get('/auth/', [StudentCreativityProgramServiceController::class, 'getCreativityByAuth']);
         Route::get('/{id}', [StudentCreativityProgramServiceController::class, 'getOneCreativity']);
         Route::post('/', [StudentCreativityProgramServiceController::class, 'create']);
         Route::post('/{id}', [StudentCreativityProgramServiceController::class, 'update']);
@@ -52,6 +53,7 @@ Route::prefix('v1')->group(function () {
     // Baca baca aja dokumentasi dilaravel, sisanya ku serahkan kepadamu anak muda 🙏
     Route::prefix('thesis')->group(function () {
         Route::get('/', [ThesisServiceController::class, 'getThesis']);
+        Route::get('/auth/', [ThesisServiceController::class, 'getThesisByAuth']);
         Route::get('/{id}', [ThesisServiceController::class, 'getOneThesis']);
         Route::post('/', [ThesisServiceController::class, 'create']);
         Route::post('/{id}', [ThesisServiceController::class, 'update']);
@@ -73,6 +75,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('research')->group(function () {
         Route::get('/', [InternalResearchServiceController::class, 'getResearch']);
         Route::get('/{id}', [InternalResearchServiceController::class, 'getOneResearch']);
+        Route::get('/auth/', [InternalResearchServiceController::class, 'getResearchByAuth']);
         Route::post('/', [InternalResearchServiceController::class, 'create']);
         Route::post('/{id}', [InternalResearchServiceController::class, 'update']);
         Route::delete('/{id}', [InternalResearchServiceController::class, 'destroy']);
@@ -104,6 +107,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('journalDocument')->group(function () {
         Route::get('/', [JournalDocumentsServiceController::class, 'getJournalDocument']);
         Route::get('/{id}', [JournalDocumentsServiceController::class, 'getOneJournalDocument']);
+        Route::get('/auth', [JournalDocumentsServiceController::class, 'getJournalDocumentByAuth']);
         Route::post('/', [JournalDocumentsServiceController::class, 'create']);
         Route::post('/{id}', [JournalDocumentsServiceController::class, 'update']);
         Route::delete('/{id}', [JournalDocumentsServiceController::class, 'destroy']);
@@ -114,6 +118,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('journalTopic')->group(function () {
         Route::get('/', [JournalTopicsServiceController::class, 'getJournalTopic']);
         Route::get('/{id}', [JournalTopicsServiceController::class, 'getOneJournalTopic']);
+        Route::get('/auth/', [JournalTopicsServiceController::class, 'getJournalTopicByAuth']);
         Route::post('/', [JournalTopicsServiceController::class, 'create']);
         Route::post('/{id}', [JournalTopicsServiceController::class, 'update']);
         Route::delete('/{id}', [JournalTopicsServiceController::class, 'destroy']);

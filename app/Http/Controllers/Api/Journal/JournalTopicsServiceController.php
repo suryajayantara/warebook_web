@@ -21,6 +21,34 @@ class JournalTopicsServiceController extends Controller
             'data' => $data
         ],200);
     }
+
+    /* Function ini digunakan untuk mengambil data dari database berdasarkan user yang login */
+    public function getJournalTopicByAuth(){
+
+
+        if(!auth('api')->check()){
+            return response()->json([
+                'message' => 'Anda Belum Login',
+            ],401);
+        }
+
+        // Data dari Token , Disimpan di variable ini
+        $user = auth()->guard('api')->user();
+
+
+
+        $data = JournalTopic::where('users_id',$user->id)->get();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'.$user->id
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
+    }
+
     //function ini digunakan untuk mengambil satu data dari repositori Topic dengan mengambil salah satu idnya
     public function getOneJournalTopic(Request $request, $id)
     {

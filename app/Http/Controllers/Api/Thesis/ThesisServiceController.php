@@ -22,6 +22,20 @@ class ThesisServiceController extends Controller
 
     }
 
+    /* Function ini digunakan untuk mengambil data dari database berdasarkan user yang login */
+    public function getThesisByAuth(){
+        $data = Thesis::where('users_id',strval(auth()->guard('api')->user()->id))->get();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
+    }
+
     // Fungsi ini gunanya untuk mengambil detail dari 1 data Repositori Tugas Akhir
     // Kalo ini work , biarin , gausah dikutak kutik lagi
     public function getOneThesis($id){
