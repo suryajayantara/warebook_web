@@ -90,7 +90,7 @@ class StudentCreativityProgramController extends Controller
                 'document_url' => $document_url
             ]);
 
-            return redirect()->route('manageCreativity.index');
+            return redirect()->route('manageCreativity.index')->with('success', 'Data Berhasil Diubah');
 
         } catch (\Throwable $th) {
             throw $th;
@@ -108,7 +108,7 @@ class StudentCreativityProgramController extends Controller
         try {
             $data=StudentCreativityProgram::find($id);
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
-            StudentCreativityProgram::destroy($id);            
+            StudentCreativityProgram::destroy($id);
             return redirect()->route('manageCreativity.index');
 
         } catch (\Throwable $th) {

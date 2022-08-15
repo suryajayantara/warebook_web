@@ -24,7 +24,8 @@ class Thesis extends Model
         'created_year',
         'title',
         'abstract',
-        'tags'
+        'tags',
+        'author',
     ];
 
     // fungsi ini digunakan untuk melakukan relasi dengan model Document

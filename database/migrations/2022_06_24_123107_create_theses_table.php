@@ -21,6 +21,7 @@ class CreateThesesTable extends Migration
             $table->text('abstract');
             $table->integer('created_year');
             $table->text('tags');
+            $table->string('author');
             $table->timestamps();
         });
     }

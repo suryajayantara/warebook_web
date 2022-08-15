@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
             'name' => 'Admin',
             'password' => bcrypt('PNBpassword35'),
             'email' => 'politekniknegeribali@pnb.ac.id'
-        ])->assignRole('administrator');
+        ])->assignRole('admin');
 
         User::create([
             'name' => 'student',

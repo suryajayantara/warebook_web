@@ -26,16 +26,16 @@ class StudentCreativityProgramServiceController extends Controller
     /* Function ini digunakan untuk mengambil data dari database berdasarkan user yang login */
     public function getCreativityByAuth(){
 
-        // $data = StudentCreativityProgram::where('users_id',strval(auth()->guard('api')->user()->id))->get();
-        // if($data == null){
-        //     return response()->json([
-        //         'message' => 'Data tidak ditemukan !'
-        //     ],500);
-        // }else{
-        //     return response()->json([
-        //         'data' => $data
-        //     ],200);
-        // }
+        $data = StudentCreativityProgram::where('users_id',strval(auth()->guard('api')->user()->id))->get();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
     }
 
     //function ini digunakan untuk mengambil satu data dari repositori PKM dengan mengambil salah satu idnya

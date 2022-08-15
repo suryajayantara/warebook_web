@@ -86,6 +86,7 @@ class ThesisServiceController extends Controller
             $data->created_year = 2021;
             $data->abstract = $request->abstract;
             $data->tags = $request->tags;
+            $data->author = $user->name;
 
             $data->save();
 

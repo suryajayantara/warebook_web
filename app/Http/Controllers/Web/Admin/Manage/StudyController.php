@@ -53,7 +53,7 @@ class StudyController extends Controller
                 'studies_name' => $request->studies_name,
                 'desc' => $request->desc
             ]);
-            return redirect()->route('studies.index');
+            return redirect()->route('studies.index')->with('success', 'Data Berhasil Ditambah');
 
         } catch (\Throwable $th) {
             // throw $th;
@@ -108,7 +108,7 @@ class StudyController extends Controller
                 'studies_name' => $request->studies_name,
                 'desc' => $request->desc
             ]);
-            return redirect()->route('studies.index');
+            return redirect()->route('studies.index')->with('success', 'Data Berhasil Diubah');
 
         } catch (\Throwable $th) {
             // throw $th;

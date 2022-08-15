@@ -42,7 +42,14 @@
         <a href="{{ route('studies.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
       </div>
     </div>
-    
+
+    {{-- success --}}
+    @if(session('success'))
+    <div class="alert alert-success mb-3 mx-4" role="alert">
+        {{session('success')}}
+    </div>
+    @endif
+
     <div class="">
       <table class="table " >
         <thead>
@@ -83,7 +90,7 @@
       </table>
       <div class="container">
         <div class="mb-3 mt-2">
-          {{$data->links()}} 
+          {{$data->links()}}
         </div>
       </div>
     </div>
