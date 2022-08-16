@@ -41,7 +41,7 @@ class StudentCreativityProgramServiceController extends Controller
     //function ini digunakan untuk mengambil satu data dari repositori PKM dengan mengambil salah satu idnya
     public function getOneCreativity(Request $request, $id)
     {
-        $data = StudentCreativityProgram::where('id', $id)->with('creativityType')->first();
+        $data = StudentCreativityProgram::where('id', $id)->with('users')->first();
         if ($data == null) {
             return response()->json([
                 'message' => 'Data tidak ditemukan !'
