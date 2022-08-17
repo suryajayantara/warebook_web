@@ -28,7 +28,7 @@ use App\Http\Controllers\Web\Student\StudentCreativityProgram\StudentCreativityP
 
 use App\Http\Controllers\Web\Student\Thesis\ThesisController;
 use App\Http\Controllers\Web\Student\Thesis\ThesisDocumentController;
-
+use App\Http\Controllers\Web\User\UserDetailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +49,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::resource('home', HomeController::class);
+Route::resource('user', UserDetailController::class);
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -75,31 +76,8 @@ Route::group(['middleware' => ['role:admin'],'prefix' => 'admin',],function(){
 route::group(['middleware' => ['role:student', 'auth'],'prefix' => 'mahasiswa'],function(){
 
     Route::resource('studentRepository', StudentRepository::class);
-
-
-//Thesis Route
-    Route::get('thesis/create/{type}', [ThesisController::class, 'create']);
-    Route::get('thesis/{id}', [ThesisController::class, 'index']);
     Route::resource('thesis', ThesisController::class);
-    Route::post('thesis/update', [ThesisController::class, 'update']);
-    Route::post('thesisDocument/create', [ThesisDocumentController::class, 'create']);
-    Route::post('thesisDocument/update', [ThesisDocumentController::class, 'update']);
     Route::resource('thesisDocument', ThesisDocumentController::class);
-
-
-//Journal Route
-    Route::get('journalTopic/index/{id}', [JournalTopicController::class, 'index']);
-    Route::get('journalTopic/edit/{id}', [JournalTopicController::class, 'edit']);
-    Route::post('journalTopic/update', [JournalTopicController::class, 'update']);
-
-    Route::get('journalDocument/create/{id}', [JournalDocumentController::class, 'create']);
-    Route::get('journalDocument/index/{id}', [JournalDocumentController::class, 'index']);
-    Route::post('journalDocument/update', [JournalDocumentController::class, 'update']);
-
-    Route::resource('journalDocument', JournalDocumentController::class);
-    Route::resource('journalTopic', JournalTopicController::class);
-
-
     Route::resource('creativity', StudentCreativityProgramController::class);
 
 
@@ -107,21 +85,8 @@ route::group(['middleware' => ['role:student', 'auth'],'prefix' => 'mahasiswa'],
 
 route::group(['middleware' => ['role:lecture'],'prefix' => 'dosen'],function(){
 
-    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('lectureRepository', LectureRepository::class);
-
     Route::resource('internalResearch', InternalResearchController::class);
-
-
-    //Journal Route
-    Route::get('journalTopic/index/{id}', [JournalTopicController::class, 'index']);
-    Route::get('journalTopic/edit/{id}', [JournalTopicController::class, 'edit']);
-    Route::post('journalTopic/update', [JournalTopicController::class, 'update']);
-
-    Route::get('journalDocument/create/{id}', [JournalDocumentController::class, 'create']);
-    Route::get('journalDocument/{id}', [JournalDocumentController::class, 'index']);
-    Route::post('journalDocument/update', [JournalDocumentController::class, 'update']);
-
     Route::resource('journalDocument', JournalDocumentController::class);
     Route::resource('journalTopic', JournalTopicController::class);
 

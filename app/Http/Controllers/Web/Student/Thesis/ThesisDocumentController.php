@@ -30,7 +30,7 @@ class ThesisDocumentController extends Controller
      */
     public function create(Request $request)
     {
-        $thesis_id = $request->thesis_id;
+        $thesis_id = $request->thesi;
         return view('thesis.document.add', compact('thesis_id'));
     }
 
@@ -111,6 +111,7 @@ class ThesisDocumentController extends Controller
         // var_dump($id);
         $data = ThesisDocument::find($id);
         $thesis = Thesis::find($data->thesis_id);
+        $document_url = $data->document_url;
 
         if($request->hasFile('document')){
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));

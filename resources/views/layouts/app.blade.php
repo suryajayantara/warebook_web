@@ -59,7 +59,7 @@
 <div id="dropdownDivider" class="hidden z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(289px, 70px);">
     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
       <li>
-        <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+        <a href="{{ route('user.show', Auth::user()->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
       </li>
       <li>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -72,6 +72,7 @@
 
 
       @yield('contents')
+     
       <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
 
 </body>

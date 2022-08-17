@@ -12,13 +12,12 @@ class JournalDocumentController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $data = JournalDocument::where('id', $id)->with('User')->first();
-        return view('journal.document.index',compact('data'));
+       
     }
 
     /**
@@ -26,9 +25,9 @@ class JournalDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create(Request $request)
     {
-        $journal_id = $id;
+        $journal_id = $request->id;
         return view('journal.document.add', compact('journal_id'));
     }
 
@@ -69,7 +68,7 @@ class JournalDocumentController extends Controller
                 'original_url' => $request->original_url,
                 'document_url' => $document_url,
             ]);
-            return redirect('/dosen/journalTopic/index/'.$request->journal_topics_id);
+            return redirect()->route('journalTopic.show', $request->journal_topics_id);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -84,7 +83,8 @@ class JournalDocumentController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = JournalDocument::where('id', $id)->with('User')->first();
+        return view('journal.document.index',compact('data'));
     }
 
     /**
@@ -123,9 +123,9 @@ class JournalDocumentController extends Controller
 
 
             $title = str_replace(' ', '_', $request->title);
-        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
-        $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
-        $document_url = 'storage/journalDocument/'. $document_url;
+            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+            $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
+            $document_url = 'storage/journalDocument/'. $document_url;
         }
 
         try {
@@ -142,7 +142,7 @@ class JournalDocumentController extends Controller
                 'original_url' => $request->original_url,
                 'document_url' => $document_url
             ]);
-            return redirect('/dosen/journalTopic/index/'.$old_journal->id);
+            return redirect()->route('journalTopic.show', ['journalTopic' => $old_journal->journal_topics_id]);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -162,7 +162,7 @@ class JournalDocumentController extends Controller
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));            
             JournalDocument::destroy($id);
 
-            return redirect('dosen/journalTopic/index/'.$data->journal_topics_id);
+            return redirect()->route('journalTopic.show', ['journalTopic' => $data->journal_topics_id]);
 
         } catch (\Throwable $th) {
             echo 'gagal';

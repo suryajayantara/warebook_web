@@ -7,12 +7,13 @@
         <h1 class="font-black text-[30px] leading-7">Update Your Document</h1>
         <p class="opacity-60 mt-1">Masukkan data document baru yng diperlukan pada repositori</p>
 
-        <form class="flex flex-col" enctype="multipart/form-data" action="/journalDocument/update" method="POST">
+        <form class="flex flex-col" enctype="multipart/form-data" action="{{route('journalDocument.update', $journal_document->id)}}" method="POST">
             @csrf
+            @method('PUT')
             <input type="hidden" value="{{$journal_document->id}}" name="journal_document_id" >
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="Judul Jurnal" name="title" id="title" value="{{$journal_document->title}}" required>
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="Penulis" name="author" id="author" value="{{$journal_document->author}}" required>
-            <textarea class="font-semibold px-4 text-slate-500 h-32 py-2 outline-none  border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" placeholder="Abstrak" name="abstract" id="abstract" cols="30" rows="10" required>{{$journal_document->title}}</textarea>
+            <textarea class="font-semibold px-4 text-slate-500 h-32 py-2 outline-none  border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" placeholder="Abstrak" name="abstract" id="abstract" cols="30" rows="10" required>{{$journal_document->abstract}}</textarea>
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="Kata Kunci" name="tags" id="tags" value="{{$journal_document->tags}}" required>
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="number" placeholder="Tahun Terbit" name="year" id="year" value="{{$journal_document->year}}" required>
             <input class="h-12 mt-3 mb-2 px-4 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200" type="text" placeholder="DOI" name="doi" id="doi" value="{{$journal_document->doi}}">

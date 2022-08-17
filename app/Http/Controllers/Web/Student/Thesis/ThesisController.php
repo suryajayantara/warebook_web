@@ -18,11 +18,9 @@ class ThesisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $thesis = Thesis::where('id', $id)->with('User')->first();
-        $document = ThesisDocument::where('thesis_id', $id)->get();
-        return view('thesis.index',compact('thesis', 'document'));
+        //
     }
 
     /**
@@ -30,9 +28,9 @@ class ThesisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($type)
+    public function create(Request $request)
     {
-        $thesis_type = $type;
+        $thesis_type = $request->type;
         // $users = User::all();
         return view('thesis.add')->with(compact('thesis_type'));
     }
@@ -78,7 +76,9 @@ class ThesisController extends Controller
      */
     public function show($id)
     {
-        //
+        $thesis = Thesis::where('id', $id)->with('User')->first();
+        $document = ThesisDocument::where('thesis_id', $id)->get();
+        return view('thesis.index',compact('thesis', 'document'));
     }
 
     /**

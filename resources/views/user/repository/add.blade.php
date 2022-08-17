@@ -12,21 +12,21 @@
         @php
             if(Auth::user()->hasRole('student')):
         @endphp
-          <a href="/mahasiswa/thesis/create/Tugas Akhir" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#0984E3]">
+          <a href="{{route('thesis.create', ['type' => 'Tugas Akhir'])}}" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#0984E3]">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">Tugas Akhir</h1>
               <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>
             </div>
             <img class="h-32" src="{{asset('img/design/thesis.svg')}}" alt="">
           </a>
-          <a href="/mahasiswa/creativity/create" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#FFB52C]">
+          <a href="{{route('creativity.create')}}" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#FFB52C]">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">PKM</h1>
               <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>
             </div>
             <img class="h-32" src="{{asset('img/design/thesis.svg')}}" alt="">
           </a>
-          <a href="/mahasiswa/thesis/create/Skripsi" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#D9D9D9]">
+          <a href="{{route('thesis.create', ['type' => 'Skripsi'])}}" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#D9D9D9]">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">Skripsi</h1>
               <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>
@@ -36,14 +36,14 @@
         @php
             else :
         @endphp
-          <a href="/dosen/journalTopic/create" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#0984E3]">
+          <a href="{{route('journalTopic.create')}}" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#0984E3]">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">Jurnal</h1>
               <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>
             </div>
             <img class="h-32" src="{{asset('img/design/thesis.svg')}}" alt="">
           </a>
-          <a href="/dosen/internalResearch/create" class="bg-[#FFB52C] w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl">
+          <a href="{{route('internalResearch.create')}}" class="bg-[#FFB52C] w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">Penelitian Dosen</h1>
               <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>

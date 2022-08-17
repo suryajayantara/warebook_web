@@ -28,13 +28,18 @@
                         @php
                             if ($thesis->user->id == Auth::user()->id) :
                         @endphp
-                                <form id='button' action="/mahasiswa/thesisDocument/create" class="mx-1 float-right" method="post">
+                                <a href="{{route('thesisDocument.create', ['thesi' => $thesis->id])}}">
+                                    <button type="button" class="mx-1 float-right px-4 py-2 text-xs bg-blue-600 text-white font-bold  leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        Tambah Document
+                                    </button>
+                                </a>
+                                {{-- <form id='button' action="/mahasiswa/thesisDocument/create" class="mx-1 float-right" method="post">
                                     @csrf
                                     <input type="hidden" name="thesis_id" value="{{$thesis->id}}">
                                     <button type="submit"  class=" inline-block px-4 py-2 text-xs bg-blue-600 text-white font-bold leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                         Tambah Dokumen
                                     </button>
-                                </form>
+                                </form> --}}
                                 <form action="{{ route('thesis.destroy', ['thesi' => $thesis->id]) }}" method="post">
                                     <input class="mx-1 float-right  px-4 py-2 text-xs bg-[#FF7675] text-white font-bold  leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="submit" value="Delete" />
                                     @method('delete')

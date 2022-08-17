@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
 
 class UserDetailController extends Controller
@@ -46,7 +47,9 @@ class UserDetailController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = UserDetail::where('users_id',$id)->first();
+        // var_dump($data);
+        return view('user.edit.index', compact('data'));
     }
 
     /**
