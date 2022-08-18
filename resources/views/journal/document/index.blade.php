@@ -55,7 +55,7 @@
             
             <div class="text-2xl mt-5 mb-2  font-bold opacity-90">
                 Dokumen Jurnal
-                <a href="/dosen/journalTopic/index/{{$data->journal_topics_id}}">
+                <a href="{{route('journalTopic.show',$data->journal_topics_id)}}">
                     <button type="button" class="mx-1 float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                         Kembali ke Repositori
                     </button>

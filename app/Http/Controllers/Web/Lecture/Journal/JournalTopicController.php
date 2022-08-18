@@ -16,12 +16,9 @@ class JournalTopicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $data = JournalTopic::where('id', $id)  ->first();
-        $document = JournalDocument::where('journal_topics_id', $id)->with('User')->get();
-        // var_dump($data);
-        return view('journal.index',compact('data', 'document'));
+        //
     }
 
     /**
@@ -71,7 +68,10 @@ class JournalTopicController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = JournalTopic::where('id', $id)  ->first();
+        $document = JournalDocument::where('journal_topics_id', $id)->with('User')->get();
+        // var_dump($data);
+        return view('journal.index',compact('data', 'document'));
     }
 
     /**
@@ -93,7 +93,7 @@ class JournalTopicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'subject' => 'required',
@@ -102,12 +102,12 @@ class JournalTopicController extends Controller
         ]);
 
         try {
-            JournalTopic::where('id', $request->id)->update([
+            JournalTopic::where('id', $id)->update([
                 'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
             ]);
-            return redirect('/dosen/journalTopic/index/'. $request->id);
+            return redirect()->route('journalTopic.show', $id);
 
         } catch (\Throwable $th) {
             throw $th;

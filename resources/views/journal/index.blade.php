@@ -54,7 +54,7 @@
                             </button>
                         </a>
                     @endif
-                <a href="/dosen/journalDocument/create/{{$data->id}}">
+                <a href="{{route('journalDocument.create', ['id' =>$data->id])}}">
                     <button type="button" class="mx-1 float-right inline-block px-6 py-2.5 bg-blue-600 text-white font-bold text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                         Tambah Jurnal
                     </button>
@@ -66,7 +66,7 @@
         <div class="grid gap-3 overflow-auto duration-300 mb-20" id="document">
            @foreach ($document as $item)
             <div class="flex min-h-[4.5rem] w-full bg-slate-50 shadow-sm rounded-md">
-                <a href="/dosen/journalDocument/index/{{$item->id}}" class="flex-grow flex">
+                <a href="{{ route('journalDocument.show', $item->id)}}" class="flex-grow flex">
                     <div class="flex items-start py-2 mr-4">
                         <img class="bg-[#FF7675]  min-h-[3rem] min-w-[3rem] p-2 ml-2 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
                     </div>
