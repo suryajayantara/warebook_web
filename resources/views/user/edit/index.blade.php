@@ -4,7 +4,7 @@
 
 <div class="container w-[70%] mx-auto">
     <h1 class="text-2xl mt-10 mb-5 font-extrabold opacity-90">Update Your Profile</h1>
-    
+
     <h2 class="text-lg  my-2 font-bold opacity-90">Nama</h2>
     <p>{{ $data->user->name}}</p>
 
@@ -18,7 +18,7 @@
     <p>{{ $data->departements->departement_name}}</p>
 
     <h2 class="text-lg  my-2 font-bold opacity-90">Program Studi</h2>
-    <p>{{ $data->studies->studies_name}}</p>
+    <p>{{ $data->study->studies_name}}</p>
 
     <div class="my-5">
         <a href="">
@@ -26,7 +26,7 @@
         </a>
         <a href="">
             <button class="bg-blue-600 px-3 py-1 font-extrabold text-white rounded-md">Ganti Password</button>
-    
+
         </a>
     </div>
 </div>

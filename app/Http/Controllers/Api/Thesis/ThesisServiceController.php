@@ -11,7 +11,7 @@ class ThesisServiceController extends Controller
     /* Function ini digunakan untuk mengambil data dari database */
     public function getThesis(Request $request){
         $search = request('search','');
-        $data = Thesis::query()->with('user')->when($search , function($query) use ($search){
+        $data = Thesis::query()->with('users.details.study.departements')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 

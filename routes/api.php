@@ -74,8 +74,8 @@ Route::prefix('v1')->group(function () {
     //route untuk get all data, get one data by id, post data, put data and delete data InternalResearch
     Route::prefix('research')->group(function () {
         Route::get('/', [InternalResearchServiceController::class, 'getResearch']);
-        Route::get('/{id}', [InternalResearchServiceController::class, 'getOneResearch']);
         Route::get('/auth/', [InternalResearchServiceController::class, 'getResearchByAuth']);
+        Route::get('/{id}', [InternalResearchServiceController::class, 'getOneResearch']);
         Route::post('/', [InternalResearchServiceController::class, 'create']);
         Route::post('/{id}', [InternalResearchServiceController::class, 'update']);
         Route::delete('/{id}', [InternalResearchServiceController::class, 'destroy']);
@@ -106,8 +106,8 @@ Route::prefix('v1')->group(function () {
     //route untuk get all data, get one data by id, post data, put data and delete data JournalDocument
     Route::prefix('journalDocument')->group(function () {
         Route::get('/', [JournalDocumentsServiceController::class, 'getJournalDocument']);
-        Route::get('/{id}', [JournalDocumentsServiceController::class, 'getOneJournalDocument']);
         Route::get('/auth', [JournalDocumentsServiceController::class, 'getJournalDocumentByAuth']);
+        Route::get('/{id}', [JournalDocumentsServiceController::class, 'getOneJournalDocument']);
         Route::post('/', [JournalDocumentsServiceController::class, 'create']);
         Route::post('/{id}', [JournalDocumentsServiceController::class, 'update']);
         Route::delete('/{id}', [JournalDocumentsServiceController::class, 'destroy']);
@@ -117,8 +117,8 @@ Route::prefix('v1')->group(function () {
     //route untuk get all data, get one data by id, post data, put data and delete data JournalTopic
     Route::prefix('journalTopic')->group(function () {
         Route::get('/', [JournalTopicsServiceController::class, 'getJournalTopic']);
-        Route::get('/{id}', [JournalTopicsServiceController::class, 'getOneJournalTopic']);
         Route::get('/auth/', [JournalTopicsServiceController::class, 'getJournalTopicByAuth']);
+        Route::get('/{id}', [JournalTopicsServiceController::class, 'getOneJournalTopic']);
         Route::post('/', [JournalTopicsServiceController::class, 'create']);
         Route::post('/{id}', [JournalTopicsServiceController::class, 'update']);
         Route::delete('/{id}', [JournalTopicsServiceController::class, 'destroy']);

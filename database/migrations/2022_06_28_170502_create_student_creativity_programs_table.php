@@ -16,6 +16,7 @@ class CreateStudentCreativityProgramsTable extends Migration
         Schema::create('student_creativity_programs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('author');
             $table->string('creativity_type');
             $table->string('aliases');
             $table->string('title');

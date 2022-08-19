@@ -13,7 +13,7 @@ class JournalDocumentsServiceController extends Controller
     public function getJournalDocument(Request $request)
     {
         $search = request('search','');
-        $data = JournalDocument::query()->with('user')->when($search , function($query) use ($search){
+        $data = JournalDocument::query()->with('user.details.study.departements')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
@@ -26,22 +26,18 @@ class JournalDocumentsServiceController extends Controller
     /* Function ini digunakan untuk mengambil data dari database berdasarkan user yang login */
     public function getJournalDocumentByAuth(){
 
-        // $user = auth()->guard('api')->user()->id;
+        $user = auth()->guard('api')->user();
 
-        // return $user;
-
-        return "Okay";
-
-        // $data = JournalDocument::where('users_id',$user->id)->get();
-        // if($data == null){
-        //     return response()->json([
-        //         'message' => 'Data tidak ditemukan !'. $user->id
-        //     ],500);
-        // }else{
-        //     return response()->json([
-        //         'data' => $data
-        //     ],200);
-        // }
+        $data = JournalDocument::where('users_id',$user->id)->get();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'. $user->id
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
     }
 
     //function ini digunakan untuk mengambil satu data dari repositori Document dengan mengambil salah satu idnya

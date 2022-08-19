@@ -13,7 +13,7 @@ class InternalResearchServiceController extends Controller
     public function getResearch(Request $request)
     {
         $search = request('search','');
-        $data = InternalResearch::query()->with('users')->when($search , function($query) use ($search){
+        $data = InternalResearch::query()->with('users.details.study.departements')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 

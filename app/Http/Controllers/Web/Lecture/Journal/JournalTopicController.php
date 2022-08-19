@@ -125,7 +125,7 @@ class JournalTopicController extends Controller
         try {
             $data = JournalDocument::where('journal_topics_id', $id)->get();
             foreach ($data as $item){
-                Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));            
+                Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));
             }
 
             JournalTopic::destroy($id);

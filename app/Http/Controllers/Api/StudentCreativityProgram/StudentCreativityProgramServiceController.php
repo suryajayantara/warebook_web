@@ -13,9 +13,9 @@ class StudentCreativityProgramServiceController extends Controller
     public function getCreativity(Request $request)
     {
         $search = request('search', '');
-        $data = StudentCreativityProgram::query()->with('users')->when($search, function ($query) use ($search) {
+        $data = StudentCreativityProgram::query()->with('users.details.study.departements')->when($search, function ($query) use ($search) {
             $query->where('title', 'like', '%' . $search . '%');
-        })->get();
+        })->paginate(1);
 
         return response()->json([
             'search_keyword' => $search,
@@ -94,6 +94,7 @@ class StudentCreativityProgramServiceController extends Controller
 
             $data = new StudentCreativityProgram();
             $data->users_id = $user->id;
+            $data->author = $user->name;
             $data->creativity_type = $request->creativity_type;
             $data->aliases = $request->aliases;
             $data->title = $request->title;
@@ -150,6 +151,7 @@ class StudentCreativityProgramServiceController extends Controller
             }
 
             $data->users_id = $user->id;
+            $data->author = $user->name;
             $data->creativity_type = $request->creativity_type;
             $data->aliases = $request->aliases;
             $data->title = $request->title;

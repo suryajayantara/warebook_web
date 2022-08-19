@@ -76,7 +76,7 @@ class ThesisController extends Controller
      */
     public function show($id)
     {
-        $thesis = Thesis::where('id', $id)->with('User')->first();
+        $thesis = Thesis::where('id', $id)->with('users')->first();
         $document = ThesisDocument::where('thesis_id', $id)->get();
         return view('thesis.index',compact('thesis', 'document'));
     }
@@ -128,7 +128,7 @@ class ThesisController extends Controller
         try {
             $data = ThesisDocument::where('thesis_id', $id)->get();
             foreach ($data as $item){
-                Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));            
+                Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));
             }
             Thesis::destroy($id);
             return redirect()->route('studentRepository.index');

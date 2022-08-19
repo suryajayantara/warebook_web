@@ -45,31 +45,31 @@ class User extends Authenticatable
 
     // fungsi ini digunakan untuk melakukan relasi dengan model Thesis
     public function theses(){
-        return $this->hasOne(Thesis::class);
+        return $this->hasOne(Thesis::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model StudentCreativityProgram
     public function creativity(){
-        return $this->hasOne(StudentCreativityProgram::class);
+        return $this->hasOne(StudentCreativityProgram::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model InternalResearch
     public function internalResearch(){
-        return $this->hasOne(InternalResearch::class);
+        return $this->hasOne(InternalResearch::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model UserDetail
     public function details(){
-        return $this->hasOne(UserDetail::class);
+        return $this->hasOne(UserDetail::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic
     public function journalTopic(){
-        return $this->hasOne(JournalTopic::class);
+        return $this->hasOne(JournalTopic::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic
     public function journalDocument(){
-        return $this->hasOne(JournalDocument::class);
+        return $this->hasOne(JournalDocument::class, 'users_id', 'id');
     }
 }

@@ -9,6 +9,7 @@ class StudentCreativityProgram extends Model
 {
     /**
      * users_id : digunakan untuk menyimpan data mahasiswa berdasarkan id yang diambil dari tabel users atau sebagai foreign key dengan tipe data bigint
+     * author : digunakan untuk menyimpan penulis PKM dengan tipe data string
      * creativity_type : digunakan untuk menyimpan bidang PKM dengan tipe data string
      * abstract : digunakan untuk menyimpan abstract pada dokument PKM dengan tipe data text
      * title : diguankan untuk menyimpan judul dari PKM denga tipe data string
@@ -20,6 +21,7 @@ class StudentCreativityProgram extends Model
     use HasFactory;
     protected $fillable = [
         'users_id',
+        'author',
         'creativity_type',
         'aliases',
         'title',

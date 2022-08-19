@@ -15,6 +15,7 @@ class Thesis extends Model
      * title : digunakan untuk menyimpan judul program studi dengan tipe data string
      * abstract : digunakan untuk menyimpan abstrak thesis denga tipe data text
      * tags : digunakan untuk menyimpan tags thesis dengan tipe data text
+     * tags : digunakan untuk menyimpan author thesis dengan tipe data string
      */
     use HasFactory;
 
@@ -34,7 +35,7 @@ class Thesis extends Model
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model User
-    public function user(){
+    public function users(){
         return $this->belongsTo(User::class,'users_id');
     }
 

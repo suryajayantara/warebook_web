@@ -24,13 +24,13 @@ class UserSeeder extends Seeder
         $user->assignRole('student');
         $user->save();
 
-        $userDetails->users_id = 1;
+        $userDetails->users_id = 4;
         $userDetails->unique_id = "1915323025";
         $userDetails->departement_id = 1;
         $userDetails->study_id = 1;
 
         $userDetails->save();
-        
+
         $user = new User();
         $userDetails = new UserDetail();
         $user->name = 'Arya Candrayana';
@@ -39,13 +39,13 @@ class UserSeeder extends Seeder
         $user->assignRole('lecture');
         $user->save();
 
-        $userDetails->users_id = 2;
+        $userDetails->users_id = 5;
         $userDetails->unique_id = "1915323005";
         $userDetails->departement_id = 1;
         $userDetails->study_id = 1;
 
         $userDetails->save();
 
-       
+
     }
 }

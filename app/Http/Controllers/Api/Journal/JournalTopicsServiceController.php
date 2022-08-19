@@ -12,7 +12,7 @@ class JournalTopicsServiceController extends Controller
     public function getJournalTopic(Request $request)
     {
         $search = request('search','');
-        $data = JournalTopic::query()->with('user')->when($search , function($query) use ($search){
+        $data = JournalTopic::query()->with('user.details.study.departements')->when($search , function($query) use ($search){
             $query->where('title','like','%' . $search . '%');
         })->get();
 
