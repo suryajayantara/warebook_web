@@ -23,7 +23,7 @@ class UserController extends Controller
         $data = auth()->guard('api')->user();
 
         return response()->json([
-            // 'data' => auth()->guard('api')->user()->roles->pluck('name')
+            'role' => auth()->guard('api')->user()->roles->pluck('name'),
             'name' => $data->name,
             'email' => $data->email,
             'departement' => $data->details->departements->departemen_name,
