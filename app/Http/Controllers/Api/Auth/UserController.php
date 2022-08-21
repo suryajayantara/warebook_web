@@ -23,20 +23,20 @@ class UserController extends Controller
         $data = auth()->guard('api')->user();
 
         return response()->json([
-            // 'data' => auth()->guard('api')->user()->roles->pluck('name')
+            'role' => auth()->guard('api')->user()->roles->pluck('name'),
             'name' => $data->name,
             'email' => $data->email,
             'departement' => $data->details->departements->departemen_name,
-            'study' => $data->details->studies,
+            'study' => $data->details->study,
             'departement' => $data->details->departements
         ],200);
     }
 
 
-    /* 
-      
+    /*
+
     */
-    
+
     public function login(){
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
 
@@ -58,7 +58,7 @@ class UserController extends Controller
     }
 
     public function newTokenGenerate(){
-      
+
     }
 
     public function register(Request $request){
@@ -69,6 +69,12 @@ class UserController extends Controller
       //   ]);
       // }
 
+        if ($request->roles != 'student' && $request->roles != 'lecture') {
+            return response()->json([
+                'message' => 'Roles Tidak Ada',
+            ],401);
+        }
+
         $user = new User();
         $detail = new UserDetail();
 
@@ -77,7 +83,16 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
-        $user->assignRole('student');
+
+        $user->assignRole($request->roles);
+
+
+        $detail->users_id = $user->id;
+        $detail->unique_id = $request->unique_id;
+        $detail->departement_id = $request->departement_id;
+        $detail->study_id = $request->study_id;
+        $detail->save();
+
 
         // User Details => to UsersDetails Models
 
@@ -85,7 +100,8 @@ class UserController extends Controller
         return response()->json([
           'success' => true,
           'token' => $token,
-          'user' => $user
+          'user' => $user,
+          'detail' => $detail
       ]);
     }
 

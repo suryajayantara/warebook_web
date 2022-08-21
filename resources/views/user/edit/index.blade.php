@@ -3,9 +3,9 @@
 @section('contents')
     <div class="container w-[70%] mx-auto">
         <h1 class="text-2xl mt-10 mb-5 font-extrabold opacity-90">Update Your Profile</h1>
-
         <h2 class="text-lg  my-2 font-bold opacity-90">Nama</h2>
         <p>{{ $data->user->name }}</p>
+
 
         <h2 class="text-lg  my-2 font-bold opacity-90">Email</h2>
         <p>{{ $data->user->email }}</p>
@@ -29,4 +29,5 @@
             </a>
         </div>
     </div>
+
 @endsection

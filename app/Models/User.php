@@ -44,38 +44,33 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     // fungsi ini digunakan untuk melakukan relasi dengan model Thesis
-    public function theses()
-    {
-        return $this->hasOne(Thesis::class);
+
+    public function theses(){
+        return $this->hasOne(Thesis::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model StudentCreativityProgram
-    public function creativity()
-    {
-        return $this->hasOne(StudentCreativityProgram::class);
+    public function creativity(){
+        return $this->hasOne(StudentCreativityProgram::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model InternalResearch
-    public function internalResearch()
-    {
-        return $this->hasOne(InternalResearch::class);
+    public function internalResearch(){
+        return $this->hasOne(InternalResearch::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model UserDetail
-    public function details()
-    {
-        return $this->hasOne(UserDetail::class);
+    public function details(){
+        return $this->hasOne(UserDetail::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic
-    public function journalTopic()
-    {
-        return $this->hasOne(JournalTopic::class);
+    public function journalTopic(){
+        return $this->hasOne(JournalTopic::class, 'users_id', 'id');
     }
 
     // fungsi ini digunakan untuk melakukan relasi dengan model JournalTopic
-    public function journalDocument()
-    {
-        return $this->hasOne(JournalDocument::class);
+    public function journalDocument(){
+        return $this->hasOne(JournalDocument::class, 'users_id', 'id');
     }
 }

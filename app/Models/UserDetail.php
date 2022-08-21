@@ -26,7 +26,7 @@ class UserDetail extends Model
         return $this->belongsTo(Departement::class,'departement_id');
     }
 
-    public function studies()
+    public function study()
     {
         return $this->belongsTo(Study::class,'study_id');
     }
