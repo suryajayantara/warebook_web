@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Departement;
 use App\Models\Study;
 use App\Models\User;
 use App\Models\UserDetail;
@@ -26,11 +25,11 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $departement_data = Departement::all();
+        $account_type = $request->type;
         $studies_data = Study::all();
-        return view('register.add', compact('departement_data','studies_data'));
+        return view('register.add', compact('studies_data', 'account_type'));
     }
 
     /**
@@ -42,37 +41,42 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'departement_id'=>'required',
-            'study_id'=>'required',
-            'email'=>'required|unique:users,email',
-            'unique_id'=>'required|unique:user_details,unique_id',
-            'name'=>'required',
-            'password'=>'required'
-        ],[
-            'email.unique' => "Data Sudah Ada !",
-            'unique_id.unique' => "Data Sudah Ada !"
+            'studies_id' => 'required',
+            'email' => 'required|unique:users,email|max:100',
+            'unique_id' => 'required|unique:user_details,unique_id',
+            'name' => 'required|min:2|max:255',
+            'password' => 'required|confirmed|min:8'
+        ], [
+            // 'password.same' => 'Password harus sama',
+            'email.unique' => "Email anda sudah terdaftar!",
+            'unique_id.unique' => "Nomor identitas anda sudah terdaftar!"
         ]);
 
         try {
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password)
-            ]);
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            if ($request->role == 'student') {
+                $user->assignRole('student');
+            } elseif ($request->role == 'lecture') {
+                $user->assignRole('lecture');
+            }
+            $user->save();
 
-            $data_parsing = User::where('email',$request->email)->first();
+            $data_parsing =  User::latest()->first();
+            $study = Study::find($request->studies_id);
+
             UserDetail::create([
-                'users_id' => $data_parsing['id'],
-                'departement_id' => $request->departement_id,
-                'study_id' => $request->study_id,
+                'users_id' => $data_parsing->id,
+                'departement_id' => $study->departement_id,
+                'study_id' => $request->studies_id,
                 'unique_id' => $request->unique_id,
             ]);
 
-            return redirect()->route('register.index');
-
+            return redirect()->route('login');
         } catch (\Throwable $th) {
-            // throw $th;
-
+            var_dump($th);
         }
     }
 

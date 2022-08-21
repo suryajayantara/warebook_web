@@ -13,7 +13,16 @@ use Illuminate\Support\Facades\Auth;
 
 class RepositoryController extends Controller
 {
-
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
+    }
 
     public function index()
     {
@@ -22,8 +31,6 @@ class RepositoryController extends Controller
         $internalresearch = InternalResearch::where('users_id', Auth::user()->id)->paginate(5);
 
         return view('user.repository.index', compact('journal', 'topic', 'internalresearch'));
-       
-        
     }
 
     public function create()

@@ -50,11 +50,12 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
-            if($request->role == 'student'){
+
+            if ($request->role == 'student') {
                 $user->assignRole('student');
-            }elseif($request->role == 'lecture'){
+            } elseif ($request->role == 'lecture') {
                 $user->assignRole('lecture');
-            }else {
+            } else {
                 $user->assignRole('admin');
             }
             $user->save();
@@ -70,12 +71,9 @@ class UserController extends Controller
             $detail->save();
 
             return redirect()->route('users.index');
-
         } catch (\Throwable $th) {
             // var_dump($th);
         }
-
-
     }
 
     /**
@@ -98,7 +96,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $data = UserDetail::find($id);
-        $studies_data = Study::all(); 
+        $studies_data = Study::all();
         return view('admin.user.edit', compact('data', 'studies_data'));
     }
 
@@ -113,34 +111,33 @@ class UserController extends Controller
     {
         try {
             $detail = UserDetail::find($id);
-        $user = User::find($detail->users_id);
-        $study = Study::find($request->studies_id);
+            $user = User::find($detail->users_id);
+            $study = Study::find($request->studies_id);
 
-        UserDetail::find($id)->update([
-            'unique_id' => $request->unique_id,
-            'departement_id' => $study->departement_id,
-            'study_id' => $study->id,
-        ]);
+            UserDetail::find($id)->update([
+                'unique_id' => $request->unique_id,
+                'departement_id' => $study->departement_id,
+                'study_id' => $study->id,
+            ]);
 
-        User::find($detail->users_id)->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+            User::find($detail->users_id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
 
-        if(!empty($request->role)){
-            $user->syncRoles([]);
-            if($request->role == 'student'){
-                $user->
-                $user->assignRole('student');
-            }elseif($request->role == 'lecture'){
-                $user->assignRole('lecture');
-            }else {
-                $user->assignRole('admin');
+            if (!empty($request->role)) {
+                $user->syncRoles([]);
+                if ($request->role == 'student') {
+                    $user->$user->assignRole('student');
+                } elseif ($request->role == 'lecture') {
+                    $user->assignRole('lecture');
+                } else {
+                    $user->assignRole('admin');
+                }
             }
-        }
 
-        return redirect()->route('users.index');
+            return redirect()->route('users.index');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -156,7 +153,7 @@ class UserController extends Controller
     {
         $user = UserDetail::find($id);
         User::destroy($user->users_id);
-        
+
         return redirect()->route('users.index');
     }
 }
