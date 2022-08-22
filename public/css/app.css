@@ -619,6 +619,10 @@ video {
   margin-left: 1.25rem;
   margin-right: 1.25rem;
 }
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
@@ -899,6 +903,9 @@ video {
 .flex-col {
   flex-direction: column;
 }
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
 .items-start {
   align-items: flex-start;
 }
@@ -989,12 +996,18 @@ video {
 .border-transparent {
   border-color: transparent;
 }
+.border-amber-900\/10 {
+  border-color: rgb(120 53 15 / 0.1);
+}
 .border-current {
   border-color: currentColor;
 }
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+.border-green-900\/10 {
+  border-color: rgb(20 83 45 / 0.1);
 }
 .bg-\[\#F5F5F5\] {
   --tw-bg-opacity: 1;
@@ -1035,6 +1048,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(238 239 243 / var(--tw-bg-opacity));
 }
+.bg-amber-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 251 235 / var(--tw-bg-opacity));
+}
 .bg-\[\#E2AA40\] {
   --tw-bg-opacity: 1;
   background-color: rgb(226 170 64 / var(--tw-bg-opacity));
@@ -1063,6 +1080,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(248 113 113 / var(--tw-bg-opacity));
 }
+.bg-green-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 253 244 / var(--tw-bg-opacity));
+}
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1073,11 +1094,11 @@ video {
 .p-2 {
   padding: 0.5rem;
 }
-.p-3 {
-  padding: 0.75rem;
-}
 .p-4 {
   padding: 1rem;
+}
+.p-3 {
+  padding: 0.75rem;
 }
 .px-16 {
   padding-left: 4rem;
@@ -1256,6 +1277,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(51 51 51 / var(--tw-text-opacity));
 }
+.text-amber-700 {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity));
+}
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity));
@@ -1267,6 +1292,10 @@ video {
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+.text-green-700 {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity));
 }
 .opacity-60 {
   opacity: 0.6;

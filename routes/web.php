@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\User\ChangePasswordController;
 use App\Http\Controllers\Web\Student\RepositoryController as StudentRepository;
 use App\Http\Controllers\Web\Lecture\RepositoryController as LectureRepository;
 
@@ -28,6 +29,7 @@ use App\Http\Controllers\Web\Student\StudentCreativityProgram\StudentCreativityP
 
 use App\Http\Controllers\Web\Student\Thesis\ThesisController;
 use App\Http\Controllers\Web\Student\Thesis\ThesisDocumentController;
+use App\Http\Controllers\Web\User\RegisterController;
 use App\Http\Controllers\Web\User\UserDetailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -44,12 +46,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return redirect()->route('login');
 });
 
 Auth::routes();
-Route::resource('home', HomeController::class);
-Route::resource('user', UserDetailController::class);
+Auth::routes(['verify' => true]);
+
+Route::resource('register', RegisterController::class);
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('home', HomeController::class);
+    Route::resource('user', UserDetailController::class);
+    Route::resource('changepassword', ChangePasswordController::class);
+});
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -57,7 +65,7 @@ Route::resource('user', UserDetailController::class);
 
 
 // Admin
-Route::group(['middleware' => ['role:admin'],'prefix' => 'admin',],function(){
+Route::group(['middleware' => ['role:admin', 'auth'], 'prefix' => 'admin',], function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('departements', DepartementController::class);
     Route::resource('studies', StudyController::class);
@@ -73,21 +81,18 @@ Route::group(['middleware' => ['role:admin'],'prefix' => 'admin',],function(){
 });
 
 // student
-route::group(['middleware' => ['role:student', 'auth'],'prefix' => 'mahasiswa'],function(){
+route::group(['middleware' => ['role:student', 'auth'], 'prefix' => 'mahasiswa'], function () {
 
     Route::resource('studentRepository', StudentRepository::class);
     Route::resource('thesis', ThesisController::class);
     Route::resource('thesisDocument', ThesisDocumentController::class);
     Route::resource('creativity', StudentCreativityProgramController::class);
-
-
 });
 
-route::group(['middleware' => ['role:lecture'],'prefix' => 'dosen'],function(){
+route::group(['middleware' => ['role:lecture'], 'prefix' => 'dosen'], function () {
 
     Route::resource('lectureRepository', LectureRepository::class);
     Route::resource('internalResearch', InternalResearchController::class);
     Route::resource('journalDocument', JournalDocumentController::class);
     Route::resource('journalTopic', JournalTopicController::class);
-
 });

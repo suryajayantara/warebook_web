@@ -18,7 +18,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -28,22 +29,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->hasRole('admin')){
+        if (Auth::user()->hasRole('admin')) {
 
             return redirect()->route('dashboard.index');
             // return view('admin.dashboard.index');
 
-        }elseIf(Auth::user()->hasRole('student')){
+        } elseif (Auth::user()->hasRole('student')) {
 
             $thesis = Thesis::all();
             return view('user.index', compact('thesis'));
-
-        }else{
+        } else {
 
             $journal = JournalTopic::all();
             return view('user.index', compact('journal'));
-
         }
-
     }
 }

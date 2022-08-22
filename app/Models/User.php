@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -44,6 +44,7 @@ class User extends Authenticatable
     ];
 
     // fungsi ini digunakan untuk melakukan relasi dengan model Thesis
+
     public function theses(){
         return $this->hasOne(Thesis::class, 'users_id', 'id');
     }
