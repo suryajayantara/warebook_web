@@ -17,7 +17,6 @@ class JournalDocumentController extends Controller
      */
     public function index()
     {
-       
     }
 
     /**
@@ -49,11 +48,11 @@ class JournalDocumentController extends Controller
             'document' => 'required',
         ]);
 
-        
+
         $title = str_replace(' ', '_', $request->title);
-        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+        $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document')->extension();
         $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
-        $document_url = 'storage/journalDocument/'. $document_url;
+        $document_url = 'storage/journalDocument/' . $document_url;
 
         try {
             JournalDocument::create([
@@ -69,7 +68,6 @@ class JournalDocumentController extends Controller
                 'document_url' => $document_url,
             ]);
             return redirect()->route('journalTopic.show', $request->journal_topics_id);
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -83,8 +81,8 @@ class JournalDocumentController extends Controller
      */
     public function show($id)
     {
-        $data = JournalDocument::where('id', $id)->with('User')->first();
-        return view('journal.document.index',compact('data'));
+        $data = JournalDocument::where('id', $id)->first();
+        return view('journal.document.index', compact('data'));
     }
 
     /**
@@ -118,14 +116,14 @@ class JournalDocumentController extends Controller
 
         $old_journal = JournalDocument::find($request->journal_document_id);
         $document_url = $old_journal->document_url;
-        if($request->hasFile('document')) {
-            Storage::disk('public')->delete(str_replace('storage/', '', $old_journal->document_url));            
+        if ($request->hasFile('document')) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $old_journal->document_url));
 
 
             $title = str_replace(' ', '_', $request->title);
-            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+            $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document')->extension();
             $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
-            $document_url = 'storage/journalDocument/'. $document_url;
+            $document_url = 'storage/journalDocument/' . $document_url;
         }
 
         try {
@@ -143,7 +141,6 @@ class JournalDocumentController extends Controller
                 'document_url' => $document_url
             ]);
             return redirect()->route('journalTopic.show', ['journalTopic' => $old_journal->journal_topics_id]);
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -159,11 +156,10 @@ class JournalDocumentController extends Controller
     {
         try {
             $data = JournalDocument::find($id);
-            Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));            
+            Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
             JournalDocument::destroy($id);
 
             return redirect()->route('journalTopic.show', ['journalTopic' => $data->journal_topics_id]);
-
         } catch (\Throwable $th) {
             echo 'gagal';
         }

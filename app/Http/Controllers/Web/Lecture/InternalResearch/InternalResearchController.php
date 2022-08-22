@@ -18,7 +18,7 @@ class InternalResearchController extends Controller
      */
     public function index($id)
     {
-        $data = InternalResearch::where('id', $id)->with('users')->first();
+        $data = InternalResearch::where('id', $id)->first();
         return view('internalResearch.index', compact('data'));
     }
 
@@ -52,18 +52,18 @@ class InternalResearchController extends Controller
             'proposal_url' => 'required',
             'document_url' => 'required',
         ]);
-        
-        
+
+
         //request untuk menguload dalam bentuk file
         $title = str_replace(' ', '_', $request->title);
-        $proposal_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('proposal_url')->extension();
+        $proposal_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('proposal_url')->extension();
         $request->file('proposal_url')->storeAs('internalResearch/proposal/', $proposal_url, 'public');
-        $proposal_url = 'storage/internalResearch/proposal/'. $proposal_url;
+        $proposal_url = 'storage/internalResearch/proposal/' . $proposal_url;
 
         $title = str_replace(' ', '_', $request->title);
-        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
+        $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document_url')->extension();
         $request->file('document_url')->storeAs('internalResearch/document/', $document_url, 'public');
-        $document_url = 'storage/internalResearch/document/'. $document_url;
+        $document_url = 'storage/internalResearch/document/' . $document_url;
 
         //request untuk mengubah nama file berdasarkan judul atau title internal research pada strtolower($request->title)
         //selanjutnya ditambah nama -img-thumbnail dan tambahan format asli pada file tersebut seperti .pdf, .png dll
@@ -86,9 +86,8 @@ class InternalResearchController extends Controller
             //move digunakan untuk memindahkan file ke folder public lalu dilanjutkan ke folder yang telah ditentukan
 
             return redirect()->route('lectureRepository.index');
-
         } catch (\Throwable $th) {
-             var_dump($th);
+            var_dump($th);
         }
     }
 
@@ -100,7 +99,7 @@ class InternalResearchController extends Controller
      */
     public function show($id)
     {
-        $data = InternalResearch::where('id', $id)->with('users')->first();
+        $data = InternalResearch::where('id', $id)->first();
         return view('internalResearch.index', compact('data'));
     }
 
@@ -112,7 +111,7 @@ class InternalResearchController extends Controller
      */
     public function edit($id)
     {
-        $data= InternalResearch::find($id);
+        $data = InternalResearch::find($id);
         return view('internalResearch.edit')->with(compact('data'));
     }
 
@@ -136,31 +135,31 @@ class InternalResearchController extends Controller
             'team_member' => 'required'
         ]);
 
-        $data=InternalResearch::find($id);
+        $data = InternalResearch::find($id);
 
         $proposal_url = $data->proposal_url;
         $document_url = $data->document_url;
 
-        if($request->hasFile('proposal_url')){
+        if ($request->hasFile('proposal_url')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $data->proposal_url));
-            
+
             $title = str_replace(' ', '_', $request->title);
-            $proposal_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('proposal_url')->extension();
+            $proposal_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('proposal_url')->extension();
             $request->file('proposal_url')->storeAs('internalResearch/proposal/', $proposal_url, 'public');
-            $proposal_url = 'storage/internalResearch/proposal/'. $proposal_url;
+            $proposal_url = 'storage/internalResearch/proposal/' . $proposal_url;
         }
 
-        if($request->hasFile('document_url')){
+        if ($request->hasFile('document_url')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
-            
+
             $title = str_replace(' ', '_', $request->title);
-            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
+            $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document_url')->extension();
             $request->file('document_url')->storeAs('internalResearch/document/', $document_url, 'public');
-            $document_url = 'storage/internalResearch/document/'. $document_url;
+            $document_url = 'storage/internalResearch/document/' . $document_url;
         }
 
         try {
-            
+
             InternalResearch::where('id', $id)->update([
                 'title' => $request->title,
                 'abstract' => $request->abstract,
@@ -174,8 +173,7 @@ class InternalResearchController extends Controller
                 'document_url' => $document_url,
             ]);
 
-            return redirect('dosen/internalResearch/'.$data->id);
-
+            return redirect('dosen/internalResearch/' . $data->id);
         } catch (\Throwable $th) {
             var_dump($th);
         }
@@ -190,12 +188,12 @@ class InternalResearchController extends Controller
     public function destroy($id)
     {
         try {
-            $data=InternalResearch::find($id);
+            $data = InternalResearch::find($id);
 
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
             Storage::disk('public')->delete(str_replace('storage/', '', $data->proposal_url));
             InternalResearch::destroy($id);
-            
+
             return redirect()->route('lectureRepository.index');
         } catch (\Throwable $th) {
             var_dump($th);

@@ -16,8 +16,8 @@ class StudyController extends Controller
      */
     public function index()
     {
-        $data = Study::with('departements')->paginate(5);
-        return view('admin.study.index',compact('data'));
+        $data = Study::paginate(5);
+        return view('admin.study.index', compact('data'));
     }
 
     /**
@@ -40,7 +40,7 @@ class StudyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'departement_id'=>'required',
+            'departement_id' => 'required',
             'studies_name' => 'required|unique:studies,studies_name,id',
             'desc' => 'required'
         ], [
@@ -54,7 +54,6 @@ class StudyController extends Controller
                 'desc' => $request->desc
             ]);
             return redirect()->route('studies.index')->with('success', 'Data Berhasil Ditambah');
-
         } catch (\Throwable $th) {
             // throw $th;
         }
@@ -68,7 +67,7 @@ class StudyController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = Study::where('studies_name', 'LIKE', '%'.$request->search.'%')->orWhere('desc', 'LIKE', '%'.$request->search.'%')->paginate(5);
+        $data = Study::where('studies_name', 'LIKE', '%' . $request->search . '%')->orWhere('desc', 'LIKE', '%' . $request->search . '%')->paginate(5);
         return view('admin.study.index', compact('data'));
     }
 
@@ -95,7 +94,7 @@ class StudyController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'departement_id'=>'required',
+            'departement_id' => 'required',
             'studies_name' => 'required',
             'desc' => 'required'
         ], [
@@ -109,7 +108,6 @@ class StudyController extends Controller
                 'desc' => $request->desc
             ]);
             return redirect()->route('studies.index')->with('success', 'Data Berhasil Diubah');
-
         } catch (\Throwable $th) {
             // throw $th;
         }

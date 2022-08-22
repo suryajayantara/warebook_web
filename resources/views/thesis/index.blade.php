@@ -12,7 +12,7 @@
                     <div class="flex mx-1 my-2 items-center">
                         <img class="rounded-full h-8 w-8" src="{{asset('img/design/panji.svg')}}" alt="">
                         <div class="text-sm mx-2">
-                            <h1 class="font-bold opacity-90">{{ $thesis->user->name}}</h1>
+                            <h1 class="font-bold opacity-90">{{ $thesis->users->name}}</h1>
                             <p class="-mt-1 text-[12px]">Diterbitkan tahun {{$thesis->created_year}}</p>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                               </button>
                         </div>
                         @php
-                            if ($thesis->user->id == Auth::user()->id) :
+                            if ($thesis->users->id == Auth::user()->id) :
                         @endphp
                                 <a href="{{route('thesisDocument.create', ['thesi' => $thesis->id])}}">
                                     <button type="button" class="mx-1 float-right px-4 py-2 text-xs bg-blue-600 text-white font-bold  leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
