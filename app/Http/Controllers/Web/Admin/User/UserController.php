@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = UserDetail::with('user')->with('departements')->with('studies')->paginate(6);
+        $data = UserDetail::paginate(6);
         return view('admin.user.index', compact('data'));
     }
 
@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $studies_data = Study::with('departements')->get();
+        $studies_data = Study::get();
         return view('admin.user.add', compact('studies_data'));
     }
 

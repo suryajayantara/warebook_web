@@ -54,7 +54,6 @@ class JournalTopicController extends Controller
             ]);
 
             return redirect()->route('lectureRepository.index');
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -68,10 +67,10 @@ class JournalTopicController extends Controller
      */
     public function show($id)
     {
-        $data = JournalTopic::where('id', $id)  ->first();
-        $document = JournalDocument::where('journal_topics_id', $id)->with('User')->get();
+        $data = JournalTopic::where('id', $id)->first();
+        $document = JournalDocument::where('journal_topics_id', $id)->get();
         // var_dump($data);
-        return view('journal.index',compact('data', 'document'));
+        return view('journal.index', compact('data', 'document'));
     }
 
     /**
@@ -83,7 +82,7 @@ class JournalTopicController extends Controller
     public function edit($id)
     {
         $journal = JournalTopic::find($id);
-        return view('journal.edit')->with(compact('journal'));
+        return view('journal.edit', compact('journal'));
     }
 
     /**
@@ -108,7 +107,6 @@ class JournalTopicController extends Controller
                 'description' => $request->description,
             ]);
             return redirect()->route('journalTopic.show', $id);
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -124,7 +122,7 @@ class JournalTopicController extends Controller
     {
         try {
             $data = JournalDocument::where('journal_topics_id', $id)->get();
-            foreach ($data as $item){
+            foreach ($data as $item) {
                 Storage::disk('public')->delete(str_replace('storage/', '', $item->document_url));
             }
 

@@ -17,7 +17,7 @@ class StudentCreativityProgramController extends Controller
      */
     public function index($id)
     {
-        $data = StudentCreativityProgram::where('id', $id)->with('users')->first();
+        $data = StudentCreativityProgram::where('id', $id)->first();
         return view('creativity.index', compact('data'));
     }
 
@@ -52,9 +52,9 @@ class StudentCreativityProgramController extends Controller
 
         //Upload file document
         $title = str_replace(' ', '_', $request->title);
-        $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
+        $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document_url')->extension();
         $request->file('document_url')->storeAs('creativityDocument/', $document_url, 'public');
-        $document_url = 'storage/creativityDocument/'. $document_url;
+        $document_url = 'storage/creativityDocument/' . $document_url;
 
         var_dump($request->year);
         try {
@@ -70,7 +70,6 @@ class StudentCreativityProgramController extends Controller
             ]);
 
             return redirect()->route('studentRepository.index');
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -84,7 +83,7 @@ class StudentCreativityProgramController extends Controller
      */
     public function show($id)
     {
-        $data = StudentCreativityProgram::where('id', $id)->with('users')->first();
+        $data = StudentCreativityProgram::where('id', $id)->first();
         return view('creativity.index', compact('data'));
     }
 
@@ -97,7 +96,7 @@ class StudentCreativityProgramController extends Controller
     public function edit($id)
     {
         $creativity = StudentCreativityProgram::find($id);
-        return view('creativity.edit')->with(compact('creativity'));
+        return view('creativity.edit', compact('creativity'));
     }
 
     /**
@@ -118,17 +117,17 @@ class StudentCreativityProgramController extends Controller
             'supervisor' => 'required',
         ]);
 
-        $data=StudentCreativityProgram::find($id);
+        $data = StudentCreativityProgram::find($id);
 
         $document_url = $data->document_url;
 
-        if($request->hasFile('document_url')){
+        if ($request->hasFile('document_url')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
             $title = str_replace(' ', '_', $request->title);
-            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document_url')->extension();
+            $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document_url')->extension();
             $request->file('document_url')->storeAs('creativityDocument/', $document_url, 'public');
-            $document_url = 'storage/creativityDocument/'. $document_url;
+            $document_url = 'storage/creativityDocument/' . $document_url;
         }
 
         try {
@@ -142,8 +141,7 @@ class StudentCreativityProgramController extends Controller
                 'document_url' => $document_url
             ]);
 
-            return redirect()->route('creativity.show', $id );
-
+            return redirect()->route('creativity.show', $id);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -158,7 +156,7 @@ class StudentCreativityProgramController extends Controller
     public function destroy($id)
     {
         try {
-            $data=StudentCreativityProgram::find($id);
+            $data = StudentCreativityProgram::find($id);
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
             StudentCreativityProgram::destroy($id);
             return redirect()->route('studentRepository.index');

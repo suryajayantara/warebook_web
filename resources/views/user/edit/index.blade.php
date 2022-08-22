@@ -17,7 +17,7 @@
         <p>{{ $data->departements->departement_name }}</p>
 
         <h2 class="text-lg  my-2 font-bold opacity-90">Program Studi</h2>
-        <p>{{ $data->studies->studies_name }}</p>
+        <p>{{ $data->study->studies_name }}</p>
 
         <div class="my-5">
             <a href="{{ route('user.edit', $data->id) }}">
@@ -29,5 +29,4 @@
             </a>
         </div>
     </div>
-
 @endsection
