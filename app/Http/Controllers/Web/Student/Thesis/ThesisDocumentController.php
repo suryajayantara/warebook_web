@@ -18,7 +18,6 @@ class ThesisDocumentController extends Controller
      */
     public function index()
     {
-
         $data = ThesisDocument::all();
         return view('admin.study.index', compact('data'));
     }

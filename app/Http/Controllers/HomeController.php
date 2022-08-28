@@ -36,12 +36,13 @@ class HomeController extends Controller
 
         } elseif (Auth::user()->hasRole('student')) {
 
-            $thesis = Thesis::all();
-            return view('user.index', compact('thesis'));
-        } else {
+            return redirect()->route('studentDashboard.index');
 
-            $journal = JournalTopic::all();
-            return view('user.index', compact('journal'));
+            // return view('user.index', compact('thesis'));
+        } else {
+            return redirect()->route('lectureDashboard.index');
+
+            // return view('user.index', compact('journal'));
         }
     }
 }
