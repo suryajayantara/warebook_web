@@ -70,7 +70,6 @@ class JournalDocumentsServiceController extends Controller
             $user = auth()->guard('api')->user();
 
             $validate = Validator($request->all(),[
-                'journal_topics_id' => 'required',
                 'title' => 'required',
                 'author' => 'required',
                 'abstract' => 'required',
@@ -157,7 +156,6 @@ class JournalDocumentsServiceController extends Controller
             }
 
             $data->users_id = $user->id;
-            $data->journal_topics_id = $request->journal_topics_id;
             $data->title = $request->title;
             $data->author = $request->author;
             $data->abstract = $request->abstract;
