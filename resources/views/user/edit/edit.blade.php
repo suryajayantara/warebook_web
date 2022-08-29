@@ -22,7 +22,7 @@
                 class="h-12 mt-3 mb-2 px-3 border-b-2 ease-in-out delay-150 focus:border-slate-600 focus:outline-none duration-200 focus:text-[#333333] "
                 name="studies_id">
                 <option value="" disabled>Pilih Program Studi</option>
-                <option value="{{ $user->study_id }}" selected>{{ $user->studies->studies_name }} -
+                <option value="{{ $user->study_id }}" selected>{{ $user->study->studies_name }} -
                     {{ $user->departements->departement_name }}</option>
                 @foreach ($studies as $item)
                     @if ($item->id != $user->study_id)
