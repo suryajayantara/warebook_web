@@ -23,6 +23,63 @@ class StudentCreativityProgramController extends Controller
         return view('admin.creativity.index', compact('data'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('admin.creativity.add');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'creativity_type' => 'required',
+            'aliases' => 'required',
+            'title' => 'required',
+            'abstract' => 'required',
+            'year' => 'required',
+            'supervisor' => 'required',
+            'document_url' => 'required',
+            'author' => 'required'
+        ]);
+
+
+        //Upload file document
+        $title = str_replace(' ', '_', $request->title);
+        $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document_url')->extension();
+        $request->file('document_url')->storeAs('creativityDocument/', $document_url, 'public');
+        $document_url = 'storage/creativityDocument/' . $document_url;
+
+        var_dump($request->year);
+        try {
+            StudentCreativityProgram::create([
+                'users_id' => Auth::user()->id,
+                'author' => $request->author,
+                'creativity_type' => $request->creativity_type,
+                'aliases' => $request->aliases,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'year' => $request->year,
+                'supervisor' => $request->supervisor,
+                'document_url' => $document_url
+            ]);
+
+            return redirect()->route('manageCreativity.index');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
 
     /**
      * Display the specified resource.

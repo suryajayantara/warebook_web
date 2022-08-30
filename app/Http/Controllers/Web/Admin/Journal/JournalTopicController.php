@@ -20,18 +20,57 @@ class JournalTopicController extends Controller
     public function index()
     {
         $data = JournalTopic::paginate(6);
-        return view('admin.journal.index',compact('data'));
+        return view('admin.journal.index', compact('data'));
     }
 
-     /**
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('admin.journal.add');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        try {
+            JournalTopic::create([
+                'users_id' => Auth::user()->id,
+                'subject' => $request->subject,
+                'title' => $request->title,
+                'description' => $request->description,
+            ]);
+
+            return redirect()->route('manageJournal.index');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
-        $data = JournalTopic::where('title', 'LIKE', '%'.$request->search.'%')->orWhere('subject', 'LIKE', '%'.$request->search.'%')->paginate(6);
+        $data = JournalTopic::where('title', 'LIKE', '%' . $request->search . '%')->orWhere('subject', 'LIKE', '%' . $request->search . '%')->paginate(6);
         return view('admin.creativity.index',   compact('data'));
     }
 
@@ -68,10 +107,9 @@ class JournalTopicController extends Controller
                 'subject' => $request->subject,
                 'title' => $request->title,
                 'description' => $request->description,
-            ]); 
+            ]);
 
             return redirect()->route('manageJournal.index');
-
         } catch (\Throwable $th) {
             var_dump($th);
         }

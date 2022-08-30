@@ -19,7 +19,55 @@ class JournalDocumentController extends Controller
     public function index()
     {
         $data = JournalDocument::paginate('6');
-        return view('admin.journal.document.index',compact('data'));
+        return view('admin.journal.document.index', compact('data'));
+    }
+
+    public function create(Request $request)
+    {
+        $journal_id = $request->journal_topics_id;
+        return view('admin.journal.document.add', compact('journal_id'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'journal_topics_id' => 'required',
+            'title' => 'required',
+            'author' => 'required',
+            'abstract' => 'required',
+            'tags' => 'required',
+            'year' => 'required',
+            'document' => 'required',
+        ]);
+
+        $title = str_replace(' ', '_', $request->title);
+        $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document')->extension();
+        $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
+        $document_url = 'storage/journalDocument/' . $document_url;
+
+        try {
+            JournalDocument::create([
+                'users_id' => Auth::user()->id,
+                'journal_topics_id' => $request->journal_topics_id,
+                'title' => $request->title,
+                'author' => $request->author,
+                'abstract' => $request->abstract,
+                'year' => $request->year,
+                'tags' => $request->tags,
+                'doi' => $request->doi,
+                'original_url' => $request->original_url,
+                'document_url' => $document_url,
+            ]);
+            return redirect()->route('manageJournal.index');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
     /**
      * Display the specified resource.
@@ -29,7 +77,7 @@ class JournalDocumentController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = JournalDocument::where('title', 'LIKE', '%'.$request->search.'%')->orWhere('tags', 'LIKE', '%'.$request->search.'%')->orWhere('author', 'LIKE', '%'.$request->search.'%')->orWhere('year', 'LIKE', '%'.$request->search.'%')->paginate(6);
+        $data = JournalDocument::where('title', 'LIKE', '%' . $request->search . '%')->orWhere('tags', 'LIKE', '%' . $request->search . '%')->orWhere('author', 'LIKE', '%' . $request->search . '%')->orWhere('year', 'LIKE', '%' . $request->search . '%')->paginate(6);
         return view('admin.journal.document.index',   compact('data'));
     }
 
@@ -65,13 +113,13 @@ class JournalDocumentController extends Controller
         $old_journal = JournalDocument::find($id);
         // var_dump($old_journal);
         $document_url = $old_journal->document_url;
-        if($request->hasFile('document')) {
+        if ($request->hasFile('document')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $old_journal->document_url));
 
             $title = str_replace(' ', '_', $request->title);
-            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+            $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document')->extension();
             $request->file('document')->storeAs('journalDocument/', $document_url, 'public');
-            $document_url = 'storage/journalDocument/'. $document_url;
+            $document_url = 'storage/journalDocument/' . $document_url;
         }
 
         try {
@@ -86,7 +134,6 @@ class JournalDocumentController extends Controller
                 'document_url' => $document_url
             ]);
             return redirect()->route('manageJournalDoc.index');
-
         } catch (\Throwable $th) {
             return $th;
         }
@@ -102,11 +149,10 @@ class JournalDocumentController extends Controller
     {
         try {
             $data = JournalDocument::find($id);
-            Storage::disk('public')->delete('document/journal/'.$data->document_url);
+            Storage::disk('public')->delete('document/journal/' . $data->document_url);
             JournalDocument::destroy($id);
 
             return redirect()->route('manageJournalDoc.index');
-
         } catch (\Throwable $th) {
             echo 'gagal';
         }

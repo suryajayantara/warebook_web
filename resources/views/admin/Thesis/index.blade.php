@@ -34,6 +34,9 @@
                 <div class="col-md-10">
                     <h5 class="card-header">Data Tesis</h5>
                 </div>
+                <div class="col-md-2">
+                    <a href="{{ route('manageThesis.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
+                </div>
             </div>
 
             <div class="">
@@ -43,8 +46,9 @@
                             <th>No</th>
                             <th>Judul Tesis</th>
                             <th>Jenis Tesis</th>
-                            <th>Kata Kunci</th>
+                            {{-- <th>Kata Kunci</th> --}}
                             <th>Penulis</th>
+                            <th>Pengunggah</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -54,7 +58,8 @@
                                 <td scope="row">{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td> {{ $item->thesis_type }}</td>
-                                <td>{{ $item->tags }}</td>
+                                {{-- <td>{{ $item->tags }}</td> --}}
+                                <td>{{ $item->author }}</td>
                                 <td>{{ $item->users->name }}</td>
                                 <td>
                                     <div class="dropdown">
@@ -65,6 +70,10 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ route('manageThesis.edit', $item->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i>Edit
+                                            </a>
+                                            <a class="dropdown-item"
+                                                href="{{ route('manageThesisDoc.create', ['thesi' => $item->id]) }}">
+                                                <i class="bx bx-book-open me-1"></i>Add doc
                                             </a>
                                             <form class="dropdown-item"
                                                 action="{{ route('manageThesis.destroy', $item->id) }}" method="POST">

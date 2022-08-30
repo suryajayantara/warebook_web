@@ -34,8 +34,10 @@
                 <div class="col-md-10">
                     <h5 class="card-header">Data Creativity</h5>
                 </div>
+                <div class="col-md-2">
+                    <a href="{{ route('manageCreativity.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
+                </div>
             </div>
-
             <div class="">
                 <table class="table ">
                     <thead>
@@ -46,6 +48,7 @@
                             <th>Pembimbing</th>
                             <th>Tahun</th>
                             <th>Penulis</th>
+                            <th>Pengunggah</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -57,7 +60,7 @@
                                 <td> {{ $item->creativity_type }}</td>
                                 <td>{{ $item->supervisor }}</td>
                                 <td>{{ $item->year }}</td>
-
+                                <td>{{ $item->author }}</td>
                                 <td>{{ $item->users->name }}</td>
                                 <td>
                                     <div class="dropdown">
@@ -69,7 +72,8 @@
                                             <a class="dropdown-item" href="{{ asset($item->document_url) }}">
                                                 <i class="bx bx-book-open me-1"></i>Lihat
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('manageCreativity.edit', $item->id) }}">
+                                            <a class="dropdown-item"
+                                                href="{{ route('manageCreativity.edit', $item->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i>Edit
                                             </a>
                                             <form class="dropdown-item"

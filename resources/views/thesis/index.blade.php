@@ -16,6 +16,15 @@
                             <p class="-mt-1 text-[12px]">Diterbitkan tahun {{$thesis->created_year}}</p>
                         </div>
                     </div>
+                    <nav class="flex font-bold">
+                        <div class="mt-2">
+                            Penulis
+                        </div>
+                    </nav>
+                    <div class="mb-2 opacity-80" >
+                        {{ $thesis->author }}
+                    </div>
+                    
                     <nav class="flex text-lg font-bold border-b border-gray-100">
                         <div class="div flex-grow">
                             <button id="abstractButton" onclick="tabsView('abstract')" class="px-4 pb-2 border-b border-current  hover:opacity-100 duration-100">
@@ -68,6 +77,7 @@
                                         <img class="bg-[#FF7675] p-3 m-2 mr-1 rounded-md" src="{{asset('img/icon/document.svg')}}" alt="">
                                         <h1 class="text-[18px] mx-2 font-black">{{$item->document_name}}</h1>
                                     </a>
+                                    @if ($thesis->users->id == Auth::user()->id) :
                                     <button id="dropdownDefault" data-dropdown-toggle="dropdown{{$item->id}}" class="mx-8" type="button">
                                         <svg width="5" height="22" viewBox="0 0 5 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect width="5" height="5" rx="2" fill="#D9D9D9"/>
@@ -75,6 +85,7 @@
                                         <rect y="17" width="5" height="5" rx="2" fill="#D9D9D9"/>
                                         </svg>
                                     </button>
+                                    @endif
                     
                                     <!-- Dropdown menu -->
                                     <div id="dropdown{{$item->id}}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
@@ -99,7 +110,7 @@
                 </div>
             </div>
         </div>
-
+{{-- 
         <div class="mt-14 grid grid-cols-5 gap-4">
             <a href="" class="block overflow-hidden rounded-md shadow-sm">
                 <img class="object-cover w-full h-36" src="{{asset('img/design/background.png')}}" alt="" />
@@ -111,7 +122,7 @@
               
                 </div>
               </a>
-        </div>
+        </div> --}}
     </div>
 
 <script src="{{asset('js/tabs.js')}}"></script>

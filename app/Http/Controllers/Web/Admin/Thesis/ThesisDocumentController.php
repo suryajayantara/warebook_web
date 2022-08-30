@@ -20,7 +20,20 @@ class ThesisDocumentController extends Controller
     {
 
         $data = ThesisDocument::paginate(5);
-        return view('admin.thesis.document.index',compact('data'));
+        return view('admin.thesis.document.index', compact('data'));
+    }
+
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        $thesis_id = $request->thesi;
+        return view('admin.thesis.document.add', compact('thesis_id'));
     }
 
     /**
@@ -29,6 +42,41 @@ class ThesisDocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function store(Request $request)
+    {
+
+        //Validation
+        $request->validate([
+            'thesis_id' => 'required',
+            'document_name' => 'required|regex:/^[a-zA-Z0-9 ]+$/u',
+            'document' => 'required',
+        ], [
+            'document_name.regex' => 'Title must be alphabet and number only'
+        ]);
+
+
+        $thesis = Thesis::find($request->thesis_id);
+
+        $title = str_replace(' ', '_', $request->document_name) . str_replace(' ', '_', $thesis->title);
+        $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document')->extension();
+        $request->file('document')->storeAs('thesisDocument/', $document_url, 'public');
+        $document_url = 'storage/thesisDocument/' . $document_url;
+
+        //Insert data
+        try {
+            ThesisDocument::create([
+                'thesis_id' => $request->thesis_id,
+                'document_name' => $request->document_name,
+                'document_url' => $document_url,
+            ]);
+
+            //redirect to thesis
+            return redirect()->route('manageThesis.index');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -37,7 +85,7 @@ class ThesisDocumentController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = ThesisDocument::where('document_name', 'LIKE', '%'.$request->search.'%')->paginate(6);
+        $data = ThesisDocument::where('document_name', 'LIKE', '%' . $request->search . '%')->paginate(6);
         return view('admin.thesis.document.index',   compact('data'));
     }
 
@@ -62,19 +110,20 @@ class ThesisDocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         // var_dump($id);
         $data = ThesisDocument::find($id);
         $thesis = Thesis::find($data->thesis_id);
 
         $document_url = $data->document_url;
 
-        if($request->hasFile('document')){
+        if ($request->hasFile('document')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
-            $title = str_replace(' ', '_', $request->document_name).str_replace(' ','_', $thesis->title);
-            $document_url =  Auth::user()->id. date('dmY') . $title . '.'. $request->file('document')->extension();
+            $title = str_replace(' ', '_', $request->document_name) . str_replace(' ', '_', $thesis->title);
+            $document_url =  Auth::user()->id . date('dmY') . $title . '.' . $request->file('document')->extension();
             $request->file('document')->storeAs('thesisDocument/', $document_url, 'public');
-            $document_url = 'storage/thesisDocument/'. $document_url;
+            $document_url = 'storage/thesisDocument/' . $document_url;
         }
 
 
@@ -84,7 +133,6 @@ class ThesisDocumentController extends Controller
                 'document_url' => $document_url,
             ]);
             return redirect()->route('manageThesisDoc.index');
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -102,7 +150,7 @@ class ThesisDocumentController extends Controller
             $data = ThesisDocument::find($id);
             Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
             ThesisDocument::destroy($id);
-            return redirect('mahasiswa/thesis/'.$data->thesis_id);
+            return redirect('mahasiswa/thesis/' . $data->thesis_id);
         } catch (\Throwable $th) {
             echo 'gagal';
         }
