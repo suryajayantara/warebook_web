@@ -29,6 +29,7 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
     <script src="{{ asset('assets/js/config.js') }}"></script>
+
 </head>
 
 <body>
@@ -69,6 +70,11 @@
                             <li class="menu-item">
                                 <a href="{{ route('users.index') }}" class="menu-link">
                                     <div data-i18n="Container">Pengguna</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('users.index') }}" class="menu-link">
+                                    <div data-i18n="Container">Laporan</div>
                                 </a>
                             </li>
                         </ul>
@@ -146,10 +152,8 @@
                             <i class="menu-icon tf-icons bx bx-power-off"></i>
                             <button type="submit">Logout</button>
                         </form>
-
-
-
                     </li>
+
 
 
 
