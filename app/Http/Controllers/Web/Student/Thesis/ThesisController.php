@@ -56,6 +56,7 @@ class ThesisController extends Controller
                 'users_id' => Auth::user()->id,
                 'thesis_type' => $request->thesis_type,
                 'title' => $request->title,
+                'author' => Auth::user()->name,
                 'tags' => $request->tags,
                 'abstract' => $request->abstract,
                 'created_year' => $request->created_year,

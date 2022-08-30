@@ -60,6 +60,7 @@ class StudentCreativityProgramController extends Controller
         try {
             StudentCreativityProgram::create([
                 'users_id' => Auth::user()->id,
+                'author' => Auth::user()->name,
                 'creativity_type' => $request->creativity_type,
                 'aliases' => $request->aliases,
                 'title' => $request->title,

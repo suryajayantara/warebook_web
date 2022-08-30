@@ -130,10 +130,7 @@ class DashboardController extends Controller
             $creativity = $creativity->paginate(4)->withQueryString();
         }
 
-
         $years = Thesis::select('created_year')->distinct()->orderBy('created_year', 'DESC')->get();
-
-
 
         return view('user.student.search', compact('thesis', 'creativity', 'journal', 'year', 'type', 'years', 'search'));
     }
