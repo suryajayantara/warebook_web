@@ -49,12 +49,12 @@
                 class="text-[#0984E3] mx-auto font-bold py-1 px-2 hover:bg-blue-50 mt-2">
                 Buat Akun
             </a>
-            {{-- @if (Route::has('password.request'))
+            @if (Route::has('password.request'))
                 <a class="text-[#0984E3] mx-auto font-bold py-1 px-2 hover:bg-blue-50 mt-2"
                     href="{{ route('password.request') }} ">
                     {{ __('Lupa Password?') }}
                 </a>
-            @endif --}}
+            @endif
         </div>
 
     </div>
