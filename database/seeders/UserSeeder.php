@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         $user->assignRole('student');
         $user->save();
 
-        $userDetails->users_id = 4;
+        $userDetails->users_id = 2;
         $userDetails->unique_id = "1915323025";
         $userDetails->departement_id = 1;
         $userDetails->study_id = 1;
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
         $user->assignRole('lecture');
         $user->save();
 
-        $userDetails->users_id = 5;
+        $userDetails->users_id = 3;
         $userDetails->unique_id = "1915323005";
         $userDetails->departement_id = 1;
         $userDetails->study_id = 1;
