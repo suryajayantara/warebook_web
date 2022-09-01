@@ -199,7 +199,7 @@ class InternalResearchController extends Controller
             Storage::disk('public')->delete(str_replace('storage/', '', $data->proposal_url));
             InternalResearch::destroy($id);
 
-            return redirect()->route('lectureRepository.index');
+            return redirect()->back();
         } catch (\Throwable $th) {
             var_dump($th);
         }
