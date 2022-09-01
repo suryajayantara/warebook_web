@@ -29,7 +29,7 @@
                 focus:border-slate-600 focus:outline-none duration-200"
                 type="password" placeholder="Konfirmasi Password" name="password_confirmation">
 
-            <button class="bg-[#0984E3] h-12 rounded-xl my-4 font-bold text-white" type="submit">Update Profile</button>
+            <button class="bg-[#0984E3] h-12 rounded-xl my-4 font-bold text-white" type="submit">Ganti Password</button>
 
         </form>
     </div>

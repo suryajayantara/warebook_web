@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web\Lecture;
 
 use App\Http\Controllers\Controller;
+use App\Models\InternalResearch;
 use App\Models\JournalDocument;
+use App\Models\JournalTopic;
 use App\Models\StudentCreativityProgram;
 use App\Models\Thesis;
 use Illuminate\Http\Request;
@@ -20,7 +22,9 @@ class DashboardController extends Controller
         $thesis = Thesis::orderBy('id', 'DESC')->paginate(5);
         $creativity = StudentCreativityProgram::orderBy('id', 'DESC')->paginate(5);
         $journal = JournalDocument::orderBy('id', 'DESC')->paginate(5);
-        return view('user.lecture.index', compact('thesis', 'creativity', 'journal'));
+        $internal = InternalResearch::orderBy('id', 'DESC')->paginate(5);
+        $topic = JournalTopic::orderBy('id', 'DESC')->paginate(5);
+        return view('user.lecture.index', compact('thesis', 'topic', 'creativity', 'journal', 'internal'));
     }
 
     /**
@@ -55,6 +59,7 @@ class DashboardController extends Controller
         $thesis = '';
         $creativity = '';
         $journal = '';
+        $internal = '';
 
         $type = $request->type;
         $year = $request->year;
@@ -97,6 +102,27 @@ class DashboardController extends Controller
                     $journal->where('year', $year);
                 }
                 $journal = $journal->paginate(4)->withQueryString();
+            } elseif ($type == 'internal') {
+                $internal = InternalResearch::orderBy('id', 'DESC')
+                    ->where(function ($query) use ($search) {
+                        $query->where('title', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('abstract', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('team_member', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('budget', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('project_started_at', 'LIKE', '%' . $search . '%');
+                    });
+                if (!empty($year)) {
+                    $internal->where('project_started_at', 'LIKE', '%' . $year . '%');
+                }
+                $internal = $internal->paginate(4)->withQueryString();
+            } elseif ($type == 'topic') {
+                $topic = JournalTopic::orderBy('id', 'DESC')
+                    ->where(function ($query) use ($search) {
+                        $query->where('title', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('description', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('subject', 'LIKE', '%' . $search . '%');
+                    });
+                $topic = $topic->paginate(4)->withQueryString();
             }
         } else {
             $thesis = Thesis::orderBy('id', 'DESC')
@@ -119,18 +145,34 @@ class DashboardController extends Controller
                     $query->orWhere('author', 'LIKE', '%' . $search . '%');
                     $query->orWhere('tags', 'LIKE', '%' . $search . '%');
                 });
+            $internal = InternalResearch::orderBy('id', 'DESC')
+                ->where(function ($query) use ($search) {
+                    $query->where('title', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('abstract', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('team_member', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('budget', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('project_started_at', 'LIKE', '%' . $search . '%');
+                });
+            $topic = JournalTopic::orderBy('id', 'DESC')
+                ->where(function ($query) use ($search) {
+                    $query->where('title', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('description', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('subject', 'LIKE', '%' . $search . '%');
+                });
             if (!empty($year)) {
                 $creativity->where('year', $year);
                 $journal->where('year', $year);
                 $thesis->where('created_year', $year);
+                $internal->where('project_started_at', 'LIKE', '%' . $year . '%');
             }
             $thesis = $thesis->paginate(4)->withQueryString();
             $journal = $journal->paginate(4)->withQueryString();
             $creativity = $creativity->paginate(4)->withQueryString();
+            $internal = $internal->paginate(4)->withQueryString();
+            $topic = $topic->paginate(4)->withQueryString();
         }
-        $years = Thesis::select('created_year')->distinct()->orderBy('created_year', 'DESC')->get();
 
-        return view('user.lecture.search', compact('thesis', 'creativity', 'journal', 'year', 'type', 'years', 'search'));
+        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'internal', 'journal', 'year', 'type', 'years', 'search'));
     }
 
 

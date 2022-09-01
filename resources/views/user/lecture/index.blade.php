@@ -22,6 +22,8 @@
                 <option value="thesis">Tesis</option>
                 <option value="pkm">PKM</option>
                 <option value="journal">Jurnal</option>
+                <option value="internal">Penelitian Dosen</option>
+
 
             </select>
             <input class="bg-[#EEEFF3] h-16 w-[80%] focus:outline-none" placeholder="Cari Judul Repositori Disini"
@@ -29,8 +31,20 @@
         </form>
     </div>
     <div class="container w-[75%] flex flex-col items-center mx-auto mb-80">
-        <h1 class="mt-16 font-bold text-[#828284] text-4xl">Jurnal Jurusanmu</h1>
+        <h1 class="mt-16 font-bold text-[#828284] text-4xl">Repositori Terbaru</h1>
         <div class="mt-14 grid grid-cols-5 gap-4">
+            @foreach ($internal as $item)
+                <a href="{{ route('internalResearch.show', $item->id) }}"
+                    class="block overflow-hidden rounded-md shadow-sm">
+                    <img class="object-cover w-full h-36" src="{{ asset('/img/design/background.png') }}" alt="" />
+                    <div class="p-4 bg-white h-40">
+                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
+                        </p>
+                        <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
+
+                    </div>
+                </a>
+            @endforeach
             @foreach ($thesis as $item)
                 <a href="{{ route('lectureThesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
                     <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}" alt="" />

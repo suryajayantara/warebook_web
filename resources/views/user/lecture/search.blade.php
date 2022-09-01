@@ -10,14 +10,16 @@
                         <option value="thesis" @if ($type == 'thesis') selected @endif>Tesis</option>
                         <option value="pkm" @if ($type == 'pkm') selected @endif>PKM</option>
                         <option value="journal" @if ($type == 'journal') selected @endif>Journal</option>
+                        <option value="internal" @if ($type == 'internal') selected @endif>Penelitian Dosen</option>
+
                     </select>
                     <h1 class="font-bold opacity-90 text-lg">Tahun Terbit</h1>
                     <select name="year" id="" class="w-full ml-2">
                         <option value="" selected>Pilih Tahun</option>
-                        @foreach ($years as $item)
-                            <option value="{{ $item->created_year }}" @if ($year == $item->created_year) selected @endif>
-                                {{ $item->created_year }}</option>
-                        @endforeach
+                        @for ($i = date('Y', strtotime('now')); $i >= 2015; $i--)
+                            <option value="{{ $i }}" @if ($year == $i) selected @endif>
+                                {{ $i }}</option>
+                        @endfor
                     </select>
 
                 </div>
@@ -81,6 +83,36 @@
                     </a>
                 @endforeach
             @endif
+            @if (!empty($internal))
+                @foreach ($internal as $item)
+                    <a href="{{ route('internalResearch.show', $item->id) }}"
+                        class="block overflow-hidden rounded-md shadow-sm">
+                        <img class="object-cover w-full h-36" src="{{ asset('/img/design/background.png') }}"
+                            alt="" />
+                        <div class="p-4 bg-white h-40">
+                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
+                            </p>
+                            <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
+
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+
+            <div class="container w-[75%] mx-auto mb-32">
+                @if (!empty($thesis->links()))
+                    {{ $thesis->links() }}
+                @else
+                    @if (!empty($creativity->links()))
+                        {{ $creativity->links() }}
+                    @else
+                        @if (!empty($journal->links()))
+                            {{ $journal->links() }}
+                        @else
+                        @endif
+                    @endif
+                @endif
+            </div>
         </div>
     </div>
     </div>

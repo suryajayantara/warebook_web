@@ -37,8 +37,7 @@
                                 <label class="col-sm-2 col-form-label">Title</label>
                                 <div class="col-sm-10">
                                     <input value="{{ old('title') }}" name="title" type="text"
-                                        class="form-control @error('title') is-invalid @enderror"
-                                        placeholder="Nama Jurusan" />
+                                        class="form-control @error('title') is-invalid @enderror" placeholder="Judul" />
                                     @error('title')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -51,7 +50,7 @@
                                 <div class="col-sm-10">
                                     <input value="{{ old('subject') }}" name="subject" type="text"
                                         class="form-control @error('subject') is-invalid @enderror"
-                                        placeholder="Nama Jurusan" />
+                                        placeholder="Bidang Studi" />
                                     @error('subject')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -63,7 +62,7 @@
                                 <label class="col-sm-2 col-form-label">Deskripsi</label>
                                 <div class="col-sm-10">
                                     <textarea rows="5" name="description" class="form-control @error('description') is-invalid @enderror"
-                                        placeholder="Deskpripsi Jurusan" aria-describedby="basic-icon-default-message2">{{ old('description') }}</textarea>
+                                        placeholder="Deskpripsi" aria-describedby="basic-icon-default-message2">{{ old('description') }}</textarea>
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

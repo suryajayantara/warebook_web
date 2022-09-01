@@ -21,7 +21,8 @@ class DashboardController extends Controller
         $thesis = Thesis::orderBy('id', 'DESC')->paginate(5);
         $creativity = StudentCreativityProgram::orderBy('id', 'DESC')->paginate(5);
         $journal = JournalDocument::orderBy('id', 'DESC')->paginate(5);
-        return view('user.student.index', compact('thesis', 'creativity', 'journal'));
+        $topic = JournalTopic::orderBy('id', 'DESC')->paginate(5);
+        return view('user.student.index', compact('thesis', 'topic', 'creativity', 'journal'));
     }
 
     /**
@@ -98,6 +99,14 @@ class DashboardController extends Controller
                     $journal->where('year', $year);
                 }
                 $journal = $journal->paginate(4)->withQueryString();
+            } elseif ($type == 'topic') {
+                $topic = JournalTopic::orderBy('id', 'DESC')
+                    ->where(function ($query) use ($search) {
+                        $query->where('title', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('description', 'LIKE', '%' . $search . '%');
+                        $query->orWhere('subject', 'LIKE', '%' . $search . '%');
+                    });
+                $topic = $topic->paginate(4)->withQueryString();
             }
         } else {
             $thesis = Thesis::orderBy('id', 'DESC')
@@ -120,6 +129,12 @@ class DashboardController extends Controller
                     $query->orWhere('author', 'LIKE', '%' . $search . '%');
                     $query->orWhere('tags', 'LIKE', '%' . $search . '%');
                 });
+            $topic = JournalTopic::orderBy('id', 'DESC')
+                ->where(function ($query) use ($search) {
+                    $query->where('title', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('description', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('subject', 'LIKE', '%' . $search . '%');
+                });
             if (!empty($year)) {
                 $creativity->where('year', $year);
                 $journal->where('year', $year);
@@ -128,11 +143,12 @@ class DashboardController extends Controller
             $thesis = $thesis->paginate(4)->withQueryString();
             $journal = $journal->paginate(4)->withQueryString();
             $creativity = $creativity->paginate(4)->withQueryString();
+            $topic = $topic->paginate(4)->withQueryString();
         }
 
         $years = Thesis::select('created_year')->distinct()->orderBy('created_year', 'DESC')->get();
 
-        return view('user.student.search', compact('thesis', 'creativity', 'journal', 'year', 'type', 'years', 'search'));
+        return view('user.student.search', compact('thesis', 'topic', 'creativity', 'journal', 'year', 'type', 'years', 'search'));
     }
 
     /**
