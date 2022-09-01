@@ -10,10 +10,10 @@
                 </div>
 
                 <div class="flex mx-1 my-4 items-center">
-                    <img class="rounded-full h-8 w-8" src="{{ asset('img/design/panji.svg') }}" alt="">
+                    <img class="rounded-full h-8 w-8" src="{{ asset('assets/img/avatars/6.png') }}" alt="">
                     <div class="text-sm mx-2">
                         <h1 class="font-bold opacity-90">{{ $data->user->name }}</h1>
-                        <p class="-mt-1 text-[12px]">Diterbitkan tahun {{ $data->year }}</p>
+                        <p class="-mt-1 text-[12px]">{{ $data->user->email }}</p>
                     </div>
                 </div>
                 <div class="text-lg font-bold opacity-90">
@@ -22,6 +22,14 @@
                 <div class="py-2">
                     <div class="duration-300 opacity-80 " id="abstract">
                         {{ $data->author }}
+                    </div>
+                </div>
+                <div class="text-lg font-bold opacity-90">
+                    Tahun Terbit
+                </div>
+                <div class="py-2">
+                    <div class="duration-300 opacity-80 " id="abstract">
+                        {{ $data->year }}
                     </div>
                 </div>
                 <div class="text-lg font-bold opacity-90">
@@ -39,6 +47,7 @@
                 <div class="duration-300 opacity-80" id="abstract">
                     {{ $data->tags }}
                 </div>
+
             </div>
 
             @if (!empty($data->doi))

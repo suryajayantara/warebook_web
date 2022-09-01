@@ -39,14 +39,14 @@
           <a href="{{route('journalTopic.create')}}" class="w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl bg-[#0984E3]">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">Jurnal</h1>
-              <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>
+              <p class="text-xs w-[90%] text-white font-light">Jurnal akademik atau jurnal ilmiah adalah sebuah terbitan berkala tempat karya kesarjanaan dalam bidang disiplin akademik tertentu dipublikasikan</p>
             </div>
             <img class="h-32" src="{{asset('img/design/thesis.svg')}}" alt="">
           </a>
           <a href="{{route('internalResearch.create')}}" class="bg-[#FFB52C] w-full mr-2 shadow-sm h-28 py-2 px-3 flex justify-between items-center rounded-xl">
             <div class="flex flex-col">
               <h1 class="font-extrabold text-white text-lg">Penelitian Dosen</h1>
-              <p class="text-xs w-[90%] text-white font-light">Tugas akhir merupakan puncak akhir dari perjalanan mu di perkuliahan, tanpa disadari , kamu memilih untuk menuntaskan perjalanannmu</p>
+              <p class="text-xs w-[90%] text-white font-light">Pusat Penelitian dan Pengabdian Kepada Masyarakat (P3M) Politeknik Negeri Bali merupakan salah satu unit kerja di lingkungan Politeknik Negeri Bali yang menjalankan tri dharma perguruan tinggi.</p>
             </div>
             <img class="h-32" src="{{asset('img/design/thesis.svg')}}" alt="">
           </a>

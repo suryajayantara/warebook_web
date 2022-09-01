@@ -36,7 +36,10 @@
             @foreach ($internal as $item)
                 <a href="{{ route('internalResearch.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <img class="object-cover w-full h-36" src="{{ asset('/img/design/background.png') }}" alt="" />
+                    <div class="bg-blue-500">
+                        <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                            alt="" />
+                    </div>
                     <div class="p-4 bg-white h-40">
                         <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
                         </p>
@@ -47,8 +50,10 @@
             @endforeach
             @foreach ($thesis as $item)
                 <a href="{{ route('lectureThesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                    <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}" alt="" />
-
+                    <div class="bg-blue-500">
+                        <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
+                            alt="" />
+                    </div>
                     <div class="p-4 bg-white h-40">
                         <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
                             {{ $item->thesis_type }}</p>
@@ -60,8 +65,10 @@
             @foreach ($creativity as $item)
                 <a href="{{ route('lectureCreativity.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}" alt="" />
-
+                    <div class="bg-blue-500">
+                        <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                            alt="" />
+                    </div>
                     <div class="p-4 bg-white h-40">
                         <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'PKM' }}
                         </p>
@@ -74,10 +81,27 @@
             @foreach ($journal as $item)
                 <a href="{{ route('journalDocument.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}" alt="" />
-
+                    <div class="bg-blue-500">
+                        <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                            alt="" />
+                    </div>
                     <div class="p-4 bg-white h-40">
-                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'journal' }}
+                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Journal' }}
+                        </p>
+
+                        <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
+
+                    </div>
+                </a>
+            @endforeach
+            @foreach ($topic as $item)
+                <a href="{{ route('journalTopic.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
+                    <div class="bg-blue-500">
+                        <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
+                            alt="" />
+                    </div>
+                    <div class="p-4 bg-white h-40">
+                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Repositori Jurnal' }}
                         </p>
 
                         <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>

@@ -72,11 +72,6 @@
                                     <div data-i18n="Container">Pengguna</div>
                                 </a>
                             </li>
-                            <li class="menu-item">
-                                <a href="{{ route('users.index') }}" class="menu-link">
-                                    <div data-i18n="Container">Laporan</div>
-                                </a>
-                            </li>
                         </ul>
                     </li>
 

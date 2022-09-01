@@ -36,8 +36,10 @@
             @if (!empty($thesis))
                 @foreach ($thesis as $item)
                     <a href="{{ route('thesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}"
-                            alt="" />
+                        <div class="bg-blue-500">
+                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
+                                alt="" />
+                        </div>
 
                         <div class="p-4 bg-white h-40">
                             <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
@@ -51,8 +53,10 @@
             @if (!empty($creativity))
                 @foreach ($creativity as $item)
                     <a href="{{ route('creativity.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}"
-                            alt="" />
+                        <div class="bg-blue-500">
+                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                                alt="" />
+                        </div>
 
                         <div class="p-4 bg-white h-40">
                             <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
@@ -69,12 +73,14 @@
                 @foreach ($journal as $item)
                     <a href="{{ route('studentJournalDocument.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <img class="object-cover w-full h-36" src="{{ asset('img/design/background.png') }}"
-                            alt="" />
+                        <div class="bg-blue-500">
+                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                                alt="" />
+                        </div>
 
                         <div class="p-4 bg-white h-40">
                             <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
-                                {{ 'journal' }}
+                                {{ 'Jurnal' }}
                             </p>
 
                             <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
@@ -83,6 +89,28 @@
                     </a>
                 @endforeach
             @endif
+
+            @if (!empty($topic))
+                @foreach ($topic as $item)
+                    <a href="{{ route('journalTopic.show', $item->id) }}"
+                        class="block overflow-hidden rounded-md shadow-sm">
+                        <div class="bg-blue-500">
+                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
+                                alt="" />
+                        </div>
+
+                        <div class="p-4 bg-white h-40">
+                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
+                                {{ 'Repositori Jurnal' }}
+                            </p>
+
+                            <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
+
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+
             @if (!empty($internal))
                 @foreach ($internal as $item)
                     <a href="{{ route('internalResearch.show', $item->id) }}"
@@ -90,7 +118,8 @@
                         <img class="object-cover w-full h-36" src="{{ asset('/img/design/background.png') }}"
                             alt="" />
                         <div class="p-4 bg-white h-40">
-                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
+                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
+                                {{ 'Penelitian Dosen Dosen' }}
                             </p>
                             <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 

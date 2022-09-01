@@ -84,7 +84,7 @@
                         </div>
                     </a>
 
-                    @if ($item->user_id == Auth::user()->id or $data->user_id == Auth::user()->id)
+                    @if ($item->users_id == Auth::user()->id || $data->users_id == Auth::user()->id)
                         <button id="dropdownDefault" data-dropdown-toggle="dropdown{{ $item->id }}" class="mx-8"
                             type="button">
                             <svg width="5" height="22" viewBox="0 0 5 22" fill="none"

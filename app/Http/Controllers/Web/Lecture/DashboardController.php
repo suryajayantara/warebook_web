@@ -172,7 +172,7 @@ class DashboardController extends Controller
             $topic = $topic->paginate(4)->withQueryString();
         }
 
-        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'internal', 'journal', 'year', 'type', 'years', 'search'));
+        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'internal', 'journal', 'year', 'type', 'search'));
     }
 
 
