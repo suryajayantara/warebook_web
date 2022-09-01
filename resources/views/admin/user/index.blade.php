@@ -31,7 +31,7 @@
         <div class="card">
             <div class="row mt-2">
                 <div class="col-md-10">
-                    <h5 class="card-header">Data Program Studi</h5>
+                    <h5 class="card-header">Data Pengguna</h5>
                 </div>
                 <div class="col-md-2">
                     <a href="{{ route('users.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
@@ -47,6 +47,7 @@
                             <th>Email</th>
                             <th>No. Identitas</th>
                             <th>Jurusan</th>
+                            <th>Program Studi</th>
                             <th>Actions</th>
                         </tr>
                     </thead>

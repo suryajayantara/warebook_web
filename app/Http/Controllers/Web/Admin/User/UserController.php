@@ -114,6 +114,11 @@ class UserController extends Controller
             $user = User::find($detail->users_id);
             $study = Study::find($request->studies_id);
 
+            $password = $user->password;
+            if ($request->password) {
+                $password = bcrypt($request->password);
+            }
+
             UserDetail::find($id)->update([
                 'unique_id' => $request->unique_id,
                 'departement_id' => $study->departement_id,
@@ -123,13 +128,13 @@ class UserController extends Controller
             User::find($detail->users_id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => $password,
             ]);
 
             if (!empty($request->role)) {
                 $user->syncRoles([]);
                 if ($request->role == 'student') {
-                    $user->$user->assignRole('student');
+                    $user->assignRole('student');
                 } elseif ($request->role == 'lecture') {
                     $user->assignRole('lecture');
                 } else {

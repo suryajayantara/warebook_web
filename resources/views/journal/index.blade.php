@@ -84,15 +84,17 @@
                         </div>
                     </a>
 
-                    <button id="dropdownDefault" data-dropdown-toggle="dropdown{{ $item->id }}" class="mx-8"
-                        type="button">
-                        <svg width="5" height="22" viewBox="0 0 5 22" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect width="5" height="5" rx="2" fill="#D9D9D9" />
-                            <rect y="9" width="5" height="5" rx="2" fill="#D9D9D9" />
-                            <rect y="17" width="5" height="5" rx="2" fill="#D9D9D9" />
-                        </svg>
-                    </button>
+                    @if ($item->users_id == Auth::user()->id || $data->users_id == Auth::user()->id)
+                        <button id="dropdownDefault" data-dropdown-toggle="dropdown{{ $item->id }}" class="mx-8"
+                            type="button">
+                            <svg width="5" height="22" viewBox="0 0 5 22" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="5" height="5" rx="2" fill="#D9D9D9" />
+                                <rect y="9" width="5" height="5" rx="2" fill="#D9D9D9" />
+                                <rect y="17" width="5" height="5" rx="2" fill="#D9D9D9" />
+                            </svg>
+                        </button>
+                    @endif
 
                     <!-- Dropdown menu -->
                     <div id="dropdown{{ $item->id }}"

@@ -557,23 +557,11 @@ video {
 .z-0 {
   z-index: 0;
 }
-.order-1 {
-  order: 1;
-}
-.order-2 {
-  order: 2;
-}
-.order-3 {
-  order: 3;
-}
 .float-right {
   float: right;
 }
 .m-2 {
   margin: 0.5rem;
-}
-.m-0 {
-  margin: 0px;
 }
 .mx-auto {
   margin-left: auto;
@@ -630,6 +618,10 @@ video {
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 .-mt-1 {
   margin-top: -0.25rem;
@@ -703,6 +695,9 @@ video {
 .-mt-9 {
   margin-top: -2.25rem;
 }
+.mr-10 {
+  margin-right: 2.5rem;
+}
 .mb-80 {
   margin-bottom: 20rem;
 }
@@ -711,9 +706,6 @@ video {
 }
 .mt-8 {
   margin-top: 2rem;
-}
-.mr-10 {
-  margin-right: 2.5rem;
 }
 .ml-3 {
   margin-left: 0.75rem;
@@ -787,11 +779,11 @@ video {
 .h-10 {
   height: 2.5rem;
 }
-.h-28 {
-  height: 7rem;
-}
 .h-\[80vh\] {
   height: 80vh;
+}
+.h-28 {
+  height: 7rem;
 }
 .h-5 {
   height: 1.25rem;
@@ -855,8 +847,14 @@ video {
   width: -moz-max-content;
   width: max-content;
 }
+.w-\[15\%\] {
+  width: 15%;
+}
 .w-\[85\%\] {
   width: 85%;
+}
+.w-\[20\%\] {
+  width: 20%;
 }
 .w-\[45\%\] {
   width: 45%;
@@ -866,12 +864,6 @@ video {
 }
 .w-\[47\%\] {
   width: 47%;
-}
-.w-\[15\%\] {
-  width: 15%;
-}
-.w-\[20\%\] {
-  width: 20%;
 }
 .w-5 {
   width: 1.25rem;
@@ -884,9 +876,6 @@ video {
 }
 .flex-1 {
   flex: 1 1 0%;
-}
-.flex-shrink-0 {
-  flex-shrink: 0;
 }
 .flex-grow {
   flex-grow: 1;
@@ -1083,6 +1072,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(251 253 255 / var(--tw-bg-opacity));
 }
+.bg-\[\#FFFFFF\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
 .bg-\[\#FFB52C\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 181 44 / var(--tw-bg-opacity));
@@ -1099,9 +1092,17 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(248 113 113 / var(--tw-bg-opacity));
 }
-.bg-\[\#FFFFFF\] {
+.bg-blue-400 {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity));
+}
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 .object-cover {
   -o-object-fit: cover;
@@ -1186,9 +1187,6 @@ video {
 }
 .pb-0 {
   padding-bottom: 0px;
-}
-.pb-3 {
-  padding-bottom: 0.75rem;
 }
 .pt-3 {
   padding-top: 0.75rem;
