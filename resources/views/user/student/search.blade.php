@@ -35,7 +35,7 @@
             @if (!empty($thesis))
                 @foreach ($thesis as $item)
                     <a href="{{ route('thesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-600">
+                        <div class="bg-[#2ed573]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
@@ -52,7 +52,7 @@
             @if (!empty($creativity))
                 @foreach ($creativity as $item)
                     <a href="{{ route('creativity.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ffa502]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -72,7 +72,7 @@
                 @foreach ($journal as $item)
                     <a href="{{ route('studentJournalDocument.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ff4757]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -92,7 +92,7 @@
                 @foreach ($topic as $item)
                     <a href="{{ route('studentJournalTopic.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#1e90ff]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
