@@ -30,7 +30,7 @@
                 type="text" name="search" id="">
         </form>
     </div>
-    <div class="container w-[75%] flex flex-col items-center mx-auto mb-80">
+    <div class="container w-[75%] flex flex-col items-center mx-auto mb-10">
         <h1 class="mt-16 font-bold text-[#828284] text-4xl">Repositori Terbaru</h1>
         <div class="mt-14 grid grid-cols-5 gap-4">
             @foreach ($internal as $item)
@@ -112,17 +112,6 @@
         </div>
     </div>
     <div class="container w-[75%] mx-auto mb-32">
-        @if (!empty($thesis->links()))
-            {{ $thesis->links() }}
-        @else
-            @if (!empty($creativity->links()))
-                {{ $creativity->links() }}
-            @else
-                @if (!empty($journal->links()))
-                    {{ $journal->links() }}
-                @else
-                @endif
-            @endif
-        @endif
+        {{ $paginate->links() }}
     </div>
 @endsection

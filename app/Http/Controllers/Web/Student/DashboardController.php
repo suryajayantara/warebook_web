@@ -22,7 +22,19 @@ class DashboardController extends Controller
         $creativity = StudentCreativityProgram::orderBy('id', 'DESC')->paginate(5);
         $journal = JournalDocument::orderBy('id', 'DESC')->paginate(5);
         $topic = JournalTopic::orderBy('id', 'DESC')->paginate(5);
-        return view('user.student.index', compact('thesis', 'topic', 'creativity', 'journal'));
+
+        $pagination = $thesis;
+        if ($creativity->total() > $pagination->total()) {
+            $pagination = $creativity;
+        }
+        if ($journal->total() > $pagination->total()) {
+            $pagination = $journal;
+        }
+        if ($topic->total() > $pagination->total()) {
+            $pagination = $topic;
+        }
+
+        return view('user.student.index', compact('thesis', 'topic', 'creativity', 'journal', 'pagination'));
     }
 
     /**
@@ -54,9 +66,10 @@ class DashboardController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $thesis = '';
-        $creativity = '';
-        $journal = '';
+        $thesis = Thesis::where('id', 'a')->paginate(4);
+        $creativity = StudentCreativityProgram::where('id', 'a')->paginate(4);
+        $journal = JournalDocument::where('id', 'a')->paginate(4);
+        $topic = JournalTopic::where('id', 'a')->paginate(4);
 
         $type = $request->type;
         $year = $request->year;
@@ -145,10 +158,20 @@ class DashboardController extends Controller
             $creativity = $creativity->paginate(4)->withQueryString();
             $topic = $topic->paginate(4)->withQueryString();
         }
+        $pagination = $journal;
+        $pagination = '';
+        $pagination = $thesis;
+        if ($creativity->total() > $pagination->total()) {
+            $pagination = $creativity;
+        }
+        if ($journal->total() > $pagination->total()) {
+            $pagination = $journal;
+        }
+        if ($topic->total() > $pagination->total()) {
+            $pagination = $topic;
+        }
 
-        $years = Thesis::select('created_year')->distinct()->orderBy('created_year', 'DESC')->get();
-
-        return view('user.student.search', compact('thesis', 'topic', 'creativity', 'journal', 'year', 'type', 'years', 'search'));
+        return view('user.student.search', compact('thesis', 'topic', 'creativity', 'journal', 'year', 'type', 'search', 'pagination'));
     }
 
     /**
