@@ -44,9 +44,12 @@ class UserController extends Controller
             $success = $user->createToken('appToken')->accessToken;
            //After successfull authentication, notice how I return json parameters
             return response()->json([
+              'user' => $user,
+              'role' => $user->roles->pluck('name')[0],
               'success' => true,
               'token' => $success,
-              'user' => $user
+              
+              
           ]);
         } else {
        //if authentication is unsuccessfull, notice how I return json parameters
