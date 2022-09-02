@@ -24,7 +24,23 @@ class DashboardController extends Controller
         $journal = JournalDocument::orderBy('id', 'DESC')->paginate(5);
         $internal = InternalResearch::orderBy('id', 'DESC')->paginate(5);
         $topic = JournalTopic::orderBy('id', 'DESC')->paginate(5);
-        return view('user.lecture.index', compact('thesis', 'topic', 'creativity', 'journal', 'internal'));
+
+        $paginate = '';
+        $paginate = $thesis;
+        if ($creativity->total() > $paginate->total()) {
+            $paginate = $creativity;
+        }
+        if ($journal->total() > $paginate->total()) {
+            $paginate = $journal;
+        }
+        if ($internal->total() > $paginate->total()) {
+            $paginate = $internal;
+        }
+        if ($topic->total() > $paginate->total()) {
+            $paginate = $topic;
+        }
+
+        return view('user.lecture.index', compact('thesis', 'topic', 'creativity', 'journal', 'internal', 'paginate'));
     }
 
     /**
@@ -56,13 +72,16 @@ class DashboardController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $thesis = '';
-        $creativity = '';
-        $journal = '';
-        $internal = '';
+        $thesis = Thesis::where('id', 'a')->paginate(4);
+        $creativity = StudentCreativityProgram::where('id', 'a')->paginate(4);
+        $journal = JournalDocument::where('id', 'a')->paginate(4);
+        $internal = InternalResearch::where('id', 'a')->paginate(4);
+        $topic = JournalTopic::where('id', 'a')->paginate(4);
 
         $type = $request->type;
         $year = $request->year;
+        $pagination = '';
+
 
         $search = $request->search;
         // dd($year);
@@ -172,7 +191,22 @@ class DashboardController extends Controller
             $topic = $topic->paginate(4)->withQueryString();
         }
 
-        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'internal', 'journal', 'year', 'type', 'search'));
+        $pagination = '';
+        $pagination = $thesis;
+        if ($creativity->total() > $pagination->total()) {
+            $pagination = $creativity;
+        }
+        if ($journal->total() > $pagination->total()) {
+            $pagination = $journal;
+        }
+        if ($internal->total() > $pagination->total()) {
+            $pagination = $internal;
+        }
+        if ($topic->total() > $pagination->total()) {
+            $pagination = $topic;
+        }
+
+        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'journal', 'year', 'type', 'search', 'pagination'));
     }
 
 
