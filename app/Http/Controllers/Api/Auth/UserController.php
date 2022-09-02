@@ -50,8 +50,8 @@ class UserController extends Controller
               'role' => $user->roles->pluck('name')[0],
               'success' => true,
               'token' => $success,
-              
-              
+
+
           ]);
         } else {
        //if authentication is unsuccessfull, notice how I return json parameters
