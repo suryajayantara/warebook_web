@@ -35,7 +35,8 @@
         <div class="grid grid-cols-4 gap-3 pt-3">
             @if (!empty($thesis))
                 @foreach ($thesis as $item)
-                    <a href="{{ route('thesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
+                    <a href="{{ route('lectureThesis.show', $item->id) }}"
+                        class="block overflow-hidden rounded-md shadow-sm">
                         <div class="bg-blue-500">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
@@ -52,7 +53,8 @@
             @endif
             @if (!empty($creativity))
                 @foreach ($creativity as $item)
-                    <a href="{{ route('creativity.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
+                    <a href="{{ route('lectureCreativity.show', $item->id) }}"
+                        class="block overflow-hidden rounded-md shadow-sm">
                         <div class="bg-blue-500">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
@@ -71,7 +73,7 @@
             @endif
             @if (!empty($journal))
                 @foreach ($journal as $item)
-                    <a href="{{ route('studentJournalDocument.show', $item->id) }}"
+                    <a href="{{ route('journalDocument.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
                         <div class="bg-blue-500">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
@@ -128,20 +130,11 @@
                 @endforeach
             @endif
 
-            <div class="container w-[75%] mx-auto mb-32">
-                @if (!empty($thesis->links()))
-                    {{ $thesis->links() }}
-                @else
-                    @if (!empty($creativity->links()))
-                        {{ $creativity->links() }}
-                    @else
-                        @if (!empty($journal->links()))
-                            {{ $journal->links() }}
-                        @else
-                        @endif
-                    @endif
-                @endif
-            </div>
+
+        </div>
+        <br>
+        <div class="container w-[75%] mx-auto mb-32">
+            {{ $pagination->links() }}
         </div>
     </div>
     </div>

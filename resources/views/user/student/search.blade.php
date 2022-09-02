@@ -113,22 +113,8 @@
     </div>
     </div>
     <div class="container w-[75%] mx-auto mb-32">
-        @if (!empty($thesis->links()))
-            {{ $thesis->links() }}
-        @else
-            @if (!empty($creativity->links()))
-                {{ $creativity->links() }}
-            @else
-                @if (!empty($journal->links()))
-                    {{ $journal->links() }}
-                @else
-                    @if (!empty($internal->links()))
-                        {{ $internal->links() }}
-                    @else
-                    @endif
-                @endif
-            @endif
-        @endif
+        <br>
+        {{ $pagination->links() }}
     </div>
 
     <br><br>
