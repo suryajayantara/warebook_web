@@ -206,7 +206,7 @@ class DashboardController extends Controller
             $pagination = $topic;
         }
 
-        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'journal', 'year', 'type', 'search', 'pagination'));
+        return view('user.lecture.search', compact('thesis', 'topic', 'creativity', 'internal', 'journal', 'year', 'type', 'search', 'pagination'));
     }
 
 

@@ -24,7 +24,7 @@
                 @foreach ($thesis as $item)
                     <a href="{{ route('thesis.show', ['thesi' => $item->id]) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#2ed573]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
@@ -43,7 +43,7 @@
             <div class="mt-10 grid grid-cols-5 gap-4">
                 @foreach ($creativity as $item)
                     <a href="{{ 'creativity/' . $item->id }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ffa502]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -62,49 +62,54 @@
         @else
             @if (!empty($topic))
                 <h1 class="mt-5 text-xl opacity-80  font-extrabold">Repository Journal Dosen</h1>
-            @endif
-            <div class="mt-10 grid grid-cols-5 gap-4">
-                @foreach ($topic as $item)
-                    <a href="{{ route('journalTopic.show', $item->id) }}"
-                        class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
-                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
-                                alt="" />
-                        </div>
-                        <div class="p-4 bg-white h-40">
-                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'journal' }}
-                            </p>
-                            <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
+                <div class="mt-10 grid grid-cols-5 gap-4">
+                    @foreach ($topic as $item)
+                        <a href="{{ route('journalTopic.show', $item->id) }}"
+                            class="block overflow-hidden rounded-md shadow-sm">
+                            <div class="bg-[#1e90ff]">
+                                <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
+                                    alt="" />
+                            </div>
+                            <div class="p-4 bg-white h-40">
+                                <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
+                                    {{ 'journal' }}
+                                </p>
+                                <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-            <br>
-            {{ $topic->links() }}
-            @if (!empty($internalResearch))
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                <br>
+                @if ($topic->total() > 5)
+                    {{ $topic->links() }}
+                @endif
+            @endif
+            @if (!empty($internalresearch))
                 <h1 class="mt-5 text-xl opacity-80  font-extrabold">Penelitian Dosen</h1>
+                <div class="mt-10 grid grid-cols-5 gap-4">
+                    @foreach ($internalresearch as $item)
+                        <a href="{{ route('internalResearch.show', $item->id) }}"
+                            class="block overflow-hidden rounded-md shadow-sm">
+                            <div class="bg-[#70a1ff]">
+                                <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                                    alt="" />
+                            </div>
+                            <div class="p-4 bg-white h-40">
+                                <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
+                                    {{ 'Penelitian' }}
+                                </p>
+                                <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
+
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                @if ($internalresearch->total() > 5)
+                    {{ $internalresearch->links() }}
+                @endif
             @endif
-
-            <div class="mt-10 grid grid-cols-5 gap-4">
-                @foreach ($internalresearch as $item)
-                    <a href="{{ route('internalResearch.show', $item->id) }}"
-                        class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
-                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
-                                alt="" />
-                        </div>
-                        <div class="p-4 bg-white h-40">
-                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
-                            </p>
-                            <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
-
-                        </div>
-                    </a>
-                @endforeach
-
-            </div>
-            {{ $internalresearch->links() }}
+            {{-- {{ $internalresearch->links() }} --}}
         @endif
 
         @if (Auth::user()->hasRole('lecture') && !empty($journal))
@@ -114,7 +119,7 @@
                 @foreach ($journal as $item)
                     <a href="{{ route('journalDocument.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ff4757]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -128,9 +133,11 @@
                 @endforeach
             </div>
             <br>
-            {{ $journal->links() }}
+            @if ($journal->total() > 5)
+                {{ $journal->links() }}
+            @endif
         @endif
     </div>
-
+    <br>
 
 @endsection

@@ -37,7 +37,7 @@
                 @foreach ($thesis as $item)
                     <a href="{{ route('lectureThesis.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#2ed573]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
@@ -55,7 +55,7 @@
                 @foreach ($creativity as $item)
                     <a href="{{ route('lectureCreativity.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ffa502]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -75,7 +75,7 @@
                 @foreach ($journal as $item)
                     <a href="{{ route('journalDocument.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ff4757]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -96,7 +96,7 @@
                 @foreach ($topic as $item)
                     <a href="{{ route('journalTopic.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#1e90ff]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
@@ -117,11 +117,12 @@
                 @foreach ($internal as $item)
                     <a href="{{ route('internalResearch.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <img class="object-cover w-full h-36" src="{{ asset('/img/design/background.png') }}"
-                            alt="" />
+                        <div class="bg-[#70a1ff]">
+                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                                alt="" />
+                        </div>
                         <div class="p-4 bg-white h-40">
-                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
-                                {{ 'Penelitian Dosen Dosen' }}
+                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
                             </p>
                             <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 

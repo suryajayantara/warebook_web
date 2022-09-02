@@ -36,7 +36,7 @@
             @foreach ($internal as $item)
                 <a href="{{ route('internalResearch.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#70a1ff]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                             alt="" />
                     </div>
@@ -50,7 +50,7 @@
             @endforeach
             @foreach ($thesis as $item)
                 <a href="{{ route('lectureThesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#2ed573]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                             alt="" />
                     </div>
@@ -65,7 +65,7 @@
             @foreach ($creativity as $item)
                 <a href="{{ route('lectureCreativity.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#ffa502]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                             alt="" />
                     </div>
@@ -81,7 +81,7 @@
             @foreach ($journal as $item)
                 <a href="{{ route('journalDocument.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#ff4757]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                             alt="" />
                     </div>
@@ -96,7 +96,7 @@
             @endforeach
             @foreach ($topic as $item)
                 <a href="{{ route('journalTopic.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#3742fa]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                             alt="" />
                     </div>
