@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Departement;
+use App\Models\Study;
 use App\Models\User;
 use App\Models\UserDetail;
 use Carbon\Carbon;
@@ -77,6 +79,7 @@ class UserController extends Controller
 
         $user = new User();
         $detail = new UserDetail();
+        $departement = Study::where('id',$request->study_id)->first();
 
         // User Register => To Users Models
         $user->name = $request->name;
@@ -89,7 +92,7 @@ class UserController extends Controller
 
         $detail->users_id = $user->id;
         $detail->unique_id = $request->unique_id;
-        $detail->departement_id = $request->departement_id;
+        $detail->departement_id = $departement->departement_id;
         $detail->study_id = $request->study_id;
         $detail->save();
 
