@@ -4,9 +4,8 @@
     <div class="bg-[#FBFDFF] h-80 w-full">
         <div class="container w-[75%] flex mx-auto items-center h-80 z-10">
             <div class="w-1/2">
-                <h1 class="text-5xl font-extrabold">Temukan Inspirasimu</h1>
-                <p class="lg:mr-24 text-[#828284] sm:mr-0">Temukan ide ide brilian dari apa yang telah dibuat oleh kakak
-                    kakakmu terdahulu</p>
+                <h1 class="text-5xl font-extrabold">Temukan & Simpan Inspirasimu</h1>
+                <p class="lg:mr-24 text-[#828284] sm:mr-0">“Sebagai pusat kajian ilmu pengetahuan dan teknologi terapan menuju pada peningkatan daya saing dan kesejahteraan masyarakat pada tahun 2025”.</p>
             </div>
             <div class="w-1/2">
                 <img class="h-72 ml-40 " src="{{ asset('img/design/backdrop.svg') }}" alt="">
@@ -22,7 +21,7 @@
                 <option value="thesis">Tesis</option>
                 <option value="pkm">PKM</option>
                 <option value="journal">Jurnal</option>
-                <option value="internal">Penelitian Dosen</option>
+                <option value="internal">Penelitian & Pengabdian Dosen</option>
 
 
             </select>
@@ -41,7 +40,7 @@
                             alt="" />
                     </div>
                     <div class="p-4 bg-white h-40">
-                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
+                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian Dosen' }}
                         </p>
                         <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 

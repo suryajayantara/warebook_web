@@ -133,7 +133,7 @@
                     <li class="menu-item ">
                         <a href="{{ route('manageInternalResearch.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">Penelitian Dosen</div>
+                            <div data-i18n="Analytics">Penelitian & Pengabdian Dosen</div>
                         </a>
                     </li>
 

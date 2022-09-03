@@ -73,7 +73,7 @@
                                             </a>
                                             <a class="dropdown-item"
                                                 href="{{ route('manageThesisDoc.create', ['thesi' => $item->id]) }}">
-                                                <i class="bx bx-book-open me-1"></i>Add doc
+                                                <i class="bx bx-book-open me-1"></i>Masukan Dokumen
                                             </a>
                                             <form class="dropdown-item"
                                                 action="{{ route('manageThesis.destroy', $item->id) }}" method="POST">

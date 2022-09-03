@@ -93,7 +93,7 @@ class UniversitySeeder extends Seeder
             'desc' => 'Prodi D4 Manajemen Proyek Konstruksi !'
         ]);
 
-        
+
         // Administrasi Niaga
         Study::create([
             'departement_id' => 4,

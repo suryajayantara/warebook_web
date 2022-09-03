@@ -70,7 +70,7 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ asset($item->document_url) }}">
-                                                <i class="bx bx-book-open me-1"></i>Lihat
+                                                <i class="bx bx-book-open me-1"></i>Lihat Dokumen
                                             </a>
                                             <a class="dropdown-item"
                                                 href="{{ route('manageCreativity.edit', $item->id) }}">

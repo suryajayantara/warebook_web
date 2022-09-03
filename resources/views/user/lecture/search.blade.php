@@ -10,7 +10,7 @@
                         <option value="thesis" @if ($type == 'thesis') selected @endif>Tesis</option>
                         <option value="pkm" @if ($type == 'pkm') selected @endif>PKM</option>
                         <option value="journal" @if ($type == 'journal') selected @endif>Journal</option>
-                        <option value="internal" @if ($type == 'internal') selected @endif>Penelitian Dosen</option>
+                        <option value="internal" @if ($type == 'internal') selected @endif>Penelitian & Pengabdian Dosen</option>
 
                     </select>
                     <h1 class="font-bold opacity-90 text-lg">Tahun Terbit</h1>
@@ -122,7 +122,7 @@
                                 alt="" />
                         </div>
                         <div class="p-4 bg-white h-40">
-                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
+                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian Dosen' }}
                             </p>
                             <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 

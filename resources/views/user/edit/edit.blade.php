@@ -3,8 +3,8 @@
 @section('contents')
     <br>
     <div class="bg-white w-[30%] mx-auto px-16 pb-8 pt-10 mb-32 shadow-md rounded-sm">
-        <h1 class="font-black text-[#333333] text-[30px]">Isi Datamu</h1>
-        <p class="opacity-60 -mt-1 mb-3">Daftar untuk mengakses konten</p>
+        <h1 class="font-black text-[#333333] text-[30px]">Update Data Diri</h1>
+        <p class="opacity-60 -mt-1 mb-3">Masukan Data Dirimu</p>
         <form enctype="multipart/form-data" action="{{ route('user.update', ['user' => $user->id]) }}" method="post"
             class="flex flex-col">
             @csrf
