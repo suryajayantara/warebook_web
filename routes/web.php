@@ -17,6 +17,7 @@ use App\Http\Controllers\Web\Admin\Thesis\ThesisController as AdminThesisControl
 use App\Http\Controllers\Web\Admin\Thesis\ThesisDocumentController as AdminThesisDocController;
 use App\Http\Controllers\Web\Admin\StudentCreativityProgram\StudentCreativityProgramController as ManageCreativityController;
 use App\Http\Controllers\Web\Admin\InternalResearch\InternalResearchController as ManageInternalResearchController;
+use App\Http\Controllers\Web\Admin\ReportController;
 use App\Http\Controllers\Web\Lecture\DashboardController as LectureDashboardController;
 use App\Http\Controllers\Web\Lecture\StudentCreativityProgram\StudentCreativityProgramController as lectureStudentCreativityProgramController;
 use App\Http\Controllers\Web\Lecture\Thesis\ThesisController as lectureThesisController;
@@ -64,6 +65,7 @@ Route::group(['middleware' => ['role:admin', 'auth'], 'prefix' => 'admin',], fun
     Route::resource('manageJournal', ManageJournalController::class);
     Route::resource('manageJournalDoc', ManageJournalDokumenController::class);
     Route::resource('manageInternalResearch', ManageInternalResearchController::class);
+    Route::resource('report', ReportController::class);
 });
 route::group(['middleware' => ['role:student', 'auth'], 'prefix' => 'mahasiswa'], function () {
     Route::resource('studentRepository', StudentRepository::class);
