@@ -30,13 +30,13 @@
                 type="text" name="search" id="">
         </form>
     </div>
-    <div class="container w-[75%] flex flex-col items-center mx-auto mb-80">
+    <div class="container w-[75%] flex flex-col items-center mx-auto mb-10">
         <h1 class="mt-16 font-bold text-[#828284] text-4xl">Repositori Terbaru</h1>
         <div class="mt-14 grid grid-cols-5 gap-4">
             @foreach ($internal as $item)
                 <a href="{{ route('internalResearch.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#70a1ff]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                             alt="" />
                     </div>
@@ -50,7 +50,7 @@
             @endforeach
             @foreach ($thesis as $item)
                 <a href="{{ route('lectureThesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#2ed573]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                             alt="" />
                     </div>
@@ -65,7 +65,7 @@
             @foreach ($creativity as $item)
                 <a href="{{ route('lectureCreativity.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#ffa502]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                             alt="" />
                     </div>
@@ -81,7 +81,7 @@
             @foreach ($journal as $item)
                 <a href="{{ route('journalDocument.show', $item->id) }}"
                     class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#ff4757]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                             alt="" />
                     </div>
@@ -96,7 +96,7 @@
             @endforeach
             @foreach ($topic as $item)
                 <a href="{{ route('journalTopic.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                    <div class="bg-blue-500">
+                    <div class="bg-[#3742fa]">
                         <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                             alt="" />
                     </div>
@@ -112,17 +112,6 @@
         </div>
     </div>
     <div class="container w-[75%] mx-auto mb-32">
-        @if (!empty($thesis->links()))
-            {{ $thesis->links() }}
-        @else
-            @if (!empty($creativity->links()))
-                {{ $creativity->links() }}
-            @else
-                @if (!empty($journal->links()))
-                    {{ $journal->links() }}
-                @else
-                @endif
-            @endif
-        @endif
+        {{ $paginate->links() }}
     </div>
 @endsection

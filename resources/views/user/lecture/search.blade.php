@@ -35,8 +35,9 @@
         <div class="grid grid-cols-4 gap-3 pt-3">
             @if (!empty($thesis))
                 @foreach ($thesis as $item)
-                    <a href="{{ route('thesis.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                    <a href="{{ route('lectureThesis.show', $item->id) }}"
+                        class="block overflow-hidden rounded-md shadow-sm">
+                        <div class="bg-[#2ed573]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
@@ -52,8 +53,9 @@
             @endif
             @if (!empty($creativity))
                 @foreach ($creativity as $item)
-                    <a href="{{ route('creativity.show', $item->id) }}" class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                    <a href="{{ route('lectureCreativity.show', $item->id) }}"
+                        class="block overflow-hidden rounded-md shadow-sm">
+                        <div class="bg-[#ffa502]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -71,9 +73,9 @@
             @endif
             @if (!empty($journal))
                 @foreach ($journal as $item)
-                    <a href="{{ route('studentJournalDocument.show', $item->id) }}"
+                    <a href="{{ route('journalDocument.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#ff4757]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
                                 alt="" />
                         </div>
@@ -94,7 +96,7 @@
                 @foreach ($topic as $item)
                     <a href="{{ route('journalTopic.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <div class="bg-blue-500">
+                        <div class="bg-[#1e90ff]">
                             <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/folder.svg') }}"
                                 alt="" />
                         </div>
@@ -115,11 +117,12 @@
                 @foreach ($internal as $item)
                     <a href="{{ route('internalResearch.show', $item->id) }}"
                         class="block overflow-hidden rounded-md shadow-sm">
-                        <img class="object-cover w-full h-36" src="{{ asset('/img/design/background.png') }}"
-                            alt="" />
+                        <div class="bg-[#70a1ff]">
+                            <img class="object-cover h-36 mx-auto py-1 " src="{{ asset('/img/icon/book.svg') }}"
+                                alt="" />
+                        </div>
                         <div class="p-4 bg-white h-40">
-                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
-                                {{ 'Penelitian Dosen Dosen' }}
+                            <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Penelitian' }}
                             </p>
                             <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 
@@ -128,20 +131,11 @@
                 @endforeach
             @endif
 
-            <div class="container w-[75%] mx-auto mb-32">
-                @if (!empty($thesis->links()))
-                    {{ $thesis->links() }}
-                @else
-                    @if (!empty($creativity->links()))
-                        {{ $creativity->links() }}
-                    @else
-                        @if (!empty($journal->links()))
-                            {{ $journal->links() }}
-                        @else
-                        @endif
-                    @endif
-                @endif
-            </div>
+
+        </div>
+        <br>
+        <div class="container w-[75%] mx-auto mb-32">
+            {{ $pagination->links() }}
         </div>
     </div>
     </div>

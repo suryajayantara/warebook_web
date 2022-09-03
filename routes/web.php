@@ -21,7 +21,6 @@ use App\Http\Controllers\Web\Admin\ReportController;
 use App\Http\Controllers\Web\Lecture\DashboardController as LectureDashboardController;
 use App\Http\Controllers\Web\Lecture\StudentCreativityProgram\StudentCreativityProgramController as lectureStudentCreativityProgramController;
 use App\Http\Controllers\Web\Lecture\Thesis\ThesisController as lectureThesisController;
-use App\Http\Controllers\Web\Lecture\Thesis\ThesisDocumentController as lectureThesisDocumentController;
 use App\Http\Controllers\Web\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Web\Student\Journal\JournalDocumentController as StudentJournalDocumentController;
 use App\Http\Controllers\Web\Student\Journal\JournalTopicController as StudentJournalController;
@@ -85,5 +84,4 @@ route::group(['middleware' => ['role:lecture'], 'prefix' => 'dosen'], function (
     Route::resource('lectureDashboard', LectureDashboardController::class);
     Route::resource('lectureCreativity', lectureStudentCreativityProgramController::class);
     Route::resource('lectureThesis', lectureThesisController::class);
-    Route::resource('lectureThesisDocument', lectureThesisDocumentController::class);
 });
