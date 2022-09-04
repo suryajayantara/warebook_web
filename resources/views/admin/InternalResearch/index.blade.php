@@ -32,7 +32,7 @@
         <div class="card">
             <div class="row mt-2">
                 <div class="col-md-10">
-                    <h5 class="card-header">Data Penelitian Dosen</h5>
+                    <h5 class="card-header">Data Penelitian & Pengabdian Dosen</h5>
                 </div>
                 <div class="col-md-2">
                     <a href="{{ route('manageInternalResearch.create') }}" class="btn btn-md btn-primary">Tambah Data</a>

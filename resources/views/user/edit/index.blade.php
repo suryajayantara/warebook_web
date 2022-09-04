@@ -2,10 +2,15 @@
 
 @section('contents')
     <div class="container w-[70%] mx-auto">
-        <h1 class="text-2xl mt-10 mb-5 font-extrabold opacity-90">Update Your Profile</h1>
-        <h2 class="text-lg  my-2 font-bold opacity-90">Nama</h2>
-        <p>{{ $data->user->name }}</p>
+        <h1 class="text-2xl mt-10 mb-5 font-extrabold opacity-90">Your Profile</h1>
 
+        <h2 class="text-lg  my-2 font-bold opacity-90">Nama</h2>
+        <div class="flex mx-1 my-2 items-center">
+            <img class="rounded-full h-8 w-8" src="{{asset('assets/img/avatars/6.png')}}" alt="">
+            <div class="text-sm mx-2">
+                <p>{{ $data->user->name }}</p>
+            </div>
+        </div>
 
         <h2 class="text-lg  my-2 font-bold opacity-90">Email</h2>
         <p>{{ $data->user->email }}</p>

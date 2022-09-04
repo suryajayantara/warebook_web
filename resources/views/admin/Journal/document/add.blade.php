@@ -28,7 +28,7 @@
             <div class="col-xxl">
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Edit Data Dokumen</h5>
+                        <h5 class="mb-0">Masukan Data Dokumen</h5>
                     </div>
                     <div class="card-body">
                         <form enctype="multipart/form-data" action="{{ route('manageJournalDoc.store') }}" method="post">

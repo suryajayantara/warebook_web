@@ -8,7 +8,7 @@
                     <div class="d-flex align-items-end row">
                         <div class="col-7">
                             <div class="card-body">
-                                <h5 class="card-title text-primary">Selamat Datang Admin 🎉</h5>
+                                <h1 class="card-title text-primary">Selamat Datang Admin 🎉</h1>
                                 <p class="mb-4">
                                     Masalah adalah cara Tuhan tuk membuatmu dewasa, jangan lari darinya tapi hadapilah.
                                     Hanya mereka yang membuatmu bijaksana

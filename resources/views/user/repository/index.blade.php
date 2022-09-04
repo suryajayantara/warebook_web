@@ -49,7 +49,7 @@
                         </div>
                         <div class="p-4 bg-white h-40">
                             <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
-                                {{ 'Program Kreativitas Mahasiswa' }}</p>
+                                {{ 'PKM' }}</p>
                             <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 
                         </div>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="p-4 bg-white h-40">
                                 <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
-                                    {{ 'journal' }}
+                                    {{ 'Repositori journal' }}
                                 </p>
                                 <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 
@@ -86,7 +86,7 @@
                 @endif
             @endif
             @if (!empty($internalresearch))
-                <h1 class="mt-5 text-xl opacity-80  font-extrabold">Penelitian Dosen</h1>
+                <h1 class="mt-5 text-xl opacity-80  font-extrabold">Penelitian & Pengabdian Dosen</h1>
                 <div class="mt-10 grid grid-cols-5 gap-4">
                     @foreach ($internalresearch as $item)
                         <a href="{{ route('internalResearch.show', $item->id) }}"
@@ -97,7 +97,7 @@
                             </div>
                             <div class="p-4 bg-white h-40">
                                 <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">
-                                    {{ 'Penelitian' }}
+                                    {{ 'Penelitian Dosen' }}
                                 </p>
                                 <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
 

@@ -85,7 +85,7 @@
                             alt="" />
                     </div>
                     <div class="p-4 bg-white h-40">
-                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Repositori' }}
+                        <p class="text-[9px] text-white bg-blue-700 w-max px-3 py-0.5 rounded-lg">{{ 'Repositori Jurnal' }}
                         </p>
 
                         <h5 class="text-xs mt-2 font-bold">{{ $item->title }}</h5>
