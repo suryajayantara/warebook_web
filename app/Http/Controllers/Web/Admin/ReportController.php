@@ -7,6 +7,7 @@ use App\Models\InternalResearch;
 use App\Models\JournalDocument;
 use App\Models\StudentCreativityProgram;
 use App\Models\Thesis;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use PDF;
@@ -25,6 +26,9 @@ class ReportController extends Controller
         $date_start =  $request->date_start;
         $date_end =  $request->date_end;
         $data = Thesis::where('id', 'iqw')->paginate(3);
+        if($date_end){
+            $date_end = Carbon::createFromFormat('Y-m-d', $date_end);
+        }
 
         if ($type || $date_start || $date_end) {
             $request->validate([
@@ -44,7 +48,6 @@ class ReportController extends Controller
             $data = InternalResearch::where('created_at', '>=', $date_start)->where('created_at', '<=', $date_end)->paginate(5);
         }
 
-        // var_dump($data);
         return view('admin.report.index', compact('data', 'type', 'date_start', 'date_end'));
     }
 

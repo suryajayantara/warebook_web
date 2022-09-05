@@ -98,7 +98,7 @@
                                 {{ $item->created_year }}
                             @else
                                 @if ($type == 'internal')
-                                    {{ $item->project_finish_at }}
+                                    {{ date('Y', strtotime($item->project_finish_at)) }}
                                 @else
                                     {{ $item->year }}
                                 @endif
