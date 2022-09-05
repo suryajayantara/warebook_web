@@ -40,7 +40,7 @@
                     @method('PUT')
 
                     <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label" >Judul PKM</label>
+                      <label class="col-sm-2 col-form-label" >Judul Penelitian atau Pengabdian</label>
                       <div class="col-sm-10">
                           <input value="{{$data->title}}" name="title" type="text" class="form-control" placeholder="Nama Jurusan" />
                           @error('studies_name')

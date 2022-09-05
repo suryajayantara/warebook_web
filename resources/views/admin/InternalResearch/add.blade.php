@@ -36,11 +36,11 @@
                             @csrf
 
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Judul Penelitian</label>
+                                <label class="col-sm-2 col-form-label">Judul Penelitian  atau Pengabdian</label>
                                 <div class="col-sm-10">
                                     <input value="{{ old('title') }}" name="title" type="text"
                                         class="form-control @error('title') is-invalid @enderror"
-                                        placeholder="Judul Penelitian" />
+                                        placeholder="Judul Penelitian atau Pengabdian" />
                                     @error('title')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -132,7 +132,7 @@
                                 <div class="col-sm-10">
                                     <input value="{{ old('team_member') }}" name="team_member" type="text"
                                         class="form-control @error('team_member') is-invalid @enderror"
-                                        placeholder="Nama dipisahkan dengan semicolom (;)" />
+                                        placeholder="Nama dipisahkan dengan semicolom (,)" />
                                     @error('team_member')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

@@ -31,7 +31,7 @@
         <div class="col-xxl">
             <div class="card mb-4">
               <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Tambah Data Jurusan</h5>
+                <h5 class="mb-0">Edit Data Jurusan</h5>
               </div>
               <div class="card-body">
                 <form enctype="multipart/form-data" action="{{ route('departements.update', $departement_data->id) }}" method="post">

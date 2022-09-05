@@ -32,7 +32,7 @@
         <div class="card">
             <div class="row mt-2">
                 <div class="col-md-10">
-                    <h5 class="card-header">Data Tesis</h5>
+                    <h5 class="card-header">Data Repositori Jurnal</h5>
                 </div>
                 <div class="col-md-2">
                     <a href="{{ route('manageJournal.create') }}" class="btn btn-md btn-primary">Tambah Data</a>
@@ -69,7 +69,7 @@
                                             </a>
                                             <a class="dropdown-item"
                                                 href="{{ route('manageJournalDoc.create', ['journal_topics_id' => $item->id]) }}">
-                                                <i class="bx bx-book-open me-1"></i>Add doc
+                                                <i class="bx bx-book-open me-1"></i>Masukan Dokumen
                                             </a>
                                             <form class="dropdown-item"
                                                 action="{{ route('manageJournal.destroy', $item->id) }}" method="POST">

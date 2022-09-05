@@ -32,7 +32,7 @@
         <div class="card">
             <div class="row mt-2">
                 <div class="col-md-10">
-                    <h5 class="card-header">Data Dokumen Tesis</h5>
+                    <h5 class="card-header">Data Dokumen Jurnal</h5>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ asset($item->document_url) }}">
-                                                <i class="bx bx-book-open me-1"></i>Lihat
+                                                <i class="bx bx-book-open me-1"></i>Lihat Dokumen
                                             </a>
                                             <a class="dropdown-item" href="{{ route('manageJournalDoc.edit', $item->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i>Edit
