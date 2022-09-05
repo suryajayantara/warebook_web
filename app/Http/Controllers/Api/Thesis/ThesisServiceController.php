@@ -81,7 +81,7 @@ class ThesisServiceController extends Controller
 
             $data = new Thesis();
             $data->users_id = $user->id;
-            $data->thesis_type = 'Tugas Akhir';
+            $data->thesis_type = $request->thesis_type;
             $data->title = $request->title;
             $data->created_year = 2021;
             $data->abstract = $request->abstract;
