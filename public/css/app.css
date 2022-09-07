@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap);
 /*
-! tailwindcss v3.1.7 | MIT License | https://tailwindcss.com
+! tailwindcss v3.1.2 | MIT License | https://tailwindcss.com
 *//*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
@@ -319,6 +319,11 @@ input::-moz-placeholder, textarea::-moz-placeholder {
   color: #9ca3af; /* 2 */
 }
 
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
 input::placeholder,
 textarea::placeholder {
   opacity: 1; /* 1 */
@@ -560,9 +565,6 @@ video {
 .float-right {
   float: right;
 }
-.float-left {
-  float: left;
-}
 .m-2 {
   margin: 0.5rem;
 }
@@ -685,6 +687,9 @@ video {
 .mt-4 {
   margin-top: 1rem;
 }
+.mr-6 {
+  margin-right: 1.5rem;
+}
 .mb-5 {
   margin-bottom: 1.25rem;
 }
@@ -711,15 +716,6 @@ video {
 }
 .-ml-px {
   margin-left: -1px;
-}
-.mb-80 {
-  margin-bottom: 20rem;
-}
-.mr-8 {
-  margin-right: 2rem;
-}
-.mr-6 {
-  margin-right: 1.5rem;
 }
 .block {
   display: block;
@@ -872,9 +868,6 @@ video {
 }
 .w-5 {
   width: 1.25rem;
-}
-.w-2 {
-  width: 0.5rem;
 }
 .min-w-\[3rem\] {
   min-width: 3rem;
@@ -1083,10 +1076,46 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(251 253 255 / var(--tw-bg-opacity));
 }
-
+.bg-\[\#70a1ff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(112 161 255 / var(--tw-bg-opacity));
+}
+.bg-\[\#2ed573\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(46 213 115 / var(--tw-bg-opacity));
+}
+.bg-\[\#ffa502\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 165 2 / var(--tw-bg-opacity));
-
+}
+.bg-\[\#ff4757\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 71 87 / var(--tw-bg-opacity));
+}
+.bg-\[\#3742fa\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 66 250 / var(--tw-bg-opacity));
+}
+.bg-\[\#FFFFFF\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.bg-\[\#1e90ff\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 144 255 / var(--tw-bg-opacity));
+}
+.bg-\[\#FFB52C\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 181 44 / var(--tw-bg-opacity));
+}
+.bg-\[\#D9D9D9\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 217 217 / var(--tw-bg-opacity));
+}
+.bg-blue-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
+}
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1171,11 +1200,11 @@ video {
 .pb-0 {
   padding-bottom: 0px;
 }
-.pt-3 {
-  padding-top: 0.75rem;
-}
 .pt-2 {
   padding-top: 0.5rem;
+}
+.pt-3 {
+  padding-top: 0.75rem;
 }
 .text-center {
   text-align: center;
@@ -1241,9 +1270,6 @@ video {
 .font-medium {
   font-weight: 500;
 }
-.italic {
-  font-style: italic;
-}
 .leading-7 {
   line-height: 1.75rem;
 }
@@ -1299,10 +1325,6 @@ video {
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
-}
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 .opacity-60 {
   opacity: 0.6;

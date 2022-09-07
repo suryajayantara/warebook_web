@@ -55,6 +55,21 @@ class JournalDocumentsServiceController extends Controller
         }
     }
 
+    public function getJournalDocumentByJournalId($id)
+    {
+    
+        $data = JournalDocument::where('journal_topics_id',$id)->first();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
+    }
+
     //Fungsi ini gunanya untuk menambah data Document pada Repositori Journal Document
     public function create(Request $request){
 

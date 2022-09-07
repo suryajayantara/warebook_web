@@ -65,6 +65,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('thesisDocument')->group(function () {
         Route::get('/', [ThesisDocumentServiceController::class, 'getThesisDocument']);
         Route::get('/{id}', [ThesisDocumentServiceController::class, 'getOneThesisDocument']);
+        Route::get('single/{id}', [ThesisDocumentServiceController::class, 'getOneThesisDocumentByThesisRepo']);
         Route::post('/', [ThesisDocumentServiceController::class, 'create']);
         Route::post('/{id}', [ThesisDocumentServiceController::class, 'update']);
         Route::delete('/{id}', [ThesisDocumentServiceController::class, 'destroy']);
@@ -108,6 +109,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/', [JournalDocumentsServiceController::class, 'getJournalDocument']);
         Route::get('/auth', [JournalDocumentsServiceController::class, 'getJournalDocumentByAuth']);
         Route::get('/{id}', [JournalDocumentsServiceController::class, 'getOneJournalDocument']);
+        Route::get('/single/{id}', [JournalDocumentsServiceController::class, 'getJournalDocumentByJournalId']);
         Route::post('/', [JournalDocumentsServiceController::class, 'create']);
         Route::post('/{id}', [JournalDocumentsServiceController::class, 'update']);
         Route::delete('/{id}', [JournalDocumentsServiceController::class, 'destroy']);

@@ -37,6 +37,20 @@ class ThesisDocumentServiceController extends Controller
         }
     }
 
+    public function getOneThesisDocumentByThesisRepo($id)
+    {
+        $data = ThesisDocument::where('thesis_id',$id)->get();
+        if($data == null){
+            return response()->json([
+                'message' => 'Data tidak ditemukan !'
+            ],500);
+        }else{
+            return response()->json([
+                'data' => $data
+            ],200);
+        }
+    }
+
     //Fungsi ini gunanya untuk menambah data thesis document pada Repositori thesis
     public function create(Request $request){
 
