@@ -12,79 +12,81 @@ class JournalDocumentsServiceController extends Controller
     //function ini digunakan untuk mengambil dan mencari data dari repositori Journal Document
     public function getJournalDocument(Request $request)
     {
-        $search = request('search','');
-        $data = JournalDocument::query()->with('user.details.study.departements')->when($search , function($query) use ($search){
-            $query->where('title','like','%' . $search . '%');
+        $search = request('search', '');
+        $data = JournalDocument::query()->with('user.details.study.departements')->when($search, function ($query) use ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
         })->get();
 
         return response()->json([
             'search_keyword' => $search,
             'data' => $data
-        ],200);
+        ], 200);
     }
 
     /* Function ini digunakan untuk mengambil data dari database berdasarkan user yang login */
-    public function getJournalDocumentByAuth(){
+    public function getJournalDocumentByAuth()
+    {
 
         $user = auth()->guard('api')->user();
 
-        $data = JournalDocument::where('users_id',$user->id)->get();
-        if($data == null){
+        $data = JournalDocument::where('users_id', $user->id)->get();
+        if ($data == null) {
             return response()->json([
-                'message' => 'Data tidak ditemukan !'. $user->id
-            ],500);
-        }else{
+                'message' => 'Data tidak ditemukan !' . $user->id
+            ], 500);
+        } else {
             return response()->json([
                 'data' => $data
-            ],200);
+            ], 200);
         }
     }
 
     //function ini digunakan untuk mengambil satu data dari repositori Document dengan mengambil salah satu idnya
     public function getOneJournalDocument(Request $request, $id)
     {
-        $data = JournalDocument::where('id',$id)->with('journalTopic')->first();
-        if($data == null){
+        $data = JournalDocument::where('id', $id)->with('journalTopic')->first();
+        if ($data == null) {
             return response()->json([
                 'message' => 'Data tidak ditemukan !'
-            ],500);
-        }else{
+            ], 500);
+        } else {
             return response()->json([
                 'data' => $data
-            ],200);
+            ], 200);
         }
     }
 
     public function getJournalDocumentByJournalId($id)
     {
-    
-        $data = JournalDocument::where('journal_topics_id',$id)->first();
-        if($data == null){
+
+        $data = JournalDocument::where('journal_topics_id', $id)->get();
+        if ($data == null) {
             return response()->json([
                 'message' => 'Data tidak ditemukan !'
-            ],500);
-        }else{
+            ], 500);
+        } else {
             return response()->json([
                 'data' => $data
-            ],200);
+            ], 200);
         }
     }
 
     //Fungsi ini gunanya untuk menambah data Document pada Repositori Journal Document
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         try {
             // Check apakah user sudah login atau belum
-            if(!auth('api')->check()){
+            if (!auth('api')->check()) {
                 return response()->json([
                     'message' => 'Anda Belum Login',
-                ],401);
+                ], 401);
             }
 
             // Data dari Token , Disimpan di variable ini
             $user = auth()->guard('api')->user();
 
-            $validate = Validator($request->all(),[
+            $validate = Validator($request->all(), [
                 'title' => 'required',
                 'author' => 'required',
                 'abstract' => 'required',
@@ -95,16 +97,16 @@ class JournalDocumentsServiceController extends Controller
                 'document_url' => 'required',
             ]);
 
-            if($validate->fails()){
+            if ($validate->fails()) {
                 return response()->json([
                     'message' => ''
                 ]);
             }
 
             //Upload Document
-            $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+            $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
             $pathName = 'storage/journalDocument/';
-            $document_url = $file_name.'.'.$request->file('document_url')->extension();
+            $document_url = $file_name . '.' . $request->file('document_url')->extension();
             $request->file('document_url')->storeAs('journalDocument', $document_url, 'public');
 
             $finalPath = $pathName . $document_url;
@@ -127,21 +129,21 @@ class JournalDocumentsServiceController extends Controller
             return response()->json([
                 'data' => $data,
                 'message' => 'Data berhasil ditambahkan'
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     //Fungsi ini gunanya untuk mengupdate data Document pada Repositori Journal Document
-    public function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
         try {
             // Check apakah user sudah login atau belum
-            if(!auth('api')->check()){
+            if (!auth('api')->check()) {
                 return response()->json([
                     'message' => 'Anda Belum Login',
-                ],401);
+                ], 401);
             }
 
             // Data dari Token , Disimpan di variable ini
@@ -149,20 +151,20 @@ class JournalDocumentsServiceController extends Controller
 
             // Check apakah data dari id diinputkan ada atau tidak datanya
             $data = JournalDocument::find($id);
-            if($data == null){
+            if ($data == null) {
                 return response()->json([
                     'message' => 'Data tidak ditemukan !'
-                ],500);
+                ], 500);
             }
 
             //update data apabila menginputkan file di document_url
-            if($request->hasFile('document_url')) {
+            if ($request->hasFile('document_url')) {
                 //digunakan untuk menghapus file beradasarkan id yang diinputkan
                 Storage::disk('public')->delete(str_replace('storage/', '', $data->document_url));
 
-                $file_name = date('Ymd').preg_replace('/\s+/','_',$request->title);
+                $file_name = date('Ymd') . preg_replace('/\s+/', '_', $request->title);
                 $pathName = 'storage/journalDocument/';
-                $document_url = $file_name.'.'.$request->file('document_url')->extension();
+                $document_url = $file_name . '.' . $request->file('document_url')->extension();
                 $request->file('document_url')->storeAs('journalDocument', $document_url, 'public');
 
                 $finalPath = $pathName . $document_url;
@@ -184,31 +186,32 @@ class JournalDocumentsServiceController extends Controller
             return response()->json([
                 'data' => $data,
                 'message' => 'Data berhasil diubah'
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
     //Fungsi ini gunanya untuk menghapus salah satu data pada repositori Journal Document
-    public function destroy($id){
+    public function destroy($id)
+    {
         try {
             $query = JournalDocument::find($id);
-            if($query == null){
+            if ($query == null) {
                 return response()->json([
                     'message' => 'Data tidak ditemukan !'
-                ],500);
+                ], 500);
             }
 
             //digunakan untuk menghapus file beradasarkan id yang diinputkan
             Storage::disk('public')->delete(str_replace('storage/', '', $query->document_url));
 
             $query->delete();
-            if($query){
+            if ($query) {
                 return response()->json([
                     'message' => 'Data berhasil dihapus !'
-                ],200);
-            }else{
+                ], 200);
+            } else {
                 return response()->json([
                     'message' => 'Data tidak terhapus'
                 ]);
@@ -216,7 +219,6 @@ class JournalDocumentsServiceController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     // Start new Function HERE
